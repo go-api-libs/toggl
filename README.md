@@ -5,7 +5,10 @@
 ![Code Coverage](https://img.shields.io/badge/coverage-0%25-red)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-
+Public Toggl API.
+Note:
+We use BasicAuth in a specific way. By the standard you provide `Authentication` header with `base64(user_name:password)` as a `credential`.
+In our case it will be `base64(user_name:api_token)`.
 
 ## Installation
 
