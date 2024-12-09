@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
+	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 )
 
@@ -40,11 +42,30 @@ func record() (*recorder.Recorder, error) {
 		return nil, err
 	}
 
-	// TODO: maskAuthorization
-	// r.AddHook(maskAuthorization, recorder.BeforeSaveHook)
+	r.AddHook(maskAuthorization, recorder.BeforeSaveHook)
 
 	// replace the default transport with the recorder
 	http.DefaultClient.Transport = r
 
 	return r, nil
+}
+
+func maskAuthorization(i *cassette.Interaction) error {
+	auth := i.Request.Headers.Get("Authorization")
+	if auth == "" {
+		return nil
+	}
+
+	i.Request.Headers.Set("Authorization", maskAuthString(auth))
+
+	return nil
+}
+
+func maskAuthString(s string) string {
+	if parts := strings.Split(s, " "); len(parts) == 2 {
+		// mask the token except the type (Bearer, Basic, etc.)
+		return fmt.Sprintf("%s %s", parts[0], strings.Repeat("*", len(parts[1])))
+	}
+
+	return strings.Repeat("*", len(s))
 }
