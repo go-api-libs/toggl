@@ -13,9 +13,9 @@ import (
 
 var (
 	baseURL = &url.URL{
-		Host:   "",
-		Path:   "TODO",
-		Scheme: "",
+		Host:   "api.track.toggl.com",
+		Path:   "/api/v9",
+		Scheme: "https",
 	}
 
 	jsonOpts = json.JoinOptions(

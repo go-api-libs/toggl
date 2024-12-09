@@ -1,12 +1,12 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "TODO",
+    "title": "Toggl API",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "TODO"
+      "url": "https://api.track.toggl.com/api/v9"
     }
   ],
   "paths": {
