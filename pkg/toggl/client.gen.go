@@ -5,9 +5,11 @@
 package toggl
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
+	"github.com/go-api-libs/api"
 	"github.com/go-json-experiment/json"
 )
 
@@ -31,4 +33,34 @@ type Client struct {
 // NewClient creates a new Client.
 func NewClient() (*Client, error) {
 	return &Client{cli: http.DefaultClient}, nil
+}
+
+// Returns details for the current user.
+//
+//	GET /me
+func (c *Client) GetMe(ctx context.Context) error {
+	u := baseURL.JoinPath("/me")
+	req := (&http.Request{
+		Header:     http.Header{},
+		Host:       u.Host,
+		Method:     http.MethodGet,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusUnauthorized:
+		// User is unauthorized to use the API
+		return api.NewErrStatusCode(rsp)
+	default:
+		return api.NewErrUnknownStatusCode(rsp)
+	}
 }
