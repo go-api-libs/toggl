@@ -4,7 +4,16 @@
 
 package toggl_test
 
-import "net/http"
+import (
+	"context"
+	"errors"
+	"net/http"
+	"testing"
+
+	"github.com/go-api-libs/api"
+	"github.com/go-api-libs/toggl/pkg/toggl"
+	"gopkg.in/dnaeon/go-vcr.v3/recorder"
+)
 
 type testRoundTripper struct {
 	rsp *http.Response
@@ -13,4 +22,85 @@ type testRoundTripper struct {
 
 func (t *testRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	return t.rsp, t.err
+}
+
+func TestClient_Error(t *testing.T) {
+	ctx := context.Background()
+
+	c, err := toggl.NewClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("Do", func(t *testing.T) {
+		testErr := errors.New("test error")
+		http.DefaultClient.Transport = &testRoundTripper{err: testErr}
+
+		if err := c.GetMe(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
+	})
+
+	t.Run("Unmarshal", func(t *testing.T) {
+		t.Run("GetMe", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if err := c.GetMe(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+		})
+	})
+}
+
+func replay(t *testing.T, cassette string) {
+	t.Helper()
+
+	r, err := recorder.NewWithOptions(&recorder.Options{
+		CassetteName:       cassette,
+		Mode:               recorder.ModeReplayOnly,
+		RealTransport:      http.DefaultTransport,
+		SkipRequestLatency: true,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		_ = r.Stop()
+	})
+
+	http.DefaultClient.Transport = r
+}
+
+func TestClient_VCR(t *testing.T) {
+	ctx := context.Background()
+
+	c, err := toggl.NewClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("2024-12-09", func(t *testing.T) {
+		replay(t, "../../pkg/toggl/vcr/2024-12-09")
+
+		if err := c.GetMe(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, api.ErrStatusCode) {
+			t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
+		}
+	})
+
+	t.Run("2024-12-10", func(t *testing.T) {
+		replay(t, "../../pkg/toggl/vcr/2024-12-10")
+
+		if err := c.GetMe(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, api.ErrStatusCode) {
+			t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
+		}
+	})
 }
