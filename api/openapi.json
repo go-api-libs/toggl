@@ -27,12 +27,7 @@
           "401": {
             "$ref": "#/components/responses/UnauthorizedResponse"
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     }
   },
@@ -222,5 +217,10 @@
         "scheme": "basic"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "BasicAuth": []
+    }
+  ]
 }
