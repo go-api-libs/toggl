@@ -6,6 +6,7 @@ package toggl
 
 import (
 	"context"
+	"strings"
 	"net/http"
 	"net/url"
 
@@ -67,11 +68,13 @@ func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 	}
 	defer rsp.Body.Close()
 
+	mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";")
+
 	switch rsp.StatusCode {
 	case http.StatusOK:
 		// TODO
-		switch rsp.Header.Get("Content-Type") {
-		case "application/json; charset=utf-8":
+		switch mt {
+		case "application/json":
 			var out R
 			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				return nil, api.WrapDecodingError(rsp, err)
