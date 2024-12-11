@@ -22,7 +22,7 @@
         "operationId": "GetMe",
         "responses": {
           "200": {
-            "$ref": "#/components/responses/GetMeResponse"
+            "$ref": "#/components/responses/UserResponse"
           },
           "401": {
             "$ref": "#/components/responses/UnauthorizedResponse"
@@ -176,7 +176,7 @@
       "UnauthorizedResponse": {
         "description": "User is unauthorized to use the API"
       },
-      "GetMeResponse": {
+      "UserResponse": {
         "description": "TODO",
         "content": {
           "application/json; charset=utf-8": {
