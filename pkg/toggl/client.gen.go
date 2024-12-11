@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/MarkRosemaker/jsonutil"
 	"github.com/go-api-libs/api"
 	"github.com/go-json-experiment/json"
 )
@@ -21,7 +22,9 @@ var (
 	}
 
 	jsonOpts = json.JoinOptions(
-		json.RejectUnknownMembers(true))
+		json.RejectUnknownMembers(true),
+		json.WithMarshalers(json.MarshalFuncV2(jsonutil.URLMarshal)),
+		json.WithUnmarshalers(json.UnmarshalFuncV2(jsonutil.URLUnmarshal)))
 )
 
 // Client conforms to the OpenAPI3 specification for this service.
@@ -38,7 +41,15 @@ func NewClient() (*Client, error) {
 // Returns details for the current user.
 //
 //	GET /me
-func (c *Client) GetMe(ctx context.Context) error {
+func (c *Client) GetMe(ctx context.Context) (*GetMeOkJSONResponse, error) {
+	return GetMe[GetMeOkJSONResponse](ctx, c)
+}
+
+// Returns details for the current user.
+// You can define a custom result to unmarshal the response into.
+//
+//	GET /me
+func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 	u := baseURL.JoinPath("/me")
 	req := (&http.Request{
 		Header:     http.Header{},
@@ -52,15 +63,28 @@ func (c *Client) GetMe(ctx context.Context) error {
 
 	rsp, err := c.cli.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer rsp.Body.Close()
 
 	switch rsp.StatusCode {
 	case http.StatusUnauthorized:
 		// User is unauthorized to use the API
-		return api.NewErrStatusCode(rsp)
+		return nil, api.NewErrStatusCode(rsp)
+	case http.StatusOK:
+		// TODO
+		switch rsp.Header.Get("Content-Type") {
+		case "application/json; charset=utf-8":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
 	default:
-		return api.NewErrUnknownStatusCode(rsp)
+		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }

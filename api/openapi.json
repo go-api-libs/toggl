@@ -23,15 +23,191 @@
         "responses": {
           "401": {
             "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "200": {
+            "$ref": "#/components/responses/GetMeOkResponse"
           }
         }
       }
     }
   },
   "components": {
+    "schemas": {
+      "GetMeOkJSONResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "api_token": {
+            "type": "string",
+            "example": "********************************"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "marcodroesler@gmail.com"
+          },
+          "fullname": {
+            "type": "string",
+            "example": "Marco"
+          },
+          "timezone": {
+            "type": "string",
+            "example": "Europe/Berlin"
+          },
+          "toggl_accounts_id": {
+            "type": "string",
+            "example": "WSBrE7LiQPJ7PKA7WnCAnk"
+          },
+          "default_workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "beginning_of_week": {
+            "type": "integer",
+            "example": 1
+          },
+          "image_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://secure.gravatar.com/avatar/af0a4ad100669ddbc678eb40ba90459d?d=404&s=200"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-03-20T20:40:08.017845Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-26T17:13:54.850204Z"
+          },
+          "openid_email": {
+            "$ref": "#/components/schemas/GetMeOkJSONResponseOpenidEmail"
+          },
+          "openid_enabled": {
+            "type": "boolean",
+            "example": true
+          },
+          "country_id": {
+            "$ref": "#/components/schemas/GetMeOkJSONResponseCountryID"
+          },
+          "has_password": {
+            "type": "boolean",
+            "example": true
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-11T17:43:57.206072Z"
+          },
+          "intercom_hash": {
+            "type": "string",
+            "example": "ea08fc8166eed37e79f7179c3c8334cd99ae5afbbd0339ab1ecb333fb1615d52"
+          },
+          "oauth_providers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "google"
+            }
+          },
+          "authorization_updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-07-02T14:55:08.008327Z"
+          }
+        },
+        "required": [
+          "id",
+          "api_token",
+          "email",
+          "fullname",
+          "timezone",
+          "toggl_accounts_id",
+          "default_workspace_id",
+          "beginning_of_week",
+          "image_url",
+          "created_at",
+          "updated_at",
+          "openid_email",
+          "openid_enabled",
+          "country_id",
+          "has_password",
+          "at",
+          "intercom_hash",
+          "oauth_providers",
+          "authorization_updated_at"
+        ],
+        "example": {
+          "id": 2166261,
+          "api_token": "********************************",
+          "email": "marcodroesler@gmail.com",
+          "fullname": "Marco",
+          "timezone": "Europe/Berlin",
+          "toggl_accounts_id": "WSBrE7LiQPJ7PKA7WnCAnk",
+          "default_workspace_id": 2230580,
+          "beginning_of_week": 1,
+          "image_url": "https://secure.gravatar.com/avatar/af0a4ad100669ddbc678eb40ba90459d?d=404&s=200",
+          "created_at": "2016-03-20T20:40:08.017845Z",
+          "updated_at": "2024-11-26T17:13:54.850204Z",
+          "openid_email": null,
+          "openid_enabled": true,
+          "country_id": null,
+          "has_password": true,
+          "at": "2024-12-11T17:43:57.206072Z",
+          "intercom_hash": "ea08fc8166eed37e79f7179c3c8334cd99ae5afbbd0339ab1ecb333fb1615d52",
+          "oauth_providers": [
+            "google"
+          ],
+          "authorization_updated_at": "2024-07-02T14:55:08.008327Z"
+        }
+      },
+      "GetMeOkJSONResponseOpenidEmail": {
+        "type": "object"
+      },
+      "GetMeOkJSONResponseCountryID": {
+        "type": "object"
+      }
+    },
     "responses": {
       "UnauthorizedResponse": {
         "description": "User is unauthorized to use the API"
+      },
+      "GetMeOkResponse": {
+        "description": "TODO",
+        "content": {
+          "application/json; charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/GetMeOkJSONResponse"
+            },
+            "example": {
+              "id": 2166261,
+              "api_token": "********************************",
+              "email": "marcodroesler@gmail.com",
+              "fullname": "Marco",
+              "timezone": "Europe/Berlin",
+              "toggl_accounts_id": "WSBrE7LiQPJ7PKA7WnCAnk",
+              "default_workspace_id": 2230580,
+              "beginning_of_week": 1,
+              "image_url": "https://secure.gravatar.com/avatar/af0a4ad100669ddbc678eb40ba90459d?d=404&s=200",
+              "created_at": "2016-03-20T20:40:08.017845Z",
+              "updated_at": "2024-11-26T17:13:54.850204Z",
+              "openid_email": null,
+              "openid_enabled": true,
+              "country_id": null,
+              "has_password": true,
+              "at": "2024-12-11T17:43:57.206072Z",
+              "intercom_hash": "ea08fc8166eed37e79f7179c3c8334cd99ae5afbbd0339ab1ecb333fb1615d52",
+              "oauth_providers": [
+                "google"
+              ],
+              "authorization_updated_at": "2024-07-02T14:55:08.008327Z"
+            }
+          }
+        }
       }
     }
   }

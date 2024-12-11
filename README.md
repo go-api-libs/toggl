@@ -2,7 +2,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/go-api-libs/toggl.svg)](https://pkg.go.dev/github.com/go-api-libs/toggl/pkg/toggl)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-blue)](/api/openapi.json)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-api-libs/toggl)](https://goreportcard.com/report/github.com/go-api-libs/toggl)
-![Code Coverage](https://img.shields.io/badge/coverage-25%25-red)
+![Code Coverage](https://img.shields.io/badge/coverage-29%25-red)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 Public Toggl API.
@@ -38,10 +38,12 @@ func main() {
 	}
 
 	ctx := context.Background()
-	err := c.GetMe(ctx)
+	getMeOkJSONResponse, err := c.GetMe(ctx)
 	if err != nil {
 		panic(err)
 	}
+
+	// Use getMeOkJSONResponse object
 }
 
 ```

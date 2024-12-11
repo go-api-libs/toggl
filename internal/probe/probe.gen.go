@@ -43,6 +43,7 @@ func record() (*recorder.Recorder, error) {
 	}
 
 	r.AddHook(maskAuthorization, recorder.BeforeSaveHook)
+	r.AddHook(maskSecrets, recorder.BeforeSaveHook)
 
 	// replace the default transport with the recorder
 	http.DefaultClient.Transport = r
