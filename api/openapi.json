@@ -218,6 +218,7 @@
     "securitySchemes": {
       "BasicAuth": {
         "type": "http",
+        "description": "The Authorization header is constructed either using the email and password or the API token and the string literal 'api_token'.",
         "scheme": "basic"
       }
     }
