@@ -27,7 +27,12 @@
           "401": {
             "$ref": "#/components/responses/UnauthorizedResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     }
   },
@@ -208,6 +213,12 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
       }
     }
   }

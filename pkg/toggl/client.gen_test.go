@@ -143,4 +143,15 @@ func TestClient_VCR(t *testing.T) {
 			t.Fatal("result is nil")
 		}
 	})
+
+	t.Run("2024-12-12", func(t *testing.T) {
+		replay(t, "../../pkg/toggl/vcr/2024-12-12")
+
+		res, err := c.GetMe(ctx)
+		if err != nil {
+			t.Fatal(err)
+		} else if res == nil {
+			t.Fatal("result is nil")
+		}
+	})
 }
