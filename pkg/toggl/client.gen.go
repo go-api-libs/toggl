@@ -6,9 +6,9 @@ package toggl
 
 import (
 	"context"
-	"strings"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/MarkRosemaker/jsonutil"
 	"github.com/go-api-libs/api"
@@ -68,12 +68,10 @@ func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 	}
 	defer rsp.Body.Close()
 
-	mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";")
-
 	switch rsp.StatusCode {
 	case http.StatusOK:
 		// TODO
-		switch mt {
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			var out R
 			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {

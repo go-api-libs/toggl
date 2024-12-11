@@ -70,10 +70,10 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
 			}
 
-			// decoding error for known content type "application/json; charset=utf-8"
+			// decoding error for known content type "application/json"
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
 				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json; charset=utf-8"}},
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
 				StatusCode: http.StatusOK,
 			}}
 
