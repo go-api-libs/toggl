@@ -14,7 +14,9 @@ interactions:
         request_uri: ""
         body: ""
         form: {}
-        headers: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
         url: https://api.track.toggl.com/api/v9/me
         method: GET
       response:
@@ -23,38 +25,42 @@ interactions:
         proto_minor: 0
         transfer_encoding: []
         trailer: {}
-        content_length: 0
+        content_length: 708
         uncompressed: false
-        body: ""
+        body: '{"id":2166261,"api_token":"********************************","email":"marcodroesler@gmail.com","fullname":"Marco","timezone":"Europe/Berlin","toggl_accounts_id":"WSBrE7LiQPJ7PKA7WnCAnk","default_workspace_id":2230580,"beginning_of_week":1,"image_url":"https://secure.gravatar.com/avatar/af0a4ad100669ddbc678eb40ba90459d?d=404\u0026s=200","created_at":"2016-03-20T20:40:08.017845Z","updated_at":"2024-11-26T17:13:54.850204Z","openid_email":null,"openid_enabled":true,"country_id":null,"has_password":true,"at":"2024-12-11T17:43:57.206072Z","intercom_hash":"ea08fc8166eed37e79f7179c3c8334cd99ae5afbbd0339ab1ecb333fb1615d52","oauth_providers":["google"],"authorization_updated_at":"2024-07-02T14:55:08.008327Z"}'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
             Cache-Control:
                 - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
             Content-Length:
-                - "0"
+                - "708"
+            Content-Type:
+                - application/json; charset=utf-8
             Date:
-                - Wed, 11 Dec 2024 16:27:59 GMT
+                - Wed, 11 Dec 2024 17:43:57 GMT
             Instance:
                 - track-public-api-proxy-66895d4956-wxt8v
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
             Server:
                 - nginx
             Strict-Transport-Security:
                 - max-age=15552000; includeSubDomains
             Via:
                 - 1.1 google
-            X-Authorization-Missing:
-                - "true"
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - SAMEORIGIN
             X-Request-Id:
-                - 6752887c090b35fecb8c1ec231ee198f
+                - 175eb6a93c10a8df8757292af4c82100
+            X-Service-Level:
+                - GREEN
             X-Toggl-Request-Id:
-                - cdb6e7a2-03ce-4533-86a8-0e91e3c18608
+                - 353eef02-60d1-4d99-969b-96e0d101ea45
             X-We-Are-Hiring:
                 - https://toggl.com/jobs/
-        status: 401 Unauthorized
-        code: 401
-        duration: 211.616833ms
+        status: 200 OK
+        code: 200
+        duration: 195.018167ms
