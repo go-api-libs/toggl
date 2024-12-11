@@ -41,8 +41,8 @@ func NewClient() (*Client, error) {
 // Returns details for the current user.
 //
 //	GET /me
-func (c *Client) GetMe(ctx context.Context) (*GetMeOkJSONResponse, error) {
-	return GetMe[GetMeOkJSONResponse](ctx, c)
+func (c *Client) GetMe(ctx context.Context) (*User, error) {
+	return GetMe[User](ctx, c)
 }
 
 // Returns details for the current user.

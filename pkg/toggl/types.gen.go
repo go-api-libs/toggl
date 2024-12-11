@@ -11,31 +11,31 @@ import (
 	"github.com/go-api-libs/types"
 )
 
-// GetMeOkJSONResponse defines a model
-type GetMeOkJSONResponse struct {
-	ID                     int                            `json:"id"`
-	APIToken               string                         `json:"api_token"`
-	Email                  types.Email                    `json:"email"`
-	Fullname               string                         `json:"fullname"`
-	Timezone               string                         `json:"timezone"`
-	TogglAccountsID        string                         `json:"toggl_accounts_id"`
-	DefaultWorkspaceID     int                            `json:"default_workspace_id"`
-	BeginningOfWeek        int                            `json:"beginning_of_week"`
-	ImageURL               url.URL                        `json:"image_url"`
-	CreatedAt              time.Time                      `json:"created_at"`
-	UpdatedAt              time.Time                      `json:"updated_at"`
-	OpenidEmail            GetMeOkJSONResponseOpenidEmail `json:"openid_email"`
-	OpenidEnabled          bool                           `json:"openid_enabled"`
-	CountryID              GetMeOkJSONResponseCountryID   `json:"country_id"`
-	HasPassword            bool                           `json:"has_password"`
-	At                     time.Time                      `json:"at"`
-	IntercomHash           string                         `json:"intercom_hash"`
-	OauthProviders         []string                       `json:"oauth_providers"`
-	AuthorizationUpdatedAt time.Time                      `json:"authorization_updated_at"`
+// User defines a model
+type User struct {
+	ID                     int             `json:"id"`
+	APIToken               string          `json:"api_token"`
+	Email                  types.Email     `json:"email"`
+	Fullname               string          `json:"fullname"`
+	Timezone               string          `json:"timezone"`
+	TogglAccountsID        string          `json:"toggl_accounts_id"`
+	DefaultWorkspaceID     int             `json:"default_workspace_id"`
+	BeginningOfWeek        int             `json:"beginning_of_week"`
+	ImageURL               url.URL         `json:"image_url"`
+	CreatedAt              time.Time       `json:"created_at"`
+	UpdatedAt              time.Time       `json:"updated_at"`
+	OpenidEmail            UserOpenidEmail `json:"openid_email"`
+	OpenidEnabled          bool            `json:"openid_enabled"`
+	CountryID              UserCountryID   `json:"country_id"`
+	HasPassword            bool            `json:"has_password"`
+	At                     time.Time       `json:"at"`
+	IntercomHash           string          `json:"intercom_hash"`
+	OauthProviders         []string        `json:"oauth_providers"`
+	AuthorizationUpdatedAt time.Time       `json:"authorization_updated_at"`
 }
 
-// GetMeOkJSONResponseOpenidEmail defines a model
-type GetMeOkJSONResponseOpenidEmail struct{}
+// UserOpenidEmail defines a model
+type UserOpenidEmail struct{}
 
-// GetMeOkJSONResponseCountryID defines a model
-type GetMeOkJSONResponseCountryID struct{}
+// UserCountryID defines a model
+type UserCountryID struct{}

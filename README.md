@@ -38,12 +38,12 @@ func main() {
 	}
 
 	ctx := context.Background()
-	getMeOkJSONResponse, err := c.GetMe(ctx)
+	user, err := c.GetMe(ctx)
 	if err != nil {
 		panic(err)
 	}
 
-	// Use getMeOkJSONResponse object
+	// Use user object
 }
 
 ```

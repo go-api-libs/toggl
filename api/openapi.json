@@ -22,7 +22,7 @@
         "operationId": "GetMe",
         "responses": {
           "200": {
-            "$ref": "#/components/responses/GetMeOkResponse"
+            "$ref": "#/components/responses/GetMeResponse"
           },
           "401": {
             "$ref": "#/components/responses/UnauthorizedResponse"
@@ -33,7 +33,7 @@
   },
   "components": {
     "schemas": {
-      "GetMeOkJSONResponse": {
+      "User": {
         "type": "object",
         "properties": {
           "id": {
@@ -85,14 +85,14 @@
             "example": "2024-11-26T17:13:54.850204Z"
           },
           "openid_email": {
-            "$ref": "#/components/schemas/GetMeOkJSONResponseOpenidEmail"
+            "$ref": "#/components/schemas/UserOpenidEmail"
           },
           "openid_enabled": {
             "type": "boolean",
             "example": true
           },
           "country_id": {
-            "$ref": "#/components/schemas/GetMeOkJSONResponseCountryID"
+            "$ref": "#/components/schemas/UserCountryID"
           },
           "has_password": {
             "type": "boolean",
@@ -165,10 +165,10 @@
           "authorization_updated_at": "2024-07-02T14:55:08.008327Z"
         }
       },
-      "GetMeOkJSONResponseOpenidEmail": {
+      "UserOpenidEmail": {
         "type": "object"
       },
-      "GetMeOkJSONResponseCountryID": {
+      "UserCountryID": {
         "type": "object"
       }
     },
@@ -176,12 +176,12 @@
       "UnauthorizedResponse": {
         "description": "User is unauthorized to use the API"
       },
-      "GetMeOkResponse": {
+      "GetMeResponse": {
         "description": "TODO",
         "content": {
           "application/json; charset=utf-8": {
             "schema": {
-              "$ref": "#/components/schemas/GetMeOkJSONResponse"
+              "$ref": "#/components/schemas/User"
             },
             "example": {
               "id": 2166261,
