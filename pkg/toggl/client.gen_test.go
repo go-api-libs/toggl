@@ -44,6 +44,7 @@ func TestClient_Error(t *testing.T) {
 	})
 
 	t.Run("Unmarshal", func(t *testing.T) {
+
 		t.Run("GetMe", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
@@ -96,6 +97,16 @@ func TestClient_VCR(t *testing.T) {
 
 	t.Run("2024-12-10", func(t *testing.T) {
 		replay(t, "../../pkg/toggl/vcr/2024-12-10")
+
+		if err := c.GetMe(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, api.ErrStatusCode) {
+			t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
+		}
+	})
+
+	t.Run("2024-12-11", func(t *testing.T) {
+		replay(t, "../../pkg/toggl/vcr/2024-12-11")
 
 		if err := c.GetMe(ctx); err == nil {
 			t.Fatal("expected error")

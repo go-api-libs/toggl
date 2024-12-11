@@ -2,7 +2,6 @@
     "swagger": "2.0",
     "info": {
         "description": "Public Toggl API.\nNote:\nWe use BasicAuth in a specific way. By the standard you provide `Authentication` header with `base64(user_name:password)` as a `credential`.\nIn our case it will be `base64(user_name:api_token)`.",
-        "title": "Toggl API",
         "termsOfService": "https://toggl.com/terms/",
         "contact": {},
         "license": {
@@ -10,8 +9,6 @@
         },
         "version": "9"
     },
-    "host": "localhost:8080",
-    "basePath": "/api/v9",
     "paths": {
         "/audit_logs/{organization_id}/{from}/{to}": {
             "get": {
@@ -1832,15 +1829,12 @@
                         "BasicAuth": []
                     }
                 ],
-                "description": "Returns details for the current user.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "me"
                 ],
-                "summary": "Me",
-                "operationId": "get-me",
                 "parameters": [
                     {
                         "type": "boolean",

@@ -15,6 +15,24 @@
     }
   ],
   "paths": {
-    "/me": {}
+    "/me": {
+      "get": {
+        "summary": "Me",
+        "description": "Returns details for the current user.",
+        "operationId": "GetMe",
+        "responses": {
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "UnauthorizedResponse": {
+        "description": "User is unauthorized to use the API"
+      }
+    }
   }
 }

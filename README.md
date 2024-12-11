@@ -2,7 +2,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/go-api-libs/toggl.svg)](https://pkg.go.dev/github.com/go-api-libs/toggl/pkg/toggl)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-blue)](/api/openapi.json)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-api-libs/toggl)](https://goreportcard.com/report/github.com/go-api-libs/toggl)
-![Code Coverage](https://img.shields.io/badge/coverage-0%25-red)
+![Code Coverage](https://img.shields.io/badge/coverage-27%25-red)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 Public Toggl API.
@@ -19,6 +19,32 @@ go get github.com/go-api-libs/toggl/pkg/toggl
 ```
 
 ## Usage
+
+### Example: Me
+
+```go
+package main
+
+import (
+	"context"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient()
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	err := c.GetMe(ctx)
+	if err != nil {
+		panic(err)
+	}
+}
+
+```
 
 ## Additional Information
 
