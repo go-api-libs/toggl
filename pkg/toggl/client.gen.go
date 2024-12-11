@@ -62,6 +62,9 @@ func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 		URL:        u,
 	}).WithContext(ctx)
 
+	// TODO: 
+	// req.SetBasicAuth(c.basicAuthUser, c.basicAuthUser)
+
 	rsp, err := c.cli.Do(req)
 	if err != nil {
 		return nil, err
