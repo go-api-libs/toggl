@@ -17,15 +17,15 @@
   "paths": {
     "/me": {
       "get": {
-        "summary": "Me",
+        "summary": "Return Current User",
         "description": "Returns details for the current user.",
         "operationId": "GetMe",
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedResponse"
-          },
           "200": {
             "$ref": "#/components/responses/GetMeOkResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
           }
         }
       }

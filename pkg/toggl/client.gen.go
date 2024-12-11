@@ -68,9 +68,6 @@ func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 	defer rsp.Body.Close()
 
 	switch rsp.StatusCode {
-	case http.StatusUnauthorized:
-		// User is unauthorized to use the API
-		return nil, api.NewErrStatusCode(rsp)
 	case http.StatusOK:
 		// TODO
 		switch rsp.Header.Get("Content-Type") {
@@ -84,6 +81,9 @@ func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 		default:
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
+	case http.StatusUnauthorized:
+		// User is unauthorized to use the API
+		return nil, api.NewErrStatusCode(rsp)
 	default:
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}

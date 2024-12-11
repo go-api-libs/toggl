@@ -20,7 +20,7 @@ go get github.com/go-api-libs/toggl/pkg/toggl
 
 ## Usage
 
-### Example: Me
+### Example: Return Current User
 
 ```go
 package main
