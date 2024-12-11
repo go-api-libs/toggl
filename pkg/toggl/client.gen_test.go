@@ -44,7 +44,6 @@ func TestClient_Error(t *testing.T) {
 	})
 
 	t.Run("Unmarshal", func(t *testing.T) {
-
 		t.Run("GetMe", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
