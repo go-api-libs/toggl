@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	userAgent = "TogglGoAPILibrary/1.0.0 (https://github.com/go-api-libs/toggl)"
+	userAgent = "TogglGoAPILibrary/9 (https://github.com/go-api-libs/toggl)"
 )
 
 var (
@@ -57,7 +57,7 @@ func (c *Client) GetMe(ctx context.Context) (*User, error) {
 func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 	u := baseURL.JoinPath("/me")
 	req := (&http.Request{
-		Header:     http.Header{},
+		Header:     http.Header{"User-Agent": []string{userAgent}},
 		Host:       u.Host,
 		Method:     http.MethodGet,
 		Proto:      "HTTP/1.1",
