@@ -29,6 +29,12 @@ func (t *testRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 func TestClient_Error(t *testing.T) {
 	ctx := context.Background()
 
+	if _, err := toggl.NewClient("", ""); err == nil {
+		t.Fatal("expected error")
+	} else if "username is empty" != err.Error() {
+		t.Fatalf("want: username is empty, got: %v", err)
+	}
+
 	c, err := toggl.NewClient("myUsername", "myPassword")
 	if err != nil {
 		t.Fatal(err)
