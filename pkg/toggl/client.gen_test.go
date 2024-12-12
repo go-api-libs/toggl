@@ -35,6 +35,12 @@ func TestClient_Error(t *testing.T) {
 		t.Fatalf("want: username is empty, got: %v", err)
 	}
 
+	if _, err := toggl.NewClient("myUsername", ""); err == nil {
+		t.Fatal("expected error")
+	} else if "password is empty" != err.Error() {
+		t.Fatalf("want: password is empty, got: %v", err)
+	}
+
 	c, err := toggl.NewClient("myUsername", "myPassword")
 	if err != nil {
 		t.Fatal(err)
