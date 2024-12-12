@@ -29,7 +29,7 @@ func (t *testRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 func TestClient_Error(t *testing.T) {
 	ctx := context.Background()
 
-	c, err := toggl.NewClient()
+	c, err := toggl.NewClient("myUsername", "myPassword")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -108,7 +108,7 @@ func replay(t *testing.T, cassette string) {
 func TestClient_VCR(t *testing.T) {
 	ctx := context.Background()
 
-	c, err := toggl.NewClient()
+	c, err := toggl.NewClient("myUsername", "myPassword")
 	if err != nil {
 		t.Fatal(err)
 	}

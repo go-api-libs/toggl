@@ -42,35 +42,20 @@ type Client struct {
 	authHeader string
 }
 
-// NewClient creates a new Client with the given options.
-func NewClient(opts ...Option) (*Client, error) {
-	c := &Client{cli: http.DefaultClient}
-
-	for _, opt := range opts {
-		if err := opt(c); err != nil {
-			return nil, err
-		}
+// NewClient creates a new Client with the given username and password to be used for basic authentication.
+func NewClient(username, password string) (*Client, error) {
+	if username == "" {
+		return nil, errors.New("username is empty")
 	}
 
-	return c, nil
-}
-
-type Option func(*Client) error
-
-func OptionBasicAuth(username, password string) Option {
-	return func(c *Client) error {
-		if username == "" {
-			return errors.New("username is empty")
-		}
-
-		if password == "" {
-			return errors.New("password is empty")
-		}
-
-		c.authHeader = "Basic "+base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
-
-		return nil
+	if password == "" {
+		return nil, errors.New("password is empty")
 	}
+
+	return &Client{
+		authHeader: "Basic " + base64.StdEncoding.EncodeToString([]byte(username+":"+password)),
+		cli:        http.DefaultClient,
+	}, nil
 }
 
 // Returns details for the current user.
