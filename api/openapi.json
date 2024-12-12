@@ -136,13 +136,13 @@
           "clients": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserClientsItems"
+              "$ref": "#/components/schemas/WorkClient"
             }
           },
           "time_entries": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserTimeEntriesItems"
+              "$ref": "#/components/schemas/TimeEntry"
             }
           },
           "projects": {
@@ -243,7 +243,7 @@
           "creator_id": 2166261
         }
       },
-      "UserClientsItems": {
+      "WorkClient": {
         "type": "object",
         "properties": {
           "id": {
@@ -289,7 +289,7 @@
           "creator_id": 2166261
         }
       },
-      "UserTimeEntriesItems": {
+      "TimeEntry": {
         "type": "object",
         "properties": {
           "id": {

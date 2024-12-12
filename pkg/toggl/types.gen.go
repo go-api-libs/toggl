@@ -18,30 +18,30 @@ type GetMeParams struct {
 
 // User defines a model
 type User struct {
-	ID                     int                     `json:"id"`
-	APIToken               string                  `json:"api_token"`
-	Email                  types.Email             `json:"email"`
-	Fullname               string                  `json:"fullname"`
-	Timezone               string                  `json:"timezone"`
-	TogglAccountsID        string                  `json:"toggl_accounts_id"`
-	DefaultWorkspaceID     int                     `json:"default_workspace_id"`
-	BeginningOfWeek        int                     `json:"beginning_of_week"`
-	ImageURL               url.URL                 `json:"image_url"`
-	CreatedAt              time.Time               `json:"created_at"`
-	UpdatedAt              time.Time               `json:"updated_at"`
-	OpenidEmail            struct{}                `json:"openid_email"`
-	OpenidEnabled          bool                    `json:"openid_enabled"`
-	CountryID              struct{}                `json:"country_id"`
-	HasPassword            bool                    `json:"has_password"`
-	At                     time.Time               `json:"at"`
-	IntercomHash           string                  `json:"intercom_hash"`
-	OauthProviders         []string                `json:"oauth_providers"`
-	AuthorizationUpdatedAt time.Time               `json:"authorization_updated_at"`
-	Tags                   *[]Tag                  `json:"tags"`
-	Clients                *[]UserClientsItems     `json:"clients"`
-	TimeEntries            *[]UserTimeEntriesItems `json:"time_entries"`
-	Projects               *[]UserProjectsItems    `json:"projects"`
-	Workspaces             *[]UserWorkspacesItems  `json:"workspaces"`
+	ID                     int                    `json:"id"`
+	APIToken               string                 `json:"api_token"`
+	Email                  types.Email            `json:"email"`
+	Fullname               string                 `json:"fullname"`
+	Timezone               string                 `json:"timezone"`
+	TogglAccountsID        string                 `json:"toggl_accounts_id"`
+	DefaultWorkspaceID     int                    `json:"default_workspace_id"`
+	BeginningOfWeek        int                    `json:"beginning_of_week"`
+	ImageURL               url.URL                `json:"image_url"`
+	CreatedAt              time.Time              `json:"created_at"`
+	UpdatedAt              time.Time              `json:"updated_at"`
+	OpenidEmail            struct{}               `json:"openid_email"`
+	OpenidEnabled          bool                   `json:"openid_enabled"`
+	CountryID              struct{}               `json:"country_id"`
+	HasPassword            bool                   `json:"has_password"`
+	At                     time.Time              `json:"at"`
+	IntercomHash           string                 `json:"intercom_hash"`
+	OauthProviders         []string               `json:"oauth_providers"`
+	AuthorizationUpdatedAt time.Time              `json:"authorization_updated_at"`
+	Tags                   *[]Tag                 `json:"tags"`
+	Clients                *[]WorkClient          `json:"clients"`
+	TimeEntries            *[]TimeEntry           `json:"time_entries"`
+	Projects               *[]UserProjectsItems   `json:"projects"`
+	Workspaces             *[]UserWorkspacesItems `json:"workspaces"`
 }
 
 // Tag defines a model
@@ -53,8 +53,8 @@ type Tag struct {
 	CreatorID   int       `json:"creator_id"`
 }
 
-// UserClientsItems defines a model
-type UserClientsItems struct {
+// WorkClient defines a model
+type WorkClient struct {
 	ID        int       `json:"id"`
 	Wid       int       `json:"wid"`
 	Archived  bool      `json:"archived"`
@@ -63,8 +63,8 @@ type UserClientsItems struct {
 	CreatorID int       `json:"creator_id"`
 }
 
-// UserTimeEntriesItems defines a model
-type UserTimeEntriesItems struct {
+// TimeEntry defines a model
+type TimeEntry struct {
 	ID              int        `json:"id"`
 	WorkspaceID     int        `json:"workspace_id"`
 	ProjectID       int        `json:"project_id"`
