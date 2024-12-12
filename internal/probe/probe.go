@@ -13,7 +13,7 @@ const serverURL = "https://api.track.toggl.com/api/v9"
 
 // probe calls the API server to check what we can do
 func probe() error {
-	req, err := http.NewRequest(http.MethodGet, serverURL+"/me", nil)
+	req, err := http.NewRequest(http.MethodGet, serverURL+"/me?with_related_data=true", nil)
 	if err != nil {
 		return err
 	}
