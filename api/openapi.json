@@ -93,14 +93,14 @@
             "example": "2024-11-26T17:13:54.850204Z"
           },
           "openid_email": {
-            "$ref": "#/components/schemas/UserOpenidEmail"
+            "type": "object"
           },
           "openid_enabled": {
             "type": "boolean",
             "example": true
           },
           "country_id": {
-            "$ref": "#/components/schemas/UserCountryID"
+            "type": "object"
           },
           "has_password": {
             "type": "boolean",
@@ -203,11 +203,213 @@
           "authorization_updated_at": "2024-07-02T14:55:08.008327Z"
         }
       },
-      "UserCountryID": {
-        "type": "object"
+      "UserTagsItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 16939168
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "name": {
+            "type": "string",
+            "example": "AGL"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-08T19:11:14.332795Z"
+          },
+          "creator_id": {
+            "type": "integer",
+            "example": 2166261
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "name",
+          "at",
+          "creator_id"
+        ],
+        "example": {
+          "id": 16939168,
+          "workspace_id": 2230580,
+          "name": "AGL",
+          "at": "2024-11-08T19:11:14.332795Z",
+          "creator_id": 2166261
+        }
       },
-      "UserOpenidEmail": {
-        "type": "object"
+      "UserClientsItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 64890399
+          },
+          "wid": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "archived": {
+            "type": "boolean",
+            "example": false
+          },
+          "name": {
+            "type": "string",
+            "example": "AGL"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-03-17T10:55:38+00:00"
+          },
+          "creator_id": {
+            "type": "integer",
+            "example": 2166261
+          }
+        },
+        "required": [
+          "id",
+          "wid",
+          "archived",
+          "name",
+          "at",
+          "creator_id"
+        ],
+        "example": {
+          "id": 64890399,
+          "wid": 2230580,
+          "archived": false,
+          "name": "AGL",
+          "at": "2024-03-17T10:55:38+00:00",
+          "creator_id": 2166261
+        }
+      },
+      "UserTimeEntriesItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 3727773734
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "project_id": {
+            "type": "integer",
+            "example": 155392684
+          },
+          "task_id": {
+            "type": "object"
+          },
+          "billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-12T20:38:54+00:00"
+          },
+          "stop": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-12T20:38:05+00:00"
+          },
+          "duration": {
+            "type": "integer",
+            "example": -1734035934
+          },
+          "description": {
+            "type": "string",
+            "example": "Open Sourcing"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "tag_ids": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "duronly": {
+            "type": "boolean",
+            "example": true
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-12T20:40:28.056447Z"
+          },
+          "server_deleted_at": {
+            "type": "object"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "uid": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "wid": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "pid": {
+            "type": "integer",
+            "example": 155392684
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "project_id",
+          "task_id",
+          "billable",
+          "start",
+          "stop",
+          "duration",
+          "description",
+          "tags",
+          "tag_ids",
+          "duronly",
+          "at",
+          "server_deleted_at",
+          "user_id",
+          "uid",
+          "wid",
+          "pid"
+        ],
+        "example": {
+          "id": 3727773734,
+          "workspace_id": 2230580,
+          "project_id": 155392684,
+          "task_id": null,
+          "billable": false,
+          "start": "2024-12-12T20:38:54+00:00",
+          "stop": null,
+          "duration": -1734035934,
+          "description": "Open Sourcing",
+          "tags": [],
+          "tag_ids": [],
+          "duronly": true,
+          "at": "2024-12-12T20:40:28.056447Z",
+          "server_deleted_at": null,
+          "user_id": 2166261,
+          "uid": 2166261,
+          "wid": 2230580,
+          "pid": 155392684
+        }
       },
       "UserProjectsItems": {
         "type": "object",
@@ -247,7 +449,7 @@
             "example": "2017-08-28T10:47:38+00:00"
           },
           "server_deleted_at": {
-            "$ref": "#/components/schemas/UserProjectsItemsServerDeletedAt"
+            "type": "object"
           },
           "color": {
             "type": "string",
@@ -258,38 +460,38 @@
             "example": false
           },
           "template": {
-            "$ref": "#/components/schemas/UserProjectsItemsTemplate"
+            "type": "object"
           },
           "auto_estimates": {
-            "$ref": "#/components/schemas/UserProjectsItemsAutoEstimates"
+            "type": "object"
           },
           "estimated_hours": {
-            "$ref": "#/components/schemas/UserProjectsItemsEstimatedHours"
+            "type": "object"
           },
           "estimated_seconds": {
-            "$ref": "#/components/schemas/UserProjectsItemsEstimatedSeconds"
+            "type": "object"
           },
           "rate": {
-            "$ref": "#/components/schemas/UserProjectsItemsRate"
+            "type": "object"
           },
           "rate_last_updated": {
-            "$ref": "#/components/schemas/UserProjectsItemsRateLastUpdated"
+            "type": "object"
           },
           "currency": {
-            "$ref": "#/components/schemas/UserProjectsItemsCurrency"
+            "type": "object"
           },
           "recurring": {
             "type": "boolean",
             "example": false
           },
           "template_id": {
-            "$ref": "#/components/schemas/UserProjectsItemsTemplateID"
+            "type": "object"
           },
           "recurring_parameters": {
-            "$ref": "#/components/schemas/UserProjectsItemsRecurringParameters"
+            "type": "object"
           },
           "fixed_fee": {
-            "$ref": "#/components/schemas/UserProjectsItemsFixedFee"
+            "type": "object"
           },
           "actual_hours": {
             "type": "integer",
@@ -300,7 +502,7 @@
             "example": 3973324
           },
           "tasks_count": {
-            "$ref": "#/components/schemas/UserProjectsItemsTasksCount"
+            "type": "object"
           },
           "can_track_time": {
             "type": "boolean",
@@ -400,82 +602,6 @@
           "pinned": false
         }
       },
-      "UserProjectsItemsTemplate": {
-        "type": "object"
-      },
-      "UserProjectsItemsFixedFee": {
-        "type": "object"
-      },
-      "UserProjectsItemsRecurringParameters": {
-        "type": "object"
-      },
-      "UserProjectsItemsTasksCount": {
-        "type": "object"
-      },
-      "UserProjectsItemsEstimatedHours": {
-        "type": "object"
-      },
-      "UserProjectsItemsEstimatedSeconds": {
-        "type": "object"
-      },
-      "UserProjectsItemsRate": {
-        "type": "object"
-      },
-      "UserProjectsItemsServerDeletedAt": {
-        "type": "object"
-      },
-      "UserProjectsItemsAutoEstimates": {
-        "type": "object"
-      },
-      "UserProjectsItemsCurrency": {
-        "type": "object"
-      },
-      "UserProjectsItemsTemplateID": {
-        "type": "object"
-      },
-      "UserProjectsItemsRateLastUpdated": {
-        "type": "object"
-      },
-      "UserTagsItems": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": 16939168
-          },
-          "workspace_id": {
-            "type": "integer",
-            "example": 2230580
-          },
-          "name": {
-            "type": "string",
-            "example": "AGL"
-          },
-          "at": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-11-08T19:11:14.332795Z"
-          },
-          "creator_id": {
-            "type": "integer",
-            "example": 2166261
-          }
-        },
-        "required": [
-          "id",
-          "workspace_id",
-          "name",
-          "at",
-          "creator_id"
-        ],
-        "example": {
-          "id": 16939168,
-          "workspace_id": 2230580,
-          "name": "AGL",
-          "at": "2024-11-08T19:11:14.332795Z",
-          "creator_id": 2166261
-        }
-      },
       "UserWorkspacesItems": {
         "type": "object",
         "properties": {
@@ -508,16 +634,16 @@
             "example": "admin"
           },
           "suspended_at": {
-            "$ref": "#/components/schemas/UserWorkspacesItemsSuspendedAt"
+            "type": "object"
           },
           "server_deleted_at": {
-            "$ref": "#/components/schemas/UserWorkspacesItemsServerDeletedAt"
+            "type": "object"
           },
           "default_hourly_rate": {
-            "$ref": "#/components/schemas/UserWorkspacesItemsDefaultHourlyRate"
+            "type": "object"
           },
           "rate_last_updated": {
-            "$ref": "#/components/schemas/UserWorkspacesItemsRateLastUpdated"
+            "type": "object"
           },
           "default_currency": {
             "type": "string",
@@ -596,17 +722,17 @@
             "example": true
           },
           "csv_upload": {
-            "$ref": "#/components/schemas/UserWorkspacesItemsCsvUpload"
+            "type": "object"
           },
           "subscription": {
-            "$ref": "#/components/schemas/UserWorkspacesItemsSubscription"
+            "type": "object"
           },
           "hide_start_end_times": {
             "type": "boolean",
             "example": false
           },
           "working_hours_in_minutes": {
-            "$ref": "#/components/schemas/UserWorkspacesItemsWorkingHoursInMinutes"
+            "type": "object"
           }
         },
         "required": [
@@ -679,207 +805,6 @@
           "hide_start_end_times": false,
           "working_hours_in_minutes": null
         }
-      },
-      "UserWorkspacesItemsServerDeletedAt": {
-        "type": "object"
-      },
-      "UserWorkspacesItemsDefaultHourlyRate": {
-        "type": "object"
-      },
-      "UserWorkspacesItemsRateLastUpdated": {
-        "type": "object"
-      },
-      "UserWorkspacesItemsSubscription": {
-        "type": "object"
-      },
-      "UserWorkspacesItemsSuspendedAt": {
-        "type": "object"
-      },
-      "UserWorkspacesItemsWorkingHoursInMinutes": {
-        "type": "object"
-      },
-      "UserWorkspacesItemsCsvUpload": {
-        "type": "object"
-      },
-      "UserClientsItems": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": 64890399
-          },
-          "wid": {
-            "type": "integer",
-            "example": 2230580
-          },
-          "archived": {
-            "type": "boolean",
-            "example": false
-          },
-          "name": {
-            "type": "string",
-            "example": "AGL"
-          },
-          "at": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-03-17T10:55:38+00:00"
-          },
-          "creator_id": {
-            "type": "integer",
-            "example": 2166261
-          }
-        },
-        "required": [
-          "id",
-          "wid",
-          "archived",
-          "name",
-          "at",
-          "creator_id"
-        ],
-        "example": {
-          "id": 64890399,
-          "wid": 2230580,
-          "archived": false,
-          "name": "AGL",
-          "at": "2024-03-17T10:55:38+00:00",
-          "creator_id": 2166261
-        }
-      },
-      "UserTimeEntriesItems": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": 3727773734
-          },
-          "workspace_id": {
-            "type": "integer",
-            "example": 2230580
-          },
-          "project_id": {
-            "type": "integer",
-            "example": 155392684
-          },
-          "task_id": {
-            "$ref": "#/components/schemas/UserTimeEntriesItemsTaskID"
-          },
-          "billable": {
-            "type": "boolean",
-            "example": false
-          },
-          "start": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-12-12T20:38:54+00:00"
-          },
-          "stop": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-12-12T20:38:05+00:00"
-          },
-          "duration": {
-            "type": "integer",
-            "example": -1734035934
-          },
-          "description": {
-            "type": "string",
-            "example": "Open Sourcing"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserTimeEntriesItemsTagsItems"
-            }
-          },
-          "tag_ids": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserTimeEntriesItemsTagIdsItems"
-            }
-          },
-          "duronly": {
-            "type": "boolean",
-            "example": true
-          },
-          "at": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-12-12T20:40:28.056447Z"
-          },
-          "server_deleted_at": {
-            "$ref": "#/components/schemas/UserTimeEntriesItemsServerDeletedAt"
-          },
-          "user_id": {
-            "type": "integer",
-            "example": 2166261
-          },
-          "uid": {
-            "type": "integer",
-            "example": 2166261
-          },
-          "wid": {
-            "type": "integer",
-            "example": 2230580
-          },
-          "pid": {
-            "type": "integer",
-            "example": 155392684
-          }
-        },
-        "required": [
-          "id",
-          "workspace_id",
-          "project_id",
-          "task_id",
-          "billable",
-          "start",
-          "stop",
-          "duration",
-          "description",
-          "tags",
-          "tag_ids",
-          "duronly",
-          "at",
-          "server_deleted_at",
-          "user_id",
-          "uid",
-          "wid",
-          "pid"
-        ],
-        "example": {
-          "id": 3727773734,
-          "workspace_id": 2230580,
-          "project_id": 155392684,
-          "task_id": null,
-          "billable": false,
-          "start": "2024-12-12T20:38:54+00:00",
-          "stop": null,
-          "duration": -1734035934,
-          "description": "Open Sourcing",
-          "tags": [],
-          "tag_ids": [],
-          "duronly": true,
-          "at": "2024-12-12T20:40:28.056447Z",
-          "server_deleted_at": null,
-          "user_id": 2166261,
-          "uid": 2166261,
-          "wid": 2230580,
-          "pid": 155392684
-        }
-      },
-      "UserTimeEntriesItemsTagsItems": {
-        "type": "object"
-      },
-      "UserTimeEntriesItemsServerDeletedAt": {
-        "type": "object"
-      },
-      "UserTimeEntriesItemsTagIdsItems": {
-        "type": "object"
-      },
-      "UserTimeEntriesItemsTaskID": {
-        "type": "object"
       }
     },
     "responses": {
