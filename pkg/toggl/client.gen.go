@@ -36,6 +36,8 @@ var (
 type Client struct {
 	// The HTTP client to use for requests.
 	cli *http.Client
+	// The authorization header to use.
+	authHeader string
 }
 
 // NewClient creates a new Client.
