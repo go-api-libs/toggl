@@ -59,7 +59,10 @@ func (c *Client) GetMe(ctx context.Context) (*User, error) {
 func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 	u := baseURL.JoinPath("/me")
 	req := (&http.Request{
-		Header:     http.Header{"User-Agent": []string{userAgent}},
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
 		Host:       u.Host,
 		Method:     http.MethodGet,
 		Proto:      "HTTP/1.1",
