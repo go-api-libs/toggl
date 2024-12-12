@@ -128,34 +128,19 @@
             "example": "2024-07-02T14:55:08.008327Z"
           },
           "tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Tag"
-            }
+            "$ref": "#/components/schemas/UserTags"
           },
           "clients": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WorkClient"
-            }
+            "$ref": "#/components/schemas/UserClients"
           },
           "time_entries": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TimeEntry"
-            }
+            "$ref": "#/components/schemas/UserTimeEntries"
           },
           "projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserProjectsItems"
-            }
+            "$ref": "#/components/schemas/UserProjects"
           },
           "workspaces": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserWorkspacesItems"
-            }
+            "$ref": "#/components/schemas/UserWorkspaces"
           }
         },
         "required": [
@@ -804,6 +789,36 @@
           "subscription": null,
           "hide_start_end_times": false,
           "working_hours_in_minutes": null
+        }
+      },
+      "UserClients": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/WorkClient"
+        }
+      },
+      "UserTimeEntries": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TimeEntry"
+        }
+      },
+      "UserProjects": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UserProjectsItems"
+        }
+      },
+      "UserTags": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Tag"
+        }
+      },
+      "UserWorkspaces": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UserWorkspacesItems"
         }
       }
     },
