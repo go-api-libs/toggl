@@ -15,7 +15,7 @@ import (
 	"github.com/go-json-experiment/json"
 )
 
-const userAgent = "TogglGoApiLibrary/1.0.0 (https://github.com/go-api-libs/toggl)"
+const userAgent = "TogglGoAPILibrary/1.0.0 (https://github.com/go-api-libs/toggl)"
 
 var (
 	baseURL = &url.URL{
