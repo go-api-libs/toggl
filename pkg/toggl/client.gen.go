@@ -61,16 +61,27 @@ func NewClient(username, password string) (*Client, error) {
 // Returns details for the current user.
 //
 //	GET /me
-func (c *Client) GetMe(ctx context.Context) (*User, error) {
-	return GetMe[User](ctx, c)
+func (c *Client) GetMe(ctx context.Context, params *GetMeParams) (*User, error) {
+	return GetMe[User](ctx, c, params)
 }
 
 // Returns details for the current user.
 // You can define a custom result to unmarshal the response into.
 //
 //	GET /me
-func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
+func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, error) {
 	u := baseURL.JoinPath("/me")
+
+	if params != nil {
+		q := make(url.Values, 1)
+
+		if params.WithRelatedData != "" {
+			q["with_related_data"] = []string{params.WithRelatedData}
+		}
+
+		u.RawQuery = q.Encode()
+	}
+
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.authHeader},

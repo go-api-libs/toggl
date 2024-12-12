@@ -16,6 +16,11 @@
   ],
   "paths": {
     "/me": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/with_related_data"
+        }
+      ],
       "get": {
         "tags": [
           "me"
@@ -88,13 +93,14 @@
             "example": "2024-11-26T17:13:54.850204Z"
           },
           "openid_email": {
-        "type": "object"
+            "$ref": "#/components/schemas/UserOpenidEmail"
           },
           "openid_enabled": {
             "type": "boolean",
             "example": true
           },
-          "country_id": {"type": "object"
+          "country_id": {
+            "$ref": "#/components/schemas/UserCountryID"
           },
           "has_password": {
             "type": "boolean",
@@ -120,6 +126,36 @@
             "type": "string",
             "format": "date-time",
             "example": "2024-07-02T14:55:08.008327Z"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTagsItems"
+            }
+          },
+          "clients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserClientsItems"
+            }
+          },
+          "time_entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTimeEntriesItems"
+            }
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserProjectsItems"
+            }
+          },
+          "workspaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserWorkspacesItems"
+            }
           }
         },
         "required": [
@@ -166,6 +202,684 @@
           ],
           "authorization_updated_at": "2024-07-02T14:55:08.008327Z"
         }
+      },
+      "UserCountryID": {
+        "type": "object"
+      },
+      "UserOpenidEmail": {
+        "type": "object"
+      },
+      "UserProjectsItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 63334144
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "client_id": {
+            "type": "integer",
+            "example": 64890399
+          },
+          "name": {
+            "type": "string",
+            "example": "AGL Academy (Course Creation & Improvement)"
+          },
+          "is_private": {
+            "type": "boolean",
+            "example": false
+          },
+          "active": {
+            "type": "boolean",
+            "example": true
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-03-17T10:58:40+00:00"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-08-28T10:47:38+00:00"
+          },
+          "server_deleted_at": {
+            "$ref": "#/components/schemas/UserProjectsItemsServerDeletedAt"
+          },
+          "color": {
+            "type": "string",
+            "example": "#0b83d9"
+          },
+          "billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "template": {
+            "$ref": "#/components/schemas/UserProjectsItemsTemplate"
+          },
+          "auto_estimates": {
+            "$ref": "#/components/schemas/UserProjectsItemsAutoEstimates"
+          },
+          "estimated_hours": {
+            "$ref": "#/components/schemas/UserProjectsItemsEstimatedHours"
+          },
+          "estimated_seconds": {
+            "$ref": "#/components/schemas/UserProjectsItemsEstimatedSeconds"
+          },
+          "rate": {
+            "$ref": "#/components/schemas/UserProjectsItemsRate"
+          },
+          "rate_last_updated": {
+            "$ref": "#/components/schemas/UserProjectsItemsRateLastUpdated"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/UserProjectsItemsCurrency"
+          },
+          "recurring": {
+            "type": "boolean",
+            "example": false
+          },
+          "template_id": {
+            "$ref": "#/components/schemas/UserProjectsItemsTemplateID"
+          },
+          "recurring_parameters": {
+            "$ref": "#/components/schemas/UserProjectsItemsRecurringParameters"
+          },
+          "fixed_fee": {
+            "$ref": "#/components/schemas/UserProjectsItemsFixedFee"
+          },
+          "actual_hours": {
+            "type": "integer",
+            "example": 1103
+          },
+          "actual_seconds": {
+            "type": "integer",
+            "example": 3973324
+          },
+          "tasks_count": {
+            "$ref": "#/components/schemas/UserProjectsItemsTasksCount"
+          },
+          "can_track_time": {
+            "type": "boolean",
+            "example": false
+          },
+          "start_date": {
+            "type": "string",
+            "example": "2017-08-28"
+          },
+          "status": {
+            "type": "string",
+            "example": "active"
+          },
+          "wid": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "cid": {
+            "type": "integer",
+            "example": 64890399
+          },
+          "is_shared": {
+            "type": "boolean",
+            "example": false
+          },
+          "pinned": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "client_id",
+          "name",
+          "is_private",
+          "active",
+          "at",
+          "created_at",
+          "server_deleted_at",
+          "color",
+          "billable",
+          "template",
+          "auto_estimates",
+          "estimated_hours",
+          "estimated_seconds",
+          "rate",
+          "rate_last_updated",
+          "currency",
+          "recurring",
+          "template_id",
+          "recurring_parameters",
+          "fixed_fee",
+          "actual_hours",
+          "actual_seconds",
+          "tasks_count",
+          "can_track_time",
+          "start_date",
+          "status",
+          "wid",
+          "cid",
+          "is_shared",
+          "pinned"
+        ],
+        "example": {
+          "id": 63334144,
+          "workspace_id": 2230580,
+          "client_id": 64890399,
+          "name": "AGL Academy (Course Creation & Improvement)",
+          "is_private": false,
+          "active": true,
+          "at": "2024-03-17T10:58:40+00:00",
+          "created_at": "2017-08-28T10:47:38+00:00",
+          "server_deleted_at": null,
+          "color": "#0b83d9",
+          "billable": false,
+          "template": null,
+          "auto_estimates": null,
+          "estimated_hours": null,
+          "estimated_seconds": null,
+          "rate": null,
+          "rate_last_updated": null,
+          "currency": null,
+          "recurring": false,
+          "template_id": null,
+          "recurring_parameters": null,
+          "fixed_fee": null,
+          "actual_hours": 1103,
+          "actual_seconds": 3973324,
+          "tasks_count": null,
+          "can_track_time": false,
+          "start_date": "2017-08-28",
+          "status": "active",
+          "wid": 2230580,
+          "cid": 64890399,
+          "is_shared": false,
+          "pinned": false
+        }
+      },
+      "UserProjectsItemsTemplate": {
+        "type": "object"
+      },
+      "UserProjectsItemsFixedFee": {
+        "type": "object"
+      },
+      "UserProjectsItemsRecurringParameters": {
+        "type": "object"
+      },
+      "UserProjectsItemsTasksCount": {
+        "type": "object"
+      },
+      "UserProjectsItemsEstimatedHours": {
+        "type": "object"
+      },
+      "UserProjectsItemsEstimatedSeconds": {
+        "type": "object"
+      },
+      "UserProjectsItemsRate": {
+        "type": "object"
+      },
+      "UserProjectsItemsServerDeletedAt": {
+        "type": "object"
+      },
+      "UserProjectsItemsAutoEstimates": {
+        "type": "object"
+      },
+      "UserProjectsItemsCurrency": {
+        "type": "object"
+      },
+      "UserProjectsItemsTemplateID": {
+        "type": "object"
+      },
+      "UserProjectsItemsRateLastUpdated": {
+        "type": "object"
+      },
+      "UserTagsItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 16939168
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "name": {
+            "type": "string",
+            "example": "AGL"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-08T19:11:14.332795Z"
+          },
+          "creator_id": {
+            "type": "integer",
+            "example": 2166261
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "name",
+          "at",
+          "creator_id"
+        ],
+        "example": {
+          "id": 16939168,
+          "workspace_id": 2230580,
+          "name": "AGL",
+          "at": "2024-11-08T19:11:14.332795Z",
+          "creator_id": 2166261
+        }
+      },
+      "UserWorkspacesItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "organization_id": {
+            "type": "integer",
+            "example": 2108099
+          },
+          "name": {
+            "type": "string",
+            "example": "Atlantean Renaissance"
+          },
+          "premium": {
+            "type": "boolean",
+            "example": false
+          },
+          "business_ws": {
+            "type": "boolean",
+            "example": false
+          },
+          "admin": {
+            "type": "boolean",
+            "example": true
+          },
+          "role": {
+            "type": "string",
+            "example": "admin"
+          },
+          "suspended_at": {
+            "$ref": "#/components/schemas/UserWorkspacesItemsSuspendedAt"
+          },
+          "server_deleted_at": {
+            "$ref": "#/components/schemas/UserWorkspacesItemsServerDeletedAt"
+          },
+          "default_hourly_rate": {
+            "$ref": "#/components/schemas/UserWorkspacesItemsDefaultHourlyRate"
+          },
+          "rate_last_updated": {
+            "$ref": "#/components/schemas/UserWorkspacesItemsRateLastUpdated"
+          },
+          "default_currency": {
+            "type": "string",
+            "example": "USD"
+          },
+          "only_admins_may_create_projects": {
+            "type": "boolean",
+            "example": false
+          },
+          "only_admins_may_create_tags": {
+            "type": "boolean",
+            "example": false
+          },
+          "only_admins_see_billable_rates": {
+            "type": "boolean",
+            "example": false
+          },
+          "only_admins_see_team_dashboard": {
+            "type": "boolean",
+            "example": false
+          },
+          "projects_billable_by_default": {
+            "type": "boolean",
+            "example": true
+          },
+          "projects_private_by_default": {
+            "type": "boolean",
+            "example": true
+          },
+          "projects_enforce_billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "limit_public_project_data": {
+            "type": "boolean",
+            "example": false
+          },
+          "last_modified": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-12T00:00:00Z"
+          },
+          "reports_collapse": {
+            "type": "boolean",
+            "example": true
+          },
+          "rounding": {
+            "type": "integer",
+            "example": 0
+          },
+          "rounding_minutes": {
+            "type": "integer",
+            "example": 0
+          },
+          "api_token": {
+            "type": "string",
+            "format": "uuid",
+            "example": "831d9ff9f4bdebc4b33aeec85526a300"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-12T11:00:55+00:00"
+          },
+          "logo_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://assets.track.toggl.com/images/workspace.jpg"
+          },
+          "ical_url": {
+            "type": "string",
+            "example": "/ical/workspace_user/4cbf3bdb29573494d335bee61b2c12a7"
+          },
+          "ical_enabled": {
+            "type": "boolean",
+            "example": true
+          },
+          "csv_upload": {
+            "$ref": "#/components/schemas/UserWorkspacesItemsCsvUpload"
+          },
+          "subscription": {
+            "$ref": "#/components/schemas/UserWorkspacesItemsSubscription"
+          },
+          "hide_start_end_times": {
+            "type": "boolean",
+            "example": false
+          },
+          "working_hours_in_minutes": {
+            "$ref": "#/components/schemas/UserWorkspacesItemsWorkingHoursInMinutes"
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "name",
+          "premium",
+          "business_ws",
+          "admin",
+          "role",
+          "suspended_at",
+          "server_deleted_at",
+          "default_hourly_rate",
+          "rate_last_updated",
+          "default_currency",
+          "only_admins_may_create_projects",
+          "only_admins_may_create_tags",
+          "only_admins_see_billable_rates",
+          "only_admins_see_team_dashboard",
+          "projects_billable_by_default",
+          "projects_private_by_default",
+          "projects_enforce_billable",
+          "limit_public_project_data",
+          "last_modified",
+          "reports_collapse",
+          "rounding",
+          "rounding_minutes",
+          "api_token",
+          "at",
+          "logo_url",
+          "ical_url",
+          "ical_enabled",
+          "csv_upload",
+          "subscription",
+          "hide_start_end_times",
+          "working_hours_in_minutes"
+        ],
+        "example": {
+          "id": 2230580,
+          "organization_id": 2108099,
+          "name": "Atlantean Renaissance",
+          "premium": false,
+          "business_ws": false,
+          "admin": true,
+          "role": "admin",
+          "suspended_at": null,
+          "server_deleted_at": null,
+          "default_hourly_rate": null,
+          "rate_last_updated": null,
+          "default_currency": "USD",
+          "only_admins_may_create_projects": false,
+          "only_admins_may_create_tags": false,
+          "only_admins_see_billable_rates": false,
+          "only_admins_see_team_dashboard": false,
+          "projects_billable_by_default": true,
+          "projects_private_by_default": true,
+          "projects_enforce_billable": false,
+          "limit_public_project_data": false,
+          "last_modified": "2024-12-12T00:00:00Z",
+          "reports_collapse": true,
+          "rounding": 0,
+          "rounding_minutes": 0,
+          "api_token": "831d9ff9f4bdebc4b33aeec85526a300",
+          "at": "2024-12-12T11:00:55+00:00",
+          "logo_url": "https://assets.track.toggl.com/images/workspace.jpg",
+          "ical_url": "/ical/workspace_user/4cbf3bdb29573494d335bee61b2c12a7",
+          "ical_enabled": true,
+          "csv_upload": null,
+          "subscription": null,
+          "hide_start_end_times": false,
+          "working_hours_in_minutes": null
+        }
+      },
+      "UserWorkspacesItemsServerDeletedAt": {
+        "type": "object"
+      },
+      "UserWorkspacesItemsDefaultHourlyRate": {
+        "type": "object"
+      },
+      "UserWorkspacesItemsRateLastUpdated": {
+        "type": "object"
+      },
+      "UserWorkspacesItemsSubscription": {
+        "type": "object"
+      },
+      "UserWorkspacesItemsSuspendedAt": {
+        "type": "object"
+      },
+      "UserWorkspacesItemsWorkingHoursInMinutes": {
+        "type": "object"
+      },
+      "UserWorkspacesItemsCsvUpload": {
+        "type": "object"
+      },
+      "UserClientsItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 64890399
+          },
+          "wid": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "archived": {
+            "type": "boolean",
+            "example": false
+          },
+          "name": {
+            "type": "string",
+            "example": "AGL"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-03-17T10:55:38+00:00"
+          },
+          "creator_id": {
+            "type": "integer",
+            "example": 2166261
+          }
+        },
+        "required": [
+          "id",
+          "wid",
+          "archived",
+          "name",
+          "at",
+          "creator_id"
+        ],
+        "example": {
+          "id": 64890399,
+          "wid": 2230580,
+          "archived": false,
+          "name": "AGL",
+          "at": "2024-03-17T10:55:38+00:00",
+          "creator_id": 2166261
+        }
+      },
+      "UserTimeEntriesItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 3727773734
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "project_id": {
+            "type": "integer",
+            "example": 155392684
+          },
+          "task_id": {
+            "$ref": "#/components/schemas/UserTimeEntriesItemsTaskID"
+          },
+          "billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-12T20:38:54+00:00"
+          },
+          "stop": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-12T20:38:05+00:00"
+          },
+          "duration": {
+            "type": "integer",
+            "example": -1734035934
+          },
+          "description": {
+            "type": "string",
+            "example": "Open Sourcing"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTimeEntriesItemsTagsItems"
+            }
+          },
+          "tag_ids": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTimeEntriesItemsTagIdsItems"
+            }
+          },
+          "duronly": {
+            "type": "boolean",
+            "example": true
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-12T20:40:28.056447Z"
+          },
+          "server_deleted_at": {
+            "$ref": "#/components/schemas/UserTimeEntriesItemsServerDeletedAt"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "uid": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "wid": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "pid": {
+            "type": "integer",
+            "example": 155392684
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "project_id",
+          "task_id",
+          "billable",
+          "start",
+          "stop",
+          "duration",
+          "description",
+          "tags",
+          "tag_ids",
+          "duronly",
+          "at",
+          "server_deleted_at",
+          "user_id",
+          "uid",
+          "wid",
+          "pid"
+        ],
+        "example": {
+          "id": 3727773734,
+          "workspace_id": 2230580,
+          "project_id": 155392684,
+          "task_id": null,
+          "billable": false,
+          "start": "2024-12-12T20:38:54+00:00",
+          "stop": null,
+          "duration": -1734035934,
+          "description": "Open Sourcing",
+          "tags": [],
+          "tag_ids": [],
+          "duronly": true,
+          "at": "2024-12-12T20:40:28.056447Z",
+          "server_deleted_at": null,
+          "user_id": 2166261,
+          "uid": 2166261,
+          "wid": 2230580,
+          "pid": 155392684
+        }
+      },
+      "UserTimeEntriesItemsTagsItems": {
+        "type": "object"
+      },
+      "UserTimeEntriesItemsServerDeletedAt": {
+        "type": "object"
+      },
+      "UserTimeEntriesItemsTagIdsItems": {
+        "type": "object"
+      },
+      "UserTimeEntriesItemsTaskID": {
+        "type": "object"
       }
     },
     "responses": {
@@ -204,6 +918,17 @@
             }
           }
         }
+      }
+    },
+    "parameters": {
+      "with_related_data": {
+        "name": "with_related_data",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "example": "true"
+        },
+        "example": "true"
       }
     },
     "securitySchemes": {

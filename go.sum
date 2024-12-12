@@ -6,6 +6,8 @@ github.com/go-api-libs/types v0.0.0-20241018234418-7b7d63d674a1 h1:OxkuiFLdBXzlP
 github.com/go-api-libs/types v0.0.0-20241018234418-7b7d63d674a1/go.mod h1:063p7ZQdS0JBGdTTqC6lvtVGWXx4IRsOFm+Ucm27HmE=
 github.com/go-json-experiment/json v0.0.0-20241209202007-cef7d841f55f h1:SX37BGMFGLP95fmXRM7/2PmFBi58SPmL0HnZiaJSy/s=
 github.com/go-json-experiment/json v0.0.0-20241209202007-cef7d841f55f/go.mod h1:BWmvoE1Xia34f3l/ibJweyhrT+aROb/FQ6d+37F0e2s=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/dnaeon/go-vcr.v3 v3.2.0 h1:Rltp0Vf+Aq0u4rQXgmXgtgoRDStTnFN83cWgSGSoRzM=
