@@ -6,6 +6,8 @@ package toggl
 
 import (
 	"context"
+	"encoding/base64"
+	"errors"
 	"net/http"
 	"net/url"
 	"strings"
@@ -40,9 +42,35 @@ type Client struct {
 	authHeader string
 }
 
-// NewClient creates a new Client.
-func NewClient() (*Client, error) {
-	return &Client{cli: http.DefaultClient}, nil
+// NewClient creates a new Client with the given options.
+func NewClient(opts ...Option) (*Client, error) {
+	c := &Client{cli: http.DefaultClient}
+
+	for _, opt := range opts {
+		if err := opt(c); err != nil {
+			return nil, err
+		}
+	}
+
+	return c, nil
+}
+
+type Option func(*Client) error
+
+func OptionBasicAuth(username, password string) Option {
+	return func(c *Client) error {
+		if username == "" {
+			return errors.New("username is empty")
+		}
+
+		if password == "" {
+			return errors.New("password is empty")
+		}
+
+		c.authHeader = "Basic "+base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+
+		return nil
+	}
 }
 
 // Returns details for the current user.
