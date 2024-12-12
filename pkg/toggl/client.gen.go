@@ -15,7 +15,9 @@ import (
 	"github.com/go-json-experiment/json"
 )
 
-const userAgent = "TogglGoAPILibrary/1.0.0 (https://github.com/go-api-libs/toggl)"
+const (
+	userAgent = "TogglGoAPILibrary/1.0.0 (https://github.com/go-api-libs/toggl)"
+)
 
 var (
 	baseURL = &url.URL{
@@ -55,9 +57,7 @@ func (c *Client) GetMe(ctx context.Context) (*User, error) {
 func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 	u := baseURL.JoinPath("/me")
 	req := (&http.Request{
-		Header:     http.Header{
-			"User-Agent": []string{userAgent},
-		},
+		Header:     http.Header{},
 		Host:       u.Host,
 		Method:     http.MethodGet,
 		Proto:      "HTTP/1.1",
@@ -65,9 +65,6 @@ func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 		ProtoMinor: 1,
 		URL:        u,
 	}).WithContext(ctx)
-
-	// TODO: 
-	// req.SetBasicAuth(c.basicAuthUser, c.basicAuthUser)
 
 	rsp, err := c.cli.Do(req)
 	if err != nil {
