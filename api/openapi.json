@@ -17,6 +17,9 @@
   "paths": {
     "/me": {
       "get": {
+        "tags": [
+          "me"
+        ],
         "summary": "Return Current User",
         "description": "Returns details for the current user.",
         "operationId": "GetMe",
@@ -177,7 +180,7 @@
         "description": "User is unauthorized to use the API"
       },
       "UserResponse": {
-        "description": "TODO",
+        "description": "Returns the user.",
         "content": {
           "application/json": {
             "schema": {

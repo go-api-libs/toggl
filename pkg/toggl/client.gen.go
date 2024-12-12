@@ -92,7 +92,7 @@ func GetMe[R any](ctx context.Context, c *Client) (*R, error) {
 
 	switch rsp.StatusCode {
 	case http.StatusOK:
-		// TODO
+		// Returns the user.
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			var out R

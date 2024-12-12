@@ -1824,17 +1824,6 @@
         },
         "/me": {
             "get": {
-                "security": [
-                    {
-                        "BasicAuth": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "me"
-                ],
                 "parameters": [
                     {
                         "type": "boolean",
@@ -1845,7 +1834,6 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation.",
                         "schema": {
                             "$ref": "#/definitions/related.UserWithRelated"
                         }
