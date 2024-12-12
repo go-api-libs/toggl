@@ -75,8 +75,8 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 	if params != nil {
 		q := make(url.Values, 1)
 
-		if params.WithRelatedData != "" {
-			q["with_related_data"] = []string{params.WithRelatedData}
+		if params.WithRelatedData {
+			q["with_related_data"] = []string{"true"}
 		}
 
 		u.RawQuery = q.Encode()

@@ -864,11 +864,12 @@
       "with_related_data": {
         "name": "with_related_data",
         "in": "query",
+        "description": "Retrieve user related data (clients, projects, tasks, tags, workspaces, time entries, etc.)",
         "schema": {
-          "type": "string",
-          "example": "true"
+          "type": "boolean",
+          "example": true
         },
-        "example": "true"
+        "example": true
       }
     },
     "securitySchemes": {

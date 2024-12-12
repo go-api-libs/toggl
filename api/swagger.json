@@ -1824,14 +1824,6 @@
         },
         "/me": {
             "get": {
-                "parameters": [
-                    {
-                        "type": "boolean",
-                        "description": "Retrieve user related data (clients, projects, tasks, tags, workspaces, time entries, etc.)",
-                        "name": "with_related_data",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "schema": {

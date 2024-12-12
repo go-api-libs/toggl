@@ -13,7 +13,8 @@ import (
 )
 
 type GetMeParams struct {
-	WithRelatedData string
+	// Retrieve user related data (clients, projects, tasks, tags, workspaces, time entries, etc.)
+	WithRelatedData bool
 }
 
 // User defines a model
