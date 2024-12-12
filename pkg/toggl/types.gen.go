@@ -37,15 +37,15 @@ type User struct {
 	IntercomHash           string                  `json:"intercom_hash"`
 	OauthProviders         []string                `json:"oauth_providers"`
 	AuthorizationUpdatedAt time.Time               `json:"authorization_updated_at"`
-	Tags                   *[]UserTagsItems        `json:"tags"`
+	Tags                   *[]Tag                  `json:"tags"`
 	Clients                *[]UserClientsItems     `json:"clients"`
 	TimeEntries            *[]UserTimeEntriesItems `json:"time_entries"`
 	Projects               *[]UserProjectsItems    `json:"projects"`
 	Workspaces             *[]UserWorkspacesItems  `json:"workspaces"`
 }
 
-// UserTagsItems defines a model
-type UserTagsItems struct {
+// Tag defines a model
+type Tag struct {
 	ID          int       `json:"id"`
 	WorkspaceID int       `json:"workspace_id"`
 	Name        string    `json:"name"`
