@@ -128,19 +128,19 @@
             "example": "2024-07-02T14:55:08.008327Z"
           },
           "tags": {
-            "$ref": "#/components/schemas/UserTags"
+            "$ref": "#/components/schemas/Tags"
           },
           "clients": {
-            "$ref": "#/components/schemas/UserClients"
+            "$ref": "#/components/schemas/Clients"
           },
           "time_entries": {
-            "$ref": "#/components/schemas/UserTimeEntries"
+            "$ref": "#/components/schemas/TimeEntries"
           },
           "projects": {
-            "$ref": "#/components/schemas/UserProjects"
+            "$ref": "#/components/schemas/Projects"
           },
           "workspaces": {
-            "$ref": "#/components/schemas/UserWorkspaces"
+            "$ref": "#/components/schemas/Workspaces"
           }
         },
         "required": [
@@ -188,6 +188,12 @@
           "authorization_updated_at": "2024-07-02T14:55:08.008327Z"
         }
       },
+      "Tags": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Tag"
+        }
+      },
       "Tag": {
         "type": "object",
         "properties": {
@@ -226,6 +232,12 @@
           "name": "AGL",
           "at": "2024-11-08T19:11:14.332795Z",
           "creator_id": 2166261
+        }
+      },
+      "Clients": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/WorkClient"
         }
       },
       "WorkClient": {
@@ -272,6 +284,12 @@
           "name": "AGL",
           "at": "2024-03-17T10:55:38+00:00",
           "creator_id": 2166261
+        }
+      },
+      "TimeEntries": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TimeEntry"
         }
       },
       "TimeEntry": {
@@ -396,7 +414,13 @@
           "pid": 155392684
         }
       },
-      "UserProjectsItems": {
+      "Projects": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Project"
+        }
+      },
+      "Project": {
         "type": "object",
         "properties": {
           "id": {
@@ -587,7 +611,13 @@
           "pinned": false
         }
       },
-      "UserWorkspacesItems": {
+      "Workspaces": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Workspace"
+        }
+      },
+      "Workspace": {
         "type": "object",
         "properties": {
           "id": {
@@ -789,36 +819,6 @@
           "subscription": null,
           "hide_start_end_times": false,
           "working_hours_in_minutes": null
-        }
-      },
-      "UserClients": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/WorkClient"
-        }
-      },
-      "UserTimeEntries": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/TimeEntry"
-        }
-      },
-      "UserProjects": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/UserProjectsItems"
-        }
-      },
-      "UserTags": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Tag"
-        }
-      },
-      "UserWorkspaces": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/UserWorkspacesItems"
         }
       }
     },

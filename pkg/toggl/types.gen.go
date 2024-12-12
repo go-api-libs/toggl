@@ -18,31 +18,34 @@ type GetMeParams struct {
 
 // User defines a model
 type User struct {
-	ID                     int             `json:"id"`
-	APIToken               string          `json:"api_token"`
-	Email                  types.Email     `json:"email"`
-	Fullname               string          `json:"fullname"`
-	Timezone               string          `json:"timezone"`
-	TogglAccountsID        string          `json:"toggl_accounts_id"`
-	DefaultWorkspaceID     int             `json:"default_workspace_id"`
-	BeginningOfWeek        int             `json:"beginning_of_week"`
-	ImageURL               url.URL         `json:"image_url"`
-	CreatedAt              time.Time       `json:"created_at"`
-	UpdatedAt              time.Time       `json:"updated_at"`
-	OpenidEmail            struct{}        `json:"openid_email"`
-	OpenidEnabled          bool            `json:"openid_enabled"`
-	CountryID              struct{}        `json:"country_id"`
-	HasPassword            bool            `json:"has_password"`
-	At                     time.Time       `json:"at"`
-	IntercomHash           string          `json:"intercom_hash"`
-	OauthProviders         []string        `json:"oauth_providers"`
-	AuthorizationUpdatedAt time.Time       `json:"authorization_updated_at"`
-	Tags                   UserTags        `json:"tags"`
-	Clients                UserClients     `json:"clients"`
-	TimeEntries            UserTimeEntries `json:"time_entries"`
-	Projects               UserProjects    `json:"projects"`
-	Workspaces             UserWorkspaces  `json:"workspaces"`
+	ID                     int         `json:"id"`
+	APIToken               string      `json:"api_token"`
+	Email                  types.Email `json:"email"`
+	Fullname               string      `json:"fullname"`
+	Timezone               string      `json:"timezone"`
+	TogglAccountsID        string      `json:"toggl_accounts_id"`
+	DefaultWorkspaceID     int         `json:"default_workspace_id"`
+	BeginningOfWeek        int         `json:"beginning_of_week"`
+	ImageURL               url.URL     `json:"image_url"`
+	CreatedAt              time.Time   `json:"created_at"`
+	UpdatedAt              time.Time   `json:"updated_at"`
+	OpenidEmail            struct{}    `json:"openid_email"`
+	OpenidEnabled          bool        `json:"openid_enabled"`
+	CountryID              struct{}    `json:"country_id"`
+	HasPassword            bool        `json:"has_password"`
+	At                     time.Time   `json:"at"`
+	IntercomHash           string      `json:"intercom_hash"`
+	OauthProviders         []string    `json:"oauth_providers"`
+	AuthorizationUpdatedAt time.Time   `json:"authorization_updated_at"`
+	Tags                   Tags        `json:"tags"`
+	Clients                Clients     `json:"clients"`
+	TimeEntries            TimeEntries `json:"time_entries"`
+	Projects               Projects    `json:"projects"`
+	Workspaces             Workspaces  `json:"workspaces"`
 }
+
+// Tags defines a model
+type Tags []Tag
 
 // Tag defines a model
 type Tag struct {
@@ -53,6 +56,9 @@ type Tag struct {
 	CreatorID   int       `json:"creator_id"`
 }
 
+// Clients defines a model
+type Clients []WorkClient
+
 // WorkClient defines a model
 type WorkClient struct {
 	ID        int       `json:"id"`
@@ -62,6 +68,9 @@ type WorkClient struct {
 	At        time.Time `json:"at"`
 	CreatorID int       `json:"creator_id"`
 }
+
+// TimeEntries defines a model
+type TimeEntries []TimeEntry
 
 // TimeEntry defines a model
 type TimeEntry struct {
@@ -85,8 +94,11 @@ type TimeEntry struct {
 	Pid             int        `json:"pid"`
 }
 
-// UserProjectsItems defines a model
-type UserProjectsItems struct {
+// Projects defines a model
+type Projects []Project
+
+// Project defines a model
+type Project struct {
 	ID                  int       `json:"id"`
 	WorkspaceID         int       `json:"workspace_id"`
 	ClientID            int       `json:"client_id"`
@@ -121,8 +133,11 @@ type UserProjectsItems struct {
 	Pinned              bool      `json:"pinned"`
 }
 
-// UserWorkspacesItems defines a model
-type UserWorkspacesItems struct {
+// Workspaces defines a model
+type Workspaces []Workspace
+
+// Workspace defines a model
+type Workspace struct {
 	ID                          int       `json:"id"`
 	OrganizationID              int       `json:"organization_id"`
 	Name                        string    `json:"name"`
@@ -157,18 +172,3 @@ type UserWorkspacesItems struct {
 	HideStartEndTimes           bool      `json:"hide_start_end_times"`
 	WorkingHoursInMinutes       struct{}  `json:"working_hours_in_minutes"`
 }
-
-// UserClients defines a model
-type UserClients []WorkClient
-
-// UserTimeEntries defines a model
-type UserTimeEntries []TimeEntry
-
-// UserProjects defines a model
-type UserProjects []UserProjectsItems
-
-// UserTags defines a model
-type UserTags []Tag
-
-// UserWorkspaces defines a model
-type UserWorkspaces []UserWorkspacesItems
