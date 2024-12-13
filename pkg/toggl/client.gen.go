@@ -72,16 +72,9 @@ func (c *Client) GetMe(ctx context.Context, params *GetMeParams) (*User, error) 
 func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, error) {
 	u := baseURL.JoinPath("/me")
 
-	if params != nil {
-		q := make(url.Values, 1)
-
-		if params.WithRelatedData {
-			q["with_related_data"] = []string{"true"}
-		}
-
-		u.RawQuery = q.Encode()
+	if params != nil && params.WithRelatedData {
+		u.RawQuery = url.Values{"with_related_data": []string{"true"}}.Encode()
 	}
-
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.authHeader},
