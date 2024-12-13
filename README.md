@@ -2,7 +2,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/go-api-libs/toggl.svg)](https://pkg.go.dev/github.com/go-api-libs/toggl/pkg/toggl)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-blue)](/api/openapi.json)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-api-libs/toggl)](https://goreportcard.com/report/github.com/go-api-libs/toggl)
-![Code Coverage](https://img.shields.io/badge/coverage-38%25-orange)
+![Code Coverage](https://img.shields.io/badge/coverage-45%25-orange)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 Public Toggl API.
@@ -20,7 +20,7 @@ go get github.com/go-api-libs/toggl/pkg/toggl
 
 ## Usage
 
-### Example: Return Current User
+### Example 1: Return Current User
 
 ```go
 package main
@@ -45,6 +45,35 @@ func main() {
 	}
 
 	// Use userWithRelated object
+}
+
+```
+
+### Example 2: 
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	getMeTimeEntriesCurrentOkJSONResponse, err := c.GetMeTimeEntriesCurrent(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use getMeTimeEntriesCurrentOkJSONResponse object
 }
 
 ```

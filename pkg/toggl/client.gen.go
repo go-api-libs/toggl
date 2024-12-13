@@ -116,3 +116,54 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
+
+// GetMeTimeEntriesCurrent defines an operation.
+//
+//	GET /me/time_entries/current
+func (c *Client) GetMeTimeEntriesCurrent(ctx context.Context) (*GetMeTimeEntriesCurrentOkJSONResponse, error) {
+	return GetMeTimeEntriesCurrent[GetMeTimeEntriesCurrentOkJSONResponse](ctx, c)
+}
+
+// GetMeTimeEntriesCurrent defines an operation.
+// You can define a custom result to unmarshal the response into.
+//
+//	GET /me/time_entries/current
+func GetMeTimeEntriesCurrent[R any](ctx context.Context, c *Client) (*R, error) {
+	u := baseURL.JoinPath("/me/time_entries/current")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodGet,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// TODO
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return nil, api.NewErrUnknownStatusCode(rsp)
+	}
+}
