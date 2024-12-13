@@ -75,6 +75,7 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 	if params != nil && params.WithRelatedData {
 		u.RawQuery = url.Values{"with_related_data": []string{"true"}}.Encode()
 	}
+
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.authHeader},
