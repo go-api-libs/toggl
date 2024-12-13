@@ -21592,54 +21592,6 @@
                 }
             }
         },
-        "models.Client": {
-            "type": "object",
-            "properties": {
-                "archived": {
-                    "description": "IsArchived is true if the client is archived",
-                    "type": "boolean"
-                },
-                "at": {
-                    "description": "When was the last update",
-                    "type": "string"
-                },
-                "creator_id": {
-                    "description": "CreatorID is the ID of the user who created the client",
-                    "type": "integer"
-                },
-                "id": {
-                    "description": "Client ID",
-                    "type": "integer"
-                },
-                "integration_ext_id": {
-                    "description": "The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)",
-                    "type": "string"
-                },
-                "integration_ext_type": {
-                    "description": "The external type of the linked entity in the external system (e.g. JIRA/SalesForce)",
-                    "type": "string"
-                },
-                "integration_provider": {
-                    "description": "The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "Name of the client",
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "permissions": {
-                    "description": "List of authorization permissions for this client.",
-                    "type": "string"
-                },
-                "wid": {
-                    "description": "Workspace ID",
-                    "type": "integer"
-                }
-            }
-        },
         "models.ContactDetail": {
             "type": "object",
             "properties": {
@@ -25116,57 +25068,12 @@
                         "$ref": "#/definitions/models.Client"
                     }
                 },
-                "country_id": {
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "string",
-                    "format": "date-time"
-                },
-                "default_workspace_id": {
-                    "type": "integer"
-                },
-                "email": {
-                    "type": "string",
-                    "format": "email"
-                },
-                "fullname": {
-                    "type": "string"
-                },
-                "has_password": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image_url": {
-                    "type": "string",
-                    "example": "http://example.com"
-                },
-                "intercom_hash": {
-                    "description": "will be omitted if empty",
-                    "type": "string"
-                },
-                "oauth_providers": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "openid_email": {
-                    "type": "string",
-                    "format": "email"
-                },
-                "openid_enabled": {
-                    "type": "boolean"
-                },
                 "options": {
                     "description": "will be omitted if empty",
                     "type": "object",
                     "$ref": "#/definitions/models.Options"
                 },
                 "projects": {
-                    "description": "Projects, null if with_related_data was not set to true or if the user does not have any projects",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Project"

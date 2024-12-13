@@ -139,7 +139,8 @@
             "$ref": "#/components/schemas/TimeEntries"
           },
           "projects": {
-            "$ref": "#/components/schemas/Projects"
+            "$ref": "#/components/schemas/Projects",
+            "description": "Projects, null if with_related_data was not set to true or if the user does not have any projects"
           },
           "workspaces": {
             "$ref": "#/components/schemas/Workspaces"
@@ -246,29 +247,54 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Client ID",
             "type": "integer",
             "example": 64890399
           },
           "wid": {
+            "description": "Workspace ID",
             "type": "integer",
             "example": 2230580
           },
           "archived": {
+            "description": "true, if the client is archived",
             "type": "boolean",
             "example": false
           },
           "name": {
+            "description": "Name of the client",
             "type": "string",
             "example": "AGL"
           },
           "at": {
+            "description": "When was the last update",
             "type": "string",
             "format": "date-time",
             "example": "2024-03-17T10:55:38+00:00"
           },
           "creator_id": {
+            "description": "The ID of the user who created the client",
             "type": "integer",
             "example": 2166261
+          },
+          "integration_ext_id": {
+            "description": "The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)",
+            "type": "string"
+          },
+          "integration_ext_type": {
+            "description": "The external type of the linked entity in the external system (e.g. JIRA/SalesForce)",
+            "type": "string"
+          },
+          "integration_provider": {
+            "description": "The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity",
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "permissions": {
+            "description": "List of authorization permissions for this client.",
+            "type": "string"
           }
         },
         "required": [

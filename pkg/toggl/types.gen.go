@@ -43,8 +43,9 @@ type UserWithRelated struct {
 	// Clients, null if with_related_data was not set to true or if the user does not have any clients
 	Clients     Clients     `json:"clients"`
 	TimeEntries TimeEntries `json:"time_entries"`
-	Projects    Projects    `json:"projects"`
-	Workspaces  Workspaces  `json:"workspaces"`
+	// Projects, null if with_related_data was not set to true or if the user does not have any projects
+	Projects   Projects   `json:"projects"`
+	Workspaces Workspaces `json:"workspaces"`
 }
 
 // Tags defines a model
@@ -64,12 +65,27 @@ type Clients []WorkClient
 
 // WorkClient defines a model
 type WorkClient struct {
-	ID        int       `json:"id"`
-	Wid       int       `json:"wid"`
-	Archived  bool      `json:"archived"`
-	Name      string    `json:"name"`
-	At        time.Time `json:"at"`
-	CreatorID int       `json:"creator_id"`
+	// Client ID
+	ID int `json:"id"`
+	// Workspace ID
+	Wid int `json:"wid"`
+	// true, if the client is archived
+	Archived bool `json:"archived"`
+	// Name of the client
+	Name string `json:"name"`
+	// When was the last update
+	At time.Time `json:"at"`
+	// The ID of the user who created the client
+	CreatorID int `json:"creator_id"`
+	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
+	IntegrationExtID *string `json:"integration_ext_id"`
+	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
+	IntegrationExtType *string `json:"integration_ext_type"`
+	// The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity
+	IntegrationProvider *string `json:"integration_provider"`
+	Notes               *string `json:"notes"`
+	// List of authorization permissions for this client.
+	Permissions *string `json:"permissions"`
 }
 
 // TimeEntries defines a model
