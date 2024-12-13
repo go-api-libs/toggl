@@ -85,7 +85,8 @@ type WorkClient struct {
 	IntegrationProvider *string `json:"integration_provider"`
 	Notes               *string `json:"notes"`
 	// List of authorization permissions for this client.
-	Permissions *string `json:"permissions"`
+	Permissions *string  `json:"permissions"`
+	Options     *Options `json:"options"`
 }
 
 // TimeEntries defines a model
@@ -112,6 +113,9 @@ type TimeEntry struct {
 	Wid             int        `json:"wid"`
 	Pid             int        `json:"pid"`
 }
+
+// Options defines a model
+type Options struct{}
 
 // Projects defines a model
 type Projects []Project

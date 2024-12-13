@@ -295,6 +295,9 @@
           "permissions": {
             "description": "List of authorization permissions for this client.",
             "type": "string"
+          },
+          "options": {
+            "$ref": "#/components/schemas/Options"
           }
         },
         "required": [
@@ -440,6 +443,12 @@
           "uid": 2166261,
           "wid": 2230580,
           "pid": 155392684
+        }
+      },
+      "Options": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
         }
       },
       "Projects": {

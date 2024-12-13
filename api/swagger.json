@@ -22176,12 +22176,7 @@
                 }
             }
         },
-        "models.Options": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "string"
-            }
-        },
+       
         "models.OrgUser": {
             "type": "object",
             "properties": {
@@ -25062,12 +25057,6 @@
         "related.UserWithRelated": {
             "type": "object",
             "properties": {
-                "clients": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Client"
-                    }
-                },
                 "options": {
                     "description": "will be omitted if empty",
                     "type": "object",
