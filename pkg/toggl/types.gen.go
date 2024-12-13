@@ -225,3 +225,13 @@ type RecurringPeriod struct{}
 
 // PostWorkspaces2230580TimeEntriesBadRequestJSONResponse defines a model
 type PostWorkspaces2230580TimeEntriesBadRequestJSONResponse string
+
+// CreateTimeEntryJSONRequestBody defines a model
+type CreateTimeEntryJSONRequestBody struct {
+	CreatedWith string     `json:"created_with"`
+	Description string     `json:"description"`
+	Tags        []struct{} `json:"tags"`
+	Billable    bool       `json:"billable"`
+	WorkspaceID int        `json:"workspace_id"`
+	Start       time.Time  `json:"start"`
+}

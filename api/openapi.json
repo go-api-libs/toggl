@@ -51,6 +51,9 @@
         "summary": "Create a time entry",
         "description": "Creates a new workspace TimeEntry.",
         "operationId": "CreateTimeEntry",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateTimeEntryRequestBody"
+        },
         "responses": {
           "400": {
             "$ref": "#/components/responses/PostWorkspaces2230580TimeEntriesBadRequestResponse"
@@ -941,6 +944,54 @@
       "PostWorkspaces2230580TimeEntriesBadRequestJSONResponse": {
         "type": "string",
         "example": "Start time year must be between 2006 and 2030"
+      },
+      "CreateTimeEntryJSONRequestBody": {
+        "type": "object",
+        "properties": {
+          "created_with": {
+            "type": "string",
+            "example": "API example code"
+          },
+          "description": {
+            "type": "string",
+            "example": "Hello Toggl"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "example": "1984-06-08T11:02:53.000Z"
+          }
+        },
+        "required": [
+          "created_with",
+          "description",
+          "tags",
+          "billable",
+          "workspace_id",
+          "start"
+        ],
+        "example": {
+          "created_with": "API example code",
+          "description": "Hello Toggl",
+          "tags": [],
+          "billable": false,
+          "workspace_id": 2230580,
+          "start": "1984-06-08T11:02:53.000Z"
+        }
       }
     },
     "responses": {
@@ -1041,6 +1092,26 @@
         "schema": {
           "type": "integer",
           "example": 2230580
+        }
+      }
+    },
+    "requestBodies": {
+      "CreateTimeEntryRequestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateTimeEntryJSONRequestBody"
+            },
+            "example": {
+              "created_with": "API example code",
+              "description": "Hello Toggl",
+              "tags": [],
+              "billable": false,
+              "workspace_id": 2230580,
+              "start": "1984-06-08T11:02:53.000Z"
+            }
+          }
         }
       }
     },
