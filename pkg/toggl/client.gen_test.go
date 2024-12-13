@@ -62,7 +62,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if err := c.PostWorkspaces2230580TimeEntries(ctx); err == nil {
+		if err := c.PostWorkspaces2230580TimeEntries(ctx, 2230580); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -148,7 +148,7 @@ func TestClient_Error(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if err := c.PostWorkspaces2230580TimeEntries(ctx); err == nil {
+			if err := c.PostWorkspaces2230580TimeEntries(ctx, 2230580); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
@@ -259,7 +259,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			if err := c.PostWorkspaces2230580TimeEntries(ctx); err == nil {
+			if err := c.PostWorkspaces2230580TimeEntries(ctx, 2230580); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)

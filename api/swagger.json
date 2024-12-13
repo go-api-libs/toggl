@@ -16613,13 +16613,6 @@
                 "operationId": "post-workspace-time-entries",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Numeric ID of the workspace",
-                        "name": "workspace_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
                         "description": "TimeEntry parameters.",
                         "name": "workspace_time_entry_post",
                         "in": "body",

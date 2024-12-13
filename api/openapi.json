@@ -53,7 +53,12 @@
         }
       }
     },
-    "/workspaces/2230580/time_entries": {
+    "/workspaces/{workspace_id}/time_entries": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/workspace_id"
+        }
+      ],
       "post": {
         "operationId": "PostWorkspaces2230580TimeEntries",
         "responses": {
@@ -1022,6 +1027,16 @@
           "example": true
         },
         "example": true
+      },
+      "workspace_id": {
+        "name": "workspace_id",
+        "in": "path",
+        "description": "Numeric ID of the workspace",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 2230580
+        }
       }
     },
     "securitySchemes": {
