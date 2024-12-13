@@ -60,7 +60,12 @@
         }
       ],
       "post": {
-        "operationId": "PostWorkspaces2230580TimeEntries",
+        "tags": [
+          "time_entries"
+        ],
+        "summary": "Create a time entry",
+        "description": "Creates a new workspace TimeEntry.",
+        "operationId": "CreateTimeEntry",
         "responses": {
           "400": {
             "$ref": "#/components/responses/PostWorkspaces2230580TimeEntriesBadRequestResponse"

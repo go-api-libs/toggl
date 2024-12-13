@@ -78,7 +78,7 @@ func main() {
 
 ```
 
-### Example 3: 
+### Example 3: Create a time entry
 
 ```go
 package main
@@ -97,7 +97,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	err := c.PostWorkspaces2230580TimeEntries(ctx, 2230580)
+	err := c.CreateTimeEntry(ctx, 2230580)
 	if err != nil {
 		panic(err)
 	}

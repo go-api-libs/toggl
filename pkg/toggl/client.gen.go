@@ -169,10 +169,10 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 	}
 }
 
-// PostWorkspaces2230580TimeEntries defines an operation.
+// Creates a new workspace TimeEntry.
 //
 //	POST /workspaces/{workspace_id}/time_entries
-func (c *Client) PostWorkspaces2230580TimeEntries(ctx context.Context, workspaceID int) error {
+func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int) error {
 	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
 	req := (&http.Request{
 		Header: http.Header{

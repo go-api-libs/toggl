@@ -16597,20 +16597,6 @@
         },
         "/workspaces/{workspace_id}/time_entries": {
             "post": {
-                "security": [
-                    {
-                        "BasicAuth": []
-                    }
-                ],
-                "description": "Creates a new workspace TimeEntry.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "time_entries"
-                ],
-                "summary": "TimeEntries",
-                "operationId": "post-workspace-time-entries",
                 "parameters": [
                     {
                         "description": "TimeEntry parameters.",
