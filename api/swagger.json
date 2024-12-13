@@ -22573,26 +22573,6 @@
         "models.Project": {
             "type": "object",
             "properties": {
-                "fixed_fee": {
-                    "description": "Fixed fee, premium feature",
-                    "type": "number"
-                },
-                "id": {
-                    "description": "Project ID",
-                    "type": "integer"
-                },
-                "integration_ext_id": {
-                    "description": "The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)",
-                    "type": "string"
-                },
-                "integration_ext_type": {
-                    "description": "The external type of the linked entity in the external system (e.g. JIRA/SalesForce)",
-                    "type": "string"
-                },
-                "integration_provider": {
-                    "description": "The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity",
-                    "type": "string"
-                },
                 "is_private": {
                     "description": "Whether the project is private",
                     "type": "boolean"

@@ -122,6 +122,7 @@ type Projects []Project
 
 // Project defines a model
 type Project struct {
+	// Project ID
 	ID          int `json:"id"`
 	WorkspaceID int `json:"workspace_id"`
 	// Client ID
@@ -171,6 +172,12 @@ type Project struct {
 	Cid      int  `json:"cid"`
 	IsShared bool `json:"is_shared"`
 	Pinned   bool `json:"pinned"`
+	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
+	IntegrationExtID *string `json:"integration_ext_id"`
+	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
+	IntegrationExtType *string `json:"integration_ext_type"`
+	// The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity
+	IntegrationProvider *string `json:"integration_provider"`
 }
 
 // Workspaces defines a model
