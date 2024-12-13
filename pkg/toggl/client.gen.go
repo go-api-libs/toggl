@@ -167,3 +167,36 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
+
+// ListWorkspaces2230580TimeEntries defines an operation.
+//
+//	GET /workspaces/2230580/time_entries
+func (c *Client) ListWorkspaces2230580TimeEntries(ctx context.Context) error {
+	u := baseURL.JoinPath("/workspaces/2230580/time_entries")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodGet,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusMethodNotAllowed:
+		// User is unauthorized to use the API
+		return api.NewErrStatusCode(rsp)
+	default:
+		return api.NewErrUnknownStatusCode(rsp)
+	}
+}

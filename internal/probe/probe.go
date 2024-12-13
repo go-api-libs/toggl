@@ -27,9 +27,12 @@ func probe() error {
 	if err != nil {
 		return err
 	}
-	_ = me
 
-	req, err := http.NewRequest(http.MethodGet, serverURL+"/me/time_entries/current", nil)
+	if _, err := c.GetCurrentTimeEntry(ctx); err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, serverURL+fmt.Sprintf("/workspaces/%d/time_entries", me.DefaultWorkspaceID), nil)
 	if err != nil {
 		return err
 	}

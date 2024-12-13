@@ -61,6 +61,12 @@ func TestClient_Error(t *testing.T) {
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
+
+		if err := c.ListWorkspaces2230580TimeEntries(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
 	})
 
 	t.Run("Unmarshal", func(t *testing.T) {
@@ -135,6 +141,17 @@ func TestClient_Error(t *testing.T) {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
+
+		t.Run("ListWorkspaces2230580TimeEntries", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if err := c.ListWorkspaces2230580TimeEntries(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
 			}
 		})
 	})
@@ -238,6 +255,14 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal(err)
 			} else if res == nil {
 				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			if err := c.ListWorkspaces2230580TimeEntries(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
 			}
 		}
 	})

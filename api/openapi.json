@@ -52,6 +52,16 @@
           }
         }
       }
+    },
+    "/workspaces/2230580/time_entries": {
+      "get": {
+        "operationId": "ListWorkspaces2230580TimeEntries",
+        "responses": {
+          "405": {
+            "$ref": "#/components/responses/UnauthorizedResponse"
+          }
+        }
+      }
     }
   },
   "components": {

@@ -3591,12 +3591,6 @@
         "/me/time_entries/current": {
             "get": {
                 "responses": {
-                    "200": {
-                        "description": "Successful operation.",
-                        "schema": {
-                            "$ref": "#/definitions/models.TimeEntry"
-                        }
-                    },
                     "403": {
                         "description": "User does not have access to this resource.",
                         "schema": {
