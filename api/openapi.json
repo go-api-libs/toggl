@@ -52,7 +52,7 @@
         "description": "Creates a new workspace TimeEntry.",
         "operationId": "CreateTimeEntry",
         "requestBody": {
-          "$ref": "#/components/requestBodies/CreateTimeEntryRequestBody"
+          "$ref": "#/components/requestBodies/TimeEntry"
         },
         "responses": {
           "400": {
@@ -1096,7 +1096,7 @@
       }
     },
     "requestBodies": {
-      "CreateTimeEntryRequestBody": {
+      "TimeEntry": {
         "required": true,
         "content": {
           "application/json": {
