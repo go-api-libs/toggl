@@ -138,6 +138,9 @@
           "time_entries": {
             "$ref": "#/components/schemas/TimeEntries"
           },
+          "options": {
+            "$ref": "#/components/schemas/Options"
+          },
           "projects": {
             "$ref": "#/components/schemas/Projects",
             "description": "Projects, null if with_related_data was not set to true or if the user does not have any projects"
@@ -295,9 +298,6 @@
           "permissions": {
             "description": "List of authorization permissions for this client.",
             "type": "string"
-          },
-          "options": {
-            "$ref": "#/components/schemas/Options"
           }
         },
         "required": [
@@ -469,8 +469,10 @@
             "example": 2230580
           },
           "client_id": {
+            "description": "Client ID",
             "type": "integer",
-            "example": 64890399
+            "example": 64890399,
+            "x-nullable": true
           },
           "name": {
             "type": "string",
@@ -481,15 +483,18 @@
             "example": false
           },
           "active": {
+            "description": "Whether the project is active or archived",
             "type": "boolean",
             "example": true
           },
           "at": {
+            "description": "Last updated date",
             "type": "string",
             "format": "date-time",
             "example": "2024-03-17T10:58:40+00:00"
           },
           "created_at": {
+            "description": "Creation date",
             "type": "string",
             "format": "date-time",
             "example": "2017-08-28T10:47:38+00:00"
@@ -498,24 +503,40 @@
             "type": "object"
           },
           "color": {
+            "description": "Color",
             "type": "string",
             "example": "#0b83d9"
           },
           "billable": {
+            "description": "Whether the project is billable, premium feature",
             "type": "boolean",
-            "example": false
+            "example": false,
+            "x-nullable": true
           },
           "template": {
             "type": "object"
           },
           "auto_estimates": {
+            "description": "Whether estimates are based on task hours, premium feature",
+            "type": "boolean",
+            "x-nullable": true
+          },
+          "current_period": {
             "type": "object"
+          },
+          "end_date": {
+            "description": "End date",
+            "type": "string"
           },
           "estimated_hours": {
-            "type": "object"
+            "description": "Estimated hours",
+            "type": "integer",
+            "x-nullable": true
           },
           "estimated_seconds": {
-            "type": "object"
+            "description": "Estimated seconds",
+            "type": "integer",
+            "x-nullable": true
           },
           "rate": {
             "type": "object"
@@ -524,7 +545,9 @@
             "type": "object"
           },
           "currency": {
-            "type": "object"
+            "description": "Currency, premium feature",
+            "type": "string",
+            "x-nullable": true
           },
           "recurring": {
             "type": "boolean",
@@ -540,12 +563,16 @@
             "type": "object"
           },
           "actual_hours": {
+            "description": "Actual hours",
             "type": "integer",
-            "example": 1103
+            "example": 1103,
+            "x-nullable": true
           },
           "actual_seconds": {
+            "description": "Actual seconds",
             "type": "integer",
-            "example": 3973324
+            "example": 3973324,
+            "x-nullable": true
           },
           "tasks_count": {
             "type": "object"
@@ -567,6 +594,7 @@
             "example": 2230580
           },
           "cid": {
+            "description": "Client ID legacy field",
             "type": "integer",
             "example": 64890399
           },

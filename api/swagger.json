@@ -22573,77 +22573,9 @@
         "models.Project": {
             "type": "object",
             "properties": {
-                "active": {
-                    "description": "Whether the project is active or archived",
-                    "type": "boolean"
-                },
-                "actual_hours": {
-                    "description": "Actual hours",
-                    "type": "integer",
-                    "x-nullable": true
-                },
-                "actual_seconds": {
-                    "description": "Actual seconds",
-                    "type": "integer",
-                    "x-nullable": true
-                },
-                "at": {
-                    "description": "Last updated date",
-                    "type": "string"
-                },
-                "auto_estimates": {
-                    "description": "Whether estimates are based on task hours, premium feature",
-                    "type": "boolean",
-                    "x-nullable": true
-                },
-                "billable": {
-                    "description": "Whether the project is billable, premium feature",
-                    "type": "boolean",
-                    "x-nullable": true
-                },
-                "can_track_time": {
-                    "type": "boolean"
-                },
-                "cid": {
-                    "description": "Client ID legacy field",
-                    "type": "integer"
-                },
-                "client_id": {
-                    "description": "Client ID",
-                    "type": "integer",
-                    "x-nullable": true
-                },
-                "color": {
-                    "description": "Color",
-                    "type": "string"
-                },
-                "created_at": {
-                    "description": "Creation date",
-                    "type": "string"
-                },
-                "currency": {
-                    "description": "Currency, premium feature",
-                    "type": "string",
-                    "x-nullable": true
-                },
                 "current_period": {
-                    "description": "Current project period, premium feature",
                     "type": "object",
                     "$ref": "#/definitions/models.RecurringPeriod"
-                },
-                "end_date": {
-                    "description": "End date",
-                    "type": "string"
-                },
-                "estimated_hours": {
-                    "description": "Estimated hours",
-                    "type": "integer",
-                    "x-nullable": true
-                },
-                "estimated_seconds": {
-                    "description": "Estimated seconds",
-                    "type": "integer",
-                    "x-nullable": true
                 },
                 "fixed_fee": {
                     "description": "Fixed fee, premium feature",
@@ -25057,11 +24989,6 @@
         "related.UserWithRelated": {
             "type": "object",
             "properties": {
-                "options": {
-                    "description": "will be omitted if empty",
-                    "type": "object",
-                    "$ref": "#/definitions/models.Options"
-                },
                 "projects": {
                     "type": "array",
                     "items": {

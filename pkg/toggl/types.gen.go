@@ -43,6 +43,7 @@ type UserWithRelated struct {
 	// Clients, null if with_related_data was not set to true or if the user does not have any clients
 	Clients     Clients     `json:"clients"`
 	TimeEntries TimeEntries `json:"time_entries"`
+	Options     *Options    `json:"options"`
 	// Projects, null if with_related_data was not set to true or if the user does not have any projects
 	Projects   Projects   `json:"projects"`
 	Workspaces Workspaces `json:"workspaces"`
@@ -85,8 +86,7 @@ type WorkClient struct {
 	IntegrationProvider *string `json:"integration_provider"`
 	Notes               *string `json:"notes"`
 	// List of authorization permissions for this client.
-	Permissions *string  `json:"permissions"`
-	Options     *Options `json:"options"`
+	Permissions *string `json:"permissions"`
 }
 
 // TimeEntries defines a model
@@ -122,38 +122,54 @@ type Projects []Project
 
 // Project defines a model
 type Project struct {
-	ID                  int       `json:"id"`
-	WorkspaceID         int       `json:"workspace_id"`
-	ClientID            int       `json:"client_id"`
-	Name                string    `json:"name"`
-	IsPrivate           bool      `json:"is_private"`
-	Active              bool      `json:"active"`
-	At                  time.Time `json:"at"`
-	CreatedAt           time.Time `json:"created_at"`
-	ServerDeletedAt     struct{}  `json:"server_deleted_at"`
-	Color               string    `json:"color"`
-	Billable            bool      `json:"billable"`
-	Template            struct{}  `json:"template"`
-	AutoEstimates       struct{}  `json:"auto_estimates"`
-	EstimatedHours      struct{}  `json:"estimated_hours"`
-	EstimatedSeconds    struct{}  `json:"estimated_seconds"`
-	Rate                struct{}  `json:"rate"`
-	RateLastUpdated     struct{}  `json:"rate_last_updated"`
-	Currency            struct{}  `json:"currency"`
-	Recurring           bool      `json:"recurring"`
-	TemplateID          struct{}  `json:"template_id"`
-	RecurringParameters struct{}  `json:"recurring_parameters"`
-	FixedFee            struct{}  `json:"fixed_fee"`
-	ActualHours         int       `json:"actual_hours"`
-	ActualSeconds       int       `json:"actual_seconds"`
-	TasksCount          struct{}  `json:"tasks_count"`
-	CanTrackTime        bool      `json:"can_track_time"`
-	StartDate           string    `json:"start_date"`
-	Status              string    `json:"status"`
-	Wid                 int       `json:"wid"`
-	Cid                 int       `json:"cid"`
-	IsShared            bool      `json:"is_shared"`
-	Pinned              bool      `json:"pinned"`
+	ID          int `json:"id"`
+	WorkspaceID int `json:"workspace_id"`
+	// Client ID
+	ClientID  int    `json:"client_id"`
+	Name      string `json:"name"`
+	IsPrivate bool   `json:"is_private"`
+	// Whether the project is active or archived
+	Active bool `json:"active"`
+	// Last updated date
+	At time.Time `json:"at"`
+	// Creation date
+	CreatedAt       time.Time `json:"created_at"`
+	ServerDeletedAt struct{}  `json:"server_deleted_at"`
+	// Color
+	Color string `json:"color"`
+	// Whether the project is billable, premium feature
+	Billable bool     `json:"billable"`
+	Template struct{} `json:"template"`
+	// Whether estimates are based on task hours, premium feature
+	AutoEstimates bool      `json:"auto_estimates"`
+	CurrentPeriod *struct{} `json:"current_period"`
+	// End date
+	EndDate *string `json:"end_date"`
+	// Estimated hours
+	EstimatedHours int `json:"estimated_hours"`
+	// Estimated seconds
+	EstimatedSeconds int      `json:"estimated_seconds"`
+	Rate             struct{} `json:"rate"`
+	RateLastUpdated  struct{} `json:"rate_last_updated"`
+	// Currency, premium feature
+	Currency            string   `json:"currency"`
+	Recurring           bool     `json:"recurring"`
+	TemplateID          struct{} `json:"template_id"`
+	RecurringParameters struct{} `json:"recurring_parameters"`
+	FixedFee            struct{} `json:"fixed_fee"`
+	// Actual hours
+	ActualHours int `json:"actual_hours"`
+	// Actual seconds
+	ActualSeconds int      `json:"actual_seconds"`
+	TasksCount    struct{} `json:"tasks_count"`
+	CanTrackTime  bool     `json:"can_track_time"`
+	StartDate     string   `json:"start_date"`
+	Status        string   `json:"status"`
+	Wid           int      `json:"wid"`
+	// Client ID legacy field
+	Cid      int  `json:"cid"`
+	IsShared bool `json:"is_shared"`
+	Pinned   bool `json:"pinned"`
 }
 
 // Workspaces defines a model
