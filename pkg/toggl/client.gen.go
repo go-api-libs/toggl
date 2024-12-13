@@ -117,18 +117,18 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 	}
 }
 
-// GetMeTimeEntriesCurrent defines an operation.
+// Load running time entry for the current user.
 //
 //	GET /me/time_entries/current
-func (c *Client) GetMeTimeEntriesCurrent(ctx context.Context) (*GetMeTimeEntriesCurrentOkJSONResponse, error) {
-	return GetMeTimeEntriesCurrent[GetMeTimeEntriesCurrentOkJSONResponse](ctx, c)
+func (c *Client) GetCurrentTimeEntry(ctx context.Context) (*TimeEntry, error) {
+	return GetCurrentTimeEntry[TimeEntry](ctx, c)
 }
 
-// GetMeTimeEntriesCurrent defines an operation.
+// Load running time entry for the current user.
 // You can define a custom result to unmarshal the response into.
 //
 //	GET /me/time_entries/current
-func GetMeTimeEntriesCurrent[R any](ctx context.Context, c *Client) (*R, error) {
+func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 	u := baseURL.JoinPath("/me/time_entries/current")
 	req := (&http.Request{
 		Header: http.Header{
@@ -151,7 +151,7 @@ func GetMeTimeEntriesCurrent[R any](ctx context.Context, c *Client) (*R, error) 
 
 	switch rsp.StatusCode {
 	case http.StatusOK:
-		// TODO
+		// Returns a time entry
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			var out R

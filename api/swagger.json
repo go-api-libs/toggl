@@ -3590,20 +3590,6 @@
         },
         "/me/time_entries/current": {
             "get": {
-                "security": [
-                    {
-                        "BasicAuth": []
-                    }
-                ],
-                "description": "Load running time entry for user ID.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "time_entries"
-                ],
-                "summary": "Get current time entry",
-                "operationId": "get-current-time-entry",
                 "responses": {
                     "200": {
                         "description": "Successful operation.",

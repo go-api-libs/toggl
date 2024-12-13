@@ -49,7 +49,7 @@ func main() {
 
 ```
 
-### Example 2: 
+### Example 2: Get current time entry
 
 ```go
 package main
@@ -68,12 +68,12 @@ func main() {
 	}
 
 	ctx := context.Background()
-	getMeTimeEntriesCurrentOkJSONResponse, err := c.GetMeTimeEntriesCurrent(ctx)
+	timeEntry, err := c.GetCurrentTimeEntry(ctx)
 	if err != nil {
 		panic(err)
 	}
 
-	// Use getMeTimeEntriesCurrentOkJSONResponse object
+	// Use timeEntry object
 }
 
 ```
