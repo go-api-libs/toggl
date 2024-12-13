@@ -22573,10 +22573,6 @@
         "models.Project": {
             "type": "object",
             "properties": {
-                "current_period": {
-                    "type": "object",
-                    "$ref": "#/definitions/models.RecurringPeriod"
-                },
                 "fixed_fee": {
                     "description": "Fixed fee, premium feature",
                     "type": "number"

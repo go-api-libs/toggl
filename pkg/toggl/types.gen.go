@@ -141,8 +141,8 @@ type Project struct {
 	Billable bool     `json:"billable"`
 	Template struct{} `json:"template"`
 	// Whether estimates are based on task hours, premium feature
-	AutoEstimates bool      `json:"auto_estimates"`
-	CurrentPeriod *struct{} `json:"current_period"`
+	AutoEstimates bool             `json:"auto_estimates"`
+	CurrentPeriod *RecurringPeriod `json:"current_period"`
 	// End date
 	EndDate *string `json:"end_date"`
 	// Estimated hours
@@ -156,7 +156,8 @@ type Project struct {
 	Recurring           bool     `json:"recurring"`
 	TemplateID          struct{} `json:"template_id"`
 	RecurringParameters struct{} `json:"recurring_parameters"`
-	FixedFee            struct{} `json:"fixed_fee"`
+	// Fixed fee, premium feature
+	FixedFee float32 `json:"fixed_fee"`
 	// Actual hours
 	ActualHours int `json:"actual_hours"`
 	// Actual seconds
@@ -211,3 +212,6 @@ type Workspace struct {
 	HideStartEndTimes           bool      `json:"hide_start_end_times"`
 	WorkingHoursInMinutes       struct{}  `json:"working_hours_in_minutes"`
 }
+
+// RecurringPeriod defines a model
+type RecurringPeriod struct{}

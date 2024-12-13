@@ -522,7 +522,7 @@
             "x-nullable": true
           },
           "current_period": {
-            "type": "object"
+            "$ref": "#/components/schemas/RecurringPeriod"
           },
           "end_date": {
             "description": "End date",
@@ -560,7 +560,8 @@
             "type": "object"
           },
           "fixed_fee": {
-            "type": "object"
+            "description": "Fixed fee, premium feature",
+            "type": "number"
           },
           "actual_hours": {
             "description": "Actual hours",
@@ -885,6 +886,9 @@
           "hide_start_end_times": false,
           "working_hours_in_minutes": null
         }
+      },
+      "RecurringPeriod": {
+        "type": "object"
       }
     },
     "responses": {
