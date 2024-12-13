@@ -222,3 +222,6 @@ type Workspace struct {
 
 // RecurringPeriod defines a model
 type RecurringPeriod struct{}
+
+// PostWorkspaces2230580TimeEntriesBadRequestJSONResponse defines a model
+type PostWorkspaces2230580TimeEntriesBadRequestJSONResponse string

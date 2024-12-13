@@ -132,37 +132,39 @@ interactions:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
-        content_length: 0
+        content_length: 148
         transfer_encoding: []
         trailer: {}
         host: api.track.toggl.com
         remote_addr: ""
         request_uri: ""
-        body: ""
+        body: '{"created_with":"API example code","description":"Hello Toggl","tags":[],"billable":false,"workspace_id":2230580,"start":"1984-06-08T11:02:53.000Z"}'
         form: {}
         headers:
             Authorization:
                 - Basic ********************************************************
         url: https://api.track.toggl.com/api/v9/workspaces/2230580/time_entries
-        method: GET
+        method: POST
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
         transfer_encoding: []
         trailer: {}
-        content_length: 0
+        content_length: 47
         uncompressed: false
-        body: ""
+        body: '"Start time year must be between 2006 and 2030"'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
             Cache-Control:
                 - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
             Content-Length:
-                - "0"
+                - "47"
+            Content-Type:
+                - application/json; charset=utf-8
             Date:
-                - Fri, 13 Dec 2024 01:59:49 GMT
+                - Fri, 13 Dec 2024 02:04:20 GMT
             Instance:
                 - track-public-api-proxy-66895d4956-wlr98
             Server:
@@ -176,11 +178,11 @@ interactions:
             X-Frame-Options:
                 - SAMEORIGIN
             X-Request-Id:
-                - 31f1732ed205721f9070bffbb8d22a67
+                - 30e33235ad0739502e875cb0bfd9b4a5
             X-Toggl-Request-Id:
-                - 65b0f67c-fb8d-47c5-a373-77f801948e51
+                - 71fa3238-0e53-4dda-a402-71cc22d21d21
             X-We-Are-Hiring:
                 - https://toggl.com/jobs/
-        status: 405 Method Not Allowed
-        code: 405
-        duration: 150.681333ms
+        status: 400 Bad Request
+        code: 400
+        duration: 146.222375ms

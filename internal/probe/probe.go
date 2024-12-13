@@ -32,7 +32,7 @@ func probe() error {
 		return err
 	}
 
-	req, err := http.NewRequest(http.MethodGet, serverURL+fmt.Sprintf("/workspaces/%d/time_entries", me.DefaultWorkspaceID), nil)
+	req, err := http.NewRequest(http.MethodPost, serverURL+fmt.Sprintf("/workspaces/%d/time_entries", me.DefaultWorkspaceID), strings.NewReader(fmt.Sprintf(`{"created_with":"API example code","description":"Hello Toggl","tags":[],"billable":false,"workspace_id":%d,"start":"1984-06-08T11:02:53.000Z"}`, me.DefaultWorkspaceID)))
 	if err != nil {
 		return err
 	}

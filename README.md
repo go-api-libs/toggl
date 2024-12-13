@@ -97,7 +97,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	err := c.ListWorkspaces2230580TimeEntries(ctx)
+	err := c.PostWorkspaces2230580TimeEntries(ctx)
 	if err != nil {
 		panic(err)
 	}

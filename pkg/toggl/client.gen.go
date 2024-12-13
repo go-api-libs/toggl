@@ -168,10 +168,10 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 	}
 }
 
-// ListWorkspaces2230580TimeEntries defines an operation.
+// PostWorkspaces2230580TimeEntries defines an operation.
 //
-//	GET /workspaces/2230580/time_entries
-func (c *Client) ListWorkspaces2230580TimeEntries(ctx context.Context) error {
+//	POST /workspaces/2230580/time_entries
+func (c *Client) PostWorkspaces2230580TimeEntries(ctx context.Context) error {
 	u := baseURL.JoinPath("/workspaces/2230580/time_entries")
 	req := (&http.Request{
 		Header: http.Header{
@@ -179,7 +179,7 @@ func (c *Client) ListWorkspaces2230580TimeEntries(ctx context.Context) error {
 			"User-Agent":    []string{userAgent},
 		},
 		Host:       u.Host,
-		Method:     http.MethodGet,
+		Method:     http.MethodPost,
 		Proto:      "HTTP/1.1",
 		ProtoMajor: 1,
 		ProtoMinor: 1,
@@ -193,8 +193,8 @@ func (c *Client) ListWorkspaces2230580TimeEntries(ctx context.Context) error {
 	defer rsp.Body.Close()
 
 	switch rsp.StatusCode {
-	case http.StatusMethodNotAllowed:
-		// User is unauthorized to use the API
+	case http.StatusBadRequest:
+		// TODO
 		return api.NewErrStatusCode(rsp)
 	default:
 		return api.NewErrUnknownStatusCode(rsp)

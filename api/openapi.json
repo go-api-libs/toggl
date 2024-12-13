@@ -54,11 +54,11 @@
       }
     },
     "/workspaces/2230580/time_entries": {
-      "get": {
-        "operationId": "ListWorkspaces2230580TimeEntries",
+      "post": {
+        "operationId": "PostWorkspaces2230580TimeEntries",
         "responses": {
-          "405": {
-            "$ref": "#/components/responses/UnauthorizedResponse"
+          "400": {
+            "$ref": "#/components/responses/PostWorkspaces2230580TimeEntriesBadRequestResponse"
           }
         }
       }
@@ -927,6 +927,10 @@
       },
       "RecurringPeriod": {
         "type": "object"
+      },
+      "PostWorkspaces2230580TimeEntriesBadRequestJSONResponse": {
+        "type": "string",
+        "example": "Start time year must be between 2006 and 2030"
       }
     },
     "responses": {
@@ -993,6 +997,17 @@
               "wid": 2230580,
               "pid": 155392684
             }
+          }
+        }
+      },
+      "PostWorkspaces2230580TimeEntriesBadRequestResponse": {
+        "description": "TODO",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostWorkspaces2230580TimeEntriesBadRequestJSONResponse"
+            },
+            "example": "Start time year must be between 2006 and 2030"
           }
         }
       }
