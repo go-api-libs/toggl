@@ -25111,7 +25111,6 @@
             "type": "object",
             "properties": {
                 "clients": {
-                    "description": "Clients, null if with_related_data was not set to true or if the user does not have any clients",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Client"

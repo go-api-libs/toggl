@@ -100,7 +100,7 @@
             "example": true
           },
           "country_id": {
-            "type": "object"
+            "type": "integer"
           },
           "has_password": {
             "type": "boolean",

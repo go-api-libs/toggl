@@ -32,7 +32,7 @@ type UserWithRelated struct {
 	UpdatedAt          time.Time   `json:"updated_at"`
 	OpenidEmail        struct{}    `json:"openid_email"`
 	OpenidEnabled      bool        `json:"openid_enabled"`
-	CountryID          struct{}    `json:"country_id"`
+	CountryID          int         `json:"country_id"`
 	HasPassword        bool        `json:"has_password"`
 	At                 time.Time   `json:"at"`
 	IntercomHash       string      `json:"intercom_hash"`
