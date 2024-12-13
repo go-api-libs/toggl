@@ -68,7 +68,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	err := c.CreateTimeEntry(ctx, 2230580)
+	err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{})
 	if err != nil {
 		panic(err)
 	}
