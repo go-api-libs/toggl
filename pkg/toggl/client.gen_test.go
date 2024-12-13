@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/go-api-libs/api"
 	"github.com/go-api-libs/toggl/pkg/toggl"
@@ -56,7 +57,14 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{}); err == nil {
+		if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+			Billable:    false,
+			CreatedWith: "API example code",
+			Description: "Hello Toggl",
+			Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
+			Tags:        nil,
+			WorkspaceID: 2230580,
+		}); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -112,7 +120,14 @@ func TestClient_Error(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{}); err == nil {
+			if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
@@ -259,7 +274,51 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{}); err == nil {
+			if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
+			}
+		}
+	})
+
+	t.Run("2024-12-14", func(t *testing.T) {
+		replay(t, "../../pkg/toggl/vcr/2024-12-14")
+
+		{
+			res, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.GetCurrentTimeEntry(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)

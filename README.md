@@ -57,6 +57,7 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 
 	"github.com/go-api-libs/toggl/pkg/toggl"
 )
@@ -68,7 +69,14 @@ func main() {
 	}
 
 	ctx := context.Background()
-	err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{})
+	err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+		Billable:    false,
+		CreatedWith: "API example code",
+		Description: "Hello Toggl",
+		Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
+		Tags:        nil,
+		WorkspaceID: 2230580,
+	})
 	if err != nil {
 		panic(err)
 	}
