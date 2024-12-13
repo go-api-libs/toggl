@@ -38,12 +38,13 @@ type UserWithRelated struct {
 	IntercomHash       string      `json:"intercom_hash"`
 	OauthProviders     []string    `json:"oauth_providers"`
 	// A timestamp when the authorization user session object was last updated.
-	AuthorizationUpdatedAt time.Time   `json:"authorization_updated_at"`
-	Tags                   Tags        `json:"tags"`
-	Clients                Clients     `json:"clients"`
-	TimeEntries            TimeEntries `json:"time_entries"`
-	Projects               Projects    `json:"projects"`
-	Workspaces             Workspaces  `json:"workspaces"`
+	AuthorizationUpdatedAt time.Time `json:"authorization_updated_at"`
+	Tags                   Tags      `json:"tags"`
+	// Clients, null if with_related_data was not set to true or if the user does not have any clients
+	Clients     Clients     `json:"clients"`
+	TimeEntries TimeEntries `json:"time_entries"`
+	Projects    Projects    `json:"projects"`
+	Workspaces  Workspaces  `json:"workspaces"`
 }
 
 // Tags defines a model
