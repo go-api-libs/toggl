@@ -49,7 +49,34 @@ func main() {
 
 ```
 
-### Example 2: Get current time entry
+### Example 2: Create a time entry
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	err := c.CreateTimeEntry(ctx, 2230580)
+	if err != nil {
+		panic(err)
+	}
+}
+
+```
+
+### Example 3: Get current time entry
 
 ```go
 package main
@@ -74,33 +101,6 @@ func main() {
 	}
 
 	// Use timeEntry object
-}
-
-```
-
-### Example 3: Create a time entry
-
-```go
-package main
-
-import (
-	"context"
-	"os"
-
-	"github.com/go-api-libs/toggl/pkg/toggl"
-)
-
-func main() {
-	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
-	if err != nil {
-		panic(err)
-	}
-
-	ctx := context.Background()
-	err := c.CreateTimeEntry(ctx, 2230580)
-	if err != nil {
-		panic(err)
-	}
 }
 
 ```

@@ -118,6 +118,39 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 	}
 }
 
+// Creates a new workspace TimeEntry.
+//
+//	POST /workspaces/{workspace_id}/time_entries
+func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int) error {
+	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodPost,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusBadRequest:
+		// TODO
+		return api.NewErrStatusCode(rsp)
+	default:
+		return api.NewErrUnknownStatusCode(rsp)
+	}
+}
+
 // Load running time entry for the current user.
 //
 //	GET /me/time_entries/current
@@ -166,38 +199,5 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 		}
 	default:
 		return nil, api.NewErrUnknownStatusCode(rsp)
-	}
-}
-
-// Creates a new workspace TimeEntry.
-//
-//	POST /workspaces/{workspace_id}/time_entries
-func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int) error {
-	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
-	req := (&http.Request{
-		Header: http.Header{
-			"Authorization": []string{c.authHeader},
-			"User-Agent":    []string{userAgent},
-		},
-		Host:       u.Host,
-		Method:     http.MethodPost,
-		Proto:      "HTTP/1.1",
-		ProtoMajor: 1,
-		ProtoMinor: 1,
-		URL:        u,
-	}).WithContext(ctx)
-
-	rsp, err := c.cli.Do(req)
-	if err != nil {
-		return err
-	}
-	defer rsp.Body.Close()
-
-	switch rsp.StatusCode {
-	case http.StatusBadRequest:
-		// TODO
-		return api.NewErrStatusCode(rsp)
-	default:
-		return api.NewErrUnknownStatusCode(rsp)
 	}
 }

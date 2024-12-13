@@ -38,21 +38,6 @@
         }
       }
     },
-    "/me/time_entries/current": {
-      "get": {
-        "tags": [
-          "time_entries"
-        ],
-        "summary": "Get current time entry",
-        "description": "Load running time entry for the current user.",
-        "operationId": "GetCurrentTimeEntry",
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/TimeEntryResponse"
-          }
-        }
-      }
-    },
     "/workspaces/{workspace_id}/time_entries": {
       "parameters": [
         {
@@ -69,6 +54,21 @@
         "responses": {
           "400": {
             "$ref": "#/components/responses/PostWorkspaces2230580TimeEntriesBadRequestResponse"
+          }
+        }
+      }
+    },
+    "/me/time_entries/current": {
+      "get": {
+        "tags": [
+          "time_entries"
+        ],
+        "summary": "Get current time entry",
+        "description": "Load running time entry for the current user.",
+        "operationId": "GetCurrentTimeEntry",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/TimeEntryResponse"
           }
         }
       }

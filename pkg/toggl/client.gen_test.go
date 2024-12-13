@@ -56,13 +56,13 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
+		if err := c.CreateTimeEntry(ctx, 2230580); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if err := c.CreateTimeEntry(ctx, 2230580); err == nil {
+		if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -108,6 +108,17 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
+		t.Run("CreateTimeEntry", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if err := c.CreateTimeEntry(ctx, 2230580); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+		})
+
 		t.Run("GetCurrentTimeEntry", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
@@ -141,17 +152,6 @@ func TestClient_Error(t *testing.T) {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
-		})
-
-		t.Run("CreateTimeEntry", func(t *testing.T) {
-			// unknown status code
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
-
-			if err := c.CreateTimeEntry(ctx, 2230580); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
 			}
 		})
 	})
