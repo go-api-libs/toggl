@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"io"
 
 	"github.com/MarkRosemaker/jsonutil"
 	"github.com/go-api-libs/api"
@@ -127,6 +127,7 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody C
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.authHeader},
+			"Content-Type":  []string{"application/json"},
 			"User-Agent":    []string{userAgent},
 		},
 		Host:       u.Host,
@@ -140,7 +141,9 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody C
 	var pw *io.PipeWriter
 	req.Body, pw = io.Pipe()
 	defer req.Body.Close()
-	go func() { pw.CloseWithError(json.MarshalWrite(pw, reqBody, jsonOpts)) }()
+	go func() {
+		pw.CloseWithError(json.MarshalWrite(pw, reqBody, jsonOpts))
+	}()
 
 	rsp, err := c.cli.Do(req)
 	if err != nil {
