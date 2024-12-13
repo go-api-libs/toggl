@@ -57,7 +57,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+		if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 			Billable:    false,
 			CreatedWith: "API example code",
 			Description: "Hello Toggl",
@@ -120,7 +120,7 @@ func TestClient_Error(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
@@ -274,7 +274,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
@@ -311,7 +311,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",

@@ -69,7 +69,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	err := c.CreateTimeEntry(ctx, 2230580, toggl.CreateTimeEntryJSONRequestBody{
+	err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 		Billable:    false,
 		CreatedWith: "API example code",
 		Description: "Hello Toggl",

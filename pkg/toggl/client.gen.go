@@ -122,7 +122,7 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 // Creates a new workspace TimeEntry.
 //
 //	POST /workspaces/{workspace_id}/time_entries
-func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody CreateTimeEntryJSONRequestBody) error {
+func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody NewTimeEntry) error {
 	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
 	req := (&http.Request{
 		Header: http.Header{

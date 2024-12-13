@@ -226,8 +226,8 @@ type RecurringPeriod struct{}
 // PostWorkspaces2230580TimeEntriesBadRequestJSONResponse defines a model
 type PostWorkspaces2230580TimeEntriesBadRequestJSONResponse string
 
-// CreateTimeEntryJSONRequestBody defines a model
-type CreateTimeEntryJSONRequestBody struct {
+// NewTimeEntry defines a model
+type NewTimeEntry struct {
 	CreatedWith string     `json:"created_with"`
 	Description string     `json:"description"`
 	Tags        []struct{} `json:"tags"`

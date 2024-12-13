@@ -945,7 +945,7 @@
         "type": "string",
         "example": "Start time year must be between 2006 and 2030"
       },
-      "CreateTimeEntryJSONRequestBody": {
+      "NewTimeEntry": {
         "type": "object",
         "properties": {
           "created_with": {
@@ -1101,7 +1101,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/CreateTimeEntryJSONRequestBody"
+              "$ref": "#/components/schemas/NewTimeEntry"
             },
             "example": {
               "created_with": "API example code",
