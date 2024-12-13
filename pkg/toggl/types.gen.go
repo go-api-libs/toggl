@@ -37,7 +37,7 @@ type UserWithRelated struct {
 	At                 time.Time   `json:"at"`
 	IntercomHash       string      `json:"intercom_hash"`
 	OauthProviders     []string    `json:"oauth_providers"`
-	// AuthorizationUpdatedAt timestamp when the authorization user session object was last updated.
+	// A timestamp when the authorization user session object was last updated.
 	AuthorizationUpdatedAt time.Time   `json:"authorization_updated_at"`
 	Tags                   Tags        `json:"tags"`
 	Clients                Clients     `json:"clients"`
