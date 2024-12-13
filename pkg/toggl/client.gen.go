@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"io"
 
 	"github.com/MarkRosemaker/jsonutil"
 	"github.com/go-api-libs/api"
@@ -135,6 +136,11 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody C
 		ProtoMinor: 1,
 		URL:        u,
 	}).WithContext(ctx)
+
+	var pw *io.PipeWriter
+	req.Body, pw = io.Pipe()
+	defer req.Body.Close()
+	go func() { pw.CloseWithError(json.MarshalWrite(pw, reqBody, jsonOpts)) }()
 
 	rsp, err := c.cli.Do(req)
 	if err != nil {
