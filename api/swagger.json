@@ -25110,21 +25110,6 @@
         "related.UserWithRelated": {
             "type": "object",
             "properties": {
-                "api_token": {
-                    "description": "will be omitted if empty",
-                    "type": "string"
-                },
-                "at": {
-                    "type": "string",
-                    "format": "date-time"
-                },
-                "authorization_updated_at": {
-                    "description": "AuthorizationUpdatedAt timestamp when the authorization user session object was last updated.",
-                    "type": "string"
-                },
-                "beginning_of_week": {
-                    "type": "integer"
-                },
                 "clients": {
                     "description": "Clients, null if with_related_data was not set to true or if the user does not have any clients",
                     "type": "array",

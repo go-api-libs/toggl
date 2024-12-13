@@ -17,26 +17,27 @@ type GetMeParams struct {
 	WithRelatedData bool
 }
 
-// User defines a model
-type User struct {
-	ID                     int         `json:"id"`
-	APIToken               string      `json:"api_token"`
-	Email                  types.Email `json:"email"`
-	Fullname               string      `json:"fullname"`
-	Timezone               string      `json:"timezone"`
-	TogglAccountsID        string      `json:"toggl_accounts_id"`
-	DefaultWorkspaceID     int         `json:"default_workspace_id"`
-	BeginningOfWeek        int         `json:"beginning_of_week"`
-	ImageURL               url.URL     `json:"image_url"`
-	CreatedAt              time.Time   `json:"created_at"`
-	UpdatedAt              time.Time   `json:"updated_at"`
-	OpenidEmail            struct{}    `json:"openid_email"`
-	OpenidEnabled          bool        `json:"openid_enabled"`
-	CountryID              struct{}    `json:"country_id"`
-	HasPassword            bool        `json:"has_password"`
-	At                     time.Time   `json:"at"`
-	IntercomHash           string      `json:"intercom_hash"`
-	OauthProviders         []string    `json:"oauth_providers"`
+// UserWithRelated defines a model
+type UserWithRelated struct {
+	ID                 int         `json:"id"`
+	APIToken           string      `json:"api_token"`
+	Email              types.Email `json:"email"`
+	Fullname           string      `json:"fullname"`
+	Timezone           string      `json:"timezone"`
+	TogglAccountsID    string      `json:"toggl_accounts_id"`
+	DefaultWorkspaceID int         `json:"default_workspace_id"`
+	BeginningOfWeek    int         `json:"beginning_of_week"`
+	ImageURL           url.URL     `json:"image_url"`
+	CreatedAt          time.Time   `json:"created_at"`
+	UpdatedAt          time.Time   `json:"updated_at"`
+	OpenidEmail        struct{}    `json:"openid_email"`
+	OpenidEnabled      bool        `json:"openid_enabled"`
+	CountryID          struct{}    `json:"country_id"`
+	HasPassword        bool        `json:"has_password"`
+	At                 time.Time   `json:"at"`
+	IntercomHash       string      `json:"intercom_hash"`
+	OauthProviders     []string    `json:"oauth_providers"`
+	// AuthorizationUpdatedAt timestamp when the authorization user session object was last updated.
 	AuthorizationUpdatedAt time.Time   `json:"authorization_updated_at"`
 	Tags                   Tags        `json:"tags"`
 	Clients                Clients     `json:"clients"`

@@ -39,12 +39,12 @@ func main() {
 	}
 
 	ctx := context.Background()
-	user, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
+	userWithRelated, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
 	if err != nil {
 		panic(err)
 	}
 
-	// Use user object
+	// Use userWithRelated object
 }
 
 ```

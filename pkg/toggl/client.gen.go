@@ -61,8 +61,8 @@ func NewClient(username, password string) (*Client, error) {
 // Returns details for the current user.
 //
 //	GET /me
-func (c *Client) GetMe(ctx context.Context, params *GetMeParams) (*User, error) {
-	return GetMe[User](ctx, c, params)
+func (c *Client) GetMe(ctx context.Context, params *GetMeParams) (*UserWithRelated, error) {
+	return GetMe[UserWithRelated](ctx, c, params)
 }
 
 // Returns details for the current user.
