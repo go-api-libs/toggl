@@ -115,7 +115,7 @@ type TimeEntry struct {
 }
 
 // Options defines a model
-type Options struct{}
+type Options map[string]string
 
 // Projects defines a model
 type Projects []Project
