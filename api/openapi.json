@@ -1004,7 +1004,7 @@
             "type": "string"
           },
           "tag_action": {
-            "$ref": "#/components/schemas/NewTimeEntryTagAction"
+            "$ref": "#/components/schemas/TagAction"
           },
           "tag_ids": {
             "description": "IDs of tags to add/remove",
@@ -1066,7 +1066,7 @@
       "EventMetadata": {
         "type": "object"
       },
-      "NewTimeEntryTagAction": {
+      "TagAction": {
         "description": "Used when updating an existing time entry",
         "type": "string",
         "enum": [

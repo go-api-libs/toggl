@@ -255,7 +255,7 @@ type NewTimeEntry struct {
 	*/
 	Stop *string `json:"stop"`
 	// Used when updating an existing time entry
-	TagAction *NewTimeEntryTagAction `json:"tag_action"`
+	TagAction *TagAction `json:"tag_action"`
 	// IDs of tags to add/remove
 	TagIds []int `json:"tag_ids"`
 	// Names of tags to add/remove. If name does not exist as tag, one will be created automatically
@@ -278,9 +278,9 @@ type NewTimeEntry struct {
 type EventMetadata struct{}
 
 // Used when updating an existing time entry
-type NewTimeEntryTagAction string
+type TagAction string
 
 const (
-	NewTimeEntryTagActionAdd    NewTimeEntryTagAction = "add"
-	NewTimeEntryTagActionDelete NewTimeEntryTagAction = "delete"
+	TagActionAdd    TagAction = "add"
+	TagActionDelete TagAction = "delete"
 )
