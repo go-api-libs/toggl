@@ -56,7 +56,7 @@
         },
         "responses": {
           "400": {
-            "$ref": "#/components/responses/PostWorkspaces2230580TimeEntriesBadRequestResponse"
+            "$ref": "#/components/responses/BadRequestResponse"
           }
         }
       }
@@ -941,7 +941,7 @@
       "RecurringPeriod": {
         "type": "object"
       },
-      "PostWorkspaces2230580TimeEntriesBadRequestJSONResponse": {
+      "APIErrorString": {
         "type": "string",
         "example": "Start time year must be between 2006 and 2030"
       },
@@ -1142,12 +1142,12 @@
           }
         }
       },
-      "PostWorkspaces2230580TimeEntriesBadRequestResponse": {
-        "description": "TODO",
+      "BadRequestResponse": {
+        "description": "Returned when the user made a bad request",
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/PostWorkspaces2230580TimeEntriesBadRequestJSONResponse"
+              "$ref": "#/components/schemas/APIErrorString"
             },
             "example": "Start time year must be between 2006 and 2030"
           }

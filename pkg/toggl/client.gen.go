@@ -153,7 +153,7 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody N
 
 	switch rsp.StatusCode {
 	case http.StatusBadRequest:
-		// TODO
+		// Returned when the user made a bad request
 		return api.NewErrStatusCode(rsp)
 	default:
 		return api.NewErrUnknownStatusCode(rsp)
