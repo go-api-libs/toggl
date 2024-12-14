@@ -274,6 +274,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
+			apiErr := &api.Error{}
 			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
@@ -283,8 +284,10 @@ func TestClient_VCR(t *testing.T) {
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrStatusCode) {
-				t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
+			} else if !errors.As(err, &apiErr) {
+				t.Fatalf("want: %T, got: %T", apiErr, err)
+			} else if !apiErr.IsCustom {
+				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
 			}
 		}
 	})
@@ -311,6 +314,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
+			apiErr := &api.Error{}
 			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
@@ -320,7 +324,7 @@ func TestClient_VCR(t *testing.T) {
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrStatusCode) {
+			} else if !errors.As(err, &apiErr) {
 				t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
 			}
 		}

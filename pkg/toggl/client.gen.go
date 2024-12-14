@@ -154,7 +154,18 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody N
 	switch rsp.StatusCode {
 	case http.StatusBadRequest:
 		// Returned when the user made a bad request
-		return api.NewErrStatusCode(rsp)
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out APIErrorString
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return api.WrapDecodingError(rsp, err)
+			}
+
+
+			return api.NewErrCustom(rsp, &out)
+		default:
+			return api.NewErrUnknownContentType(rsp)
+		}
 	default:
 		return api.NewErrUnknownStatusCode(rsp)
 	}

@@ -1,7 +1,7 @@
 # github.com/MarkRosemaker/jsonutil v0.0.0-20241121165235-080e83f11d35
 ## explicit; go 1.23.2
 github.com/MarkRosemaker/jsonutil
-# github.com/go-api-libs/api v0.0.0-20241130015416-83da383db809
+# github.com/go-api-libs/api v0.0.0-20241214211713-b6ebfca381a0
 ## explicit; go 1.23.2
 github.com/go-api-libs/api
 # github.com/go-api-libs/types v0.0.0-20241018234418-7b7d63d674a1
