@@ -948,32 +948,102 @@
       "NewTimeEntry": {
         "type": "object",
         "properties": {
+          "billable": {
+            "description": "Whether the time entry is marked as billable, optional, default false",
+            "type": "boolean",
+            "example": false
+          },
           "created_with": {
+            "description": "Must be provided when creating a time entry and should identify the service/application used to create it",
             "type": "string",
             "example": "API example code"
           },
           "description": {
+            "description": "Time entry description, optional",
             "type": "string",
             "example": "Hello Toggl"
           },
-          "tags": {
+          "duration": {
+            "description": "Time entry duration. For running entries should be negative, preferable -1",
+            "type": "integer"
+          },
+          "duronly": {
+            "description": "Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.",
+            "type": "boolean"
+          },
+          "event_metadata": {
+            "$ref": "#/components/schemas/EventMetadata"
+          },
+          "pid": {
+            "description": "Project ID, legacy field",
+            "type": "integer"
+          },
+          "project_id": {
+            "description": "Project ID, optional",
+            "type": "integer"
+          },
+          "shared_with_user_ids": {
+            "description": "List of user IDs to share this time entry with",
             "type": "array",
             "items": {
-              "type": "object"
+              "type": "integer"
             }
           },
-          "billable": {
-            "type": "boolean",
-            "example": false
-          },
-          "workspace_id": {
-            "type": "integer",
-            "example": 2230580
-          },
           "start": {
+            "description": "Start time, required for creation.",
             "type": "string",
             "format": "date-time",
             "example": "1984-06-08T11:02:53.000Z"
+          },
+          "start_date": {
+            "description": "If provided during creation, the date part will take precedence over the date part of \"start\". Format: 2006-11-07",
+            "type": "string"
+          },
+          "stop": {
+            "description": "Stop time in UTC, can be omitted if it's still running or created with \"duration\".\nIf \"stop\" and \"duration\" are provided, values must be consistent (start + duration == stop)",
+            "type": "string"
+          },
+          "tag_action": {
+            "$ref": "#/components/schemas/NewTimeEntryTagAction"
+          },
+          "tag_ids": {
+            "description": "IDs of tags to add/remove",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "tags": {
+            "description": "Names of tags to add/remove. If name does not exist as tag, one will be created automatically",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "task_id": {
+            "description": "Task ID, optional",
+            "type": "integer"
+          },
+          "tid": {
+            "description": "Task ID, legacy field",
+            "type": "integer"
+          },
+          "uid": {
+            "description": "Time Entry creator ID, legacy field",
+            "type": "integer"
+          },
+          "user_id": {
+            "description": "Time Entry creator ID, if omitted will use the requester user ID",
+            "type": "integer"
+          },
+          "wid": {
+            "description": "Workspace ID, legacy field",
+            "type": "integer"
+          },
+          "workspace_id": {
+            "description": "Workspace ID",
+            "type": "integer",
+            "example": 2230580
           }
         },
         "required": [
@@ -992,6 +1062,17 @@
           "workspace_id": 2230580,
           "start": "1984-06-08T11:02:53.000Z"
         }
+      },
+      "EventMetadata": {
+        "type": "object"
+      },
+      "NewTimeEntryTagAction": {
+        "description": "Used when updating an existing time entry",
+        "type": "string",
+        "enum": [
+          "add",
+          "delete"
+        ]
       }
     },
     "responses": {

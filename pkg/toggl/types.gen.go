@@ -228,10 +228,59 @@ type PostWorkspaces2230580TimeEntriesBadRequestJSONResponse string
 
 // NewTimeEntry defines a model
 type NewTimeEntry struct {
-	CreatedWith string     `json:"created_with"`
-	Description string     `json:"description"`
-	Tags        []struct{} `json:"tags"`
-	Billable    bool       `json:"billable"`
-	WorkspaceID int        `json:"workspace_id"`
-	Start       time.Time  `json:"start"`
+	// Whether the time entry is marked as billable, optional, default false
+	Billable bool `json:"billable"`
+	// Must be provided when creating a time entry and should identify the service/application used to create it
+	CreatedWith string `json:"created_with"`
+	// Time entry description, optional
+	Description string `json:"description"`
+	// Time entry duration. For running entries should be negative, preferable -1
+	Duration *int `json:"duration"`
+	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
+	Duronly       *bool          `json:"duronly"`
+	EventMetadata *EventMetadata `json:"event_metadata"`
+	// Project ID, legacy field
+	Pid *int `json:"pid"`
+	// Project ID, optional
+	ProjectID *int `json:"project_id"`
+	// List of user IDs to share this time entry with
+	SharedWithUserIds []int `json:"shared_with_user_ids"`
+	// Start time, required for creation.
+	Start time.Time `json:"start"`
+	// If provided during creation, the date part will take precedence over the date part of "start". Format: 2006-11-07
+	StartDate *string `json:"start_date"`
+	/*
+	   Stop time in UTC, can be omitted if it's still running or created with "duration".
+	   If "stop" and "duration" are provided, values must be consistent (start + duration == stop)
+	*/
+	Stop *string `json:"stop"`
+	// Used when updating an existing time entry
+	TagAction *NewTimeEntryTagAction `json:"tag_action"`
+	// IDs of tags to add/remove
+	TagIds []int `json:"tag_ids"`
+	// Names of tags to add/remove. If name does not exist as tag, one will be created automatically
+	Tags []string `json:"tags"`
+	// Task ID, optional
+	TaskID *int `json:"task_id"`
+	// Task ID, legacy field
+	Tid *int `json:"tid"`
+	// Time Entry creator ID, legacy field
+	UID *int `json:"uid"`
+	// Time Entry creator ID, if omitted will use the requester user ID
+	UserID *int `json:"user_id"`
+	// Workspace ID, legacy field
+	Wid *int `json:"wid"`
+	// Workspace ID
+	WorkspaceID int `json:"workspace_id"`
 }
+
+// EventMetadata defines a model
+type EventMetadata struct{}
+
+// Used when updating an existing time entry
+type NewTimeEntryTagAction string
+
+const (
+	NewTimeEntryTagActionAdd    NewTimeEntryTagAction = "add"
+	NewTimeEntryTagActionDelete NewTimeEntryTagAction = "delete"
+)
