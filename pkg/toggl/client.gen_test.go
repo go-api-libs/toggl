@@ -133,6 +133,25 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
 			}
 
+			// unknown content type for 400 Bad Request
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusBadRequest,
+			}}
+
+			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
 			// decoding error for known content type "application/json"
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
 				Body:       io.NopCloser(strings.NewReader("{")),
