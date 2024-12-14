@@ -161,7 +161,6 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody N
 				return api.WrapDecodingError(rsp, err)
 			}
 
-
 			return api.NewErrCustom(rsp, &out)
 		default:
 			return api.NewErrUnknownContentType(rsp)
