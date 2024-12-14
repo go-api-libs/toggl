@@ -352,22 +352,28 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 
+	})
+
+	t.Run("2024-12-15", func(t *testing.T) {
+		replay(t, "../../pkg/toggl/vcr/2024-12-15")
+
 		{
-			apiErr := &api.Error{}
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &apiErr) {
-				t.Fatalf("want: %T, got: %T", apiErr, err)
-			} else if !apiErr.IsCustom {
-				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
+			res, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
 			}
 		}
+
+		{
+			res, err := c.GetCurrentTimeEntry(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
 	})
 }
