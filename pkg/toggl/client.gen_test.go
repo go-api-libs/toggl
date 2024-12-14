@@ -325,7 +325,9 @@ func TestClient_VCR(t *testing.T) {
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &apiErr) {
-				t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
+				t.Fatalf("want: %T, got: %T", apiErr, err)
+			} else if !apiErr.IsCustom {
+				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
 			}
 		}
 	})
