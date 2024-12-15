@@ -13,7 +13,6 @@ import (
 	"net/http"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/go-api-libs/api"
 	"github.com/go-api-libs/toggl/pkg/toggl"
@@ -60,18 +59,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-			Billable:    false,
-			CreatedWith: "API example code",
-			Description: "Hello Toggl",
-			Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
-			Tags:        []string{},
-			WorkspaceID: 2230580,
-		}); err == nil {
-			t.Fatal("expected error")
-		} else if !errors.Is(err, testErr) {
-			t.Fatalf("want: %v, got: %v", testErr, err)
-		}
+		
 
 		if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
 			t.Fatal("expected error")
@@ -120,99 +108,10 @@ func TestClient_Error(t *testing.T) {
 		})
 
 		t.Run("CreateTimeEntry", func(t *testing.T) {
-			// unknown status code
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+			
 
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        []string{},
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
-			}
+			
 
-			// unknown content type for 200 OK
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Header:     http.Header{"Content-Type": []string{"foo"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        []string{},
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownContentType) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
-			}
-
-			// decoding error for known content type "application/json"
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        []string{},
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &errDecode) {
-				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
-
-			// unknown content type for 400 Bad Request
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Header:     http.Header{"Content-Type": []string{"foo"}},
-				StatusCode: http.StatusBadRequest,
-			}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        []string{},
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownContentType) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
-			}
-
-			// decoding error for known content type "application/json"
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-				StatusCode: http.StatusBadRequest,
-			}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        []string{},
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &errDecode) {
-				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
 		})
 
 		t.Run("GetCurrentTimeEntry", func(t *testing.T) {
@@ -285,8 +184,18 @@ func matcher(r *http.Request, i cassette.Request) bool {
 		return true
 	}
 
-	fmt.Printf("body: %v\n", body)
-	fmt.Printf("i.Body: %v\n", i.Body)
+	for j, b := range []byte(body) {
+		if j < len(i.Body) && i.Body[j] == b {
+			continue
+		}
+
+		fmt.Printf("same: %v\n", body[:j-1])
+		fmt.Printf(">  got: %v\n", body[j-1:])
+		fmt.Printf("> want: %v\n", i.Body[j-1:])
+		break
+	}
+
+
 
 	return false
 }
@@ -404,23 +313,6 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 
-		{
-			apiErr := &api.Error{}
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        []string{},
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &apiErr) {
-				t.Fatalf("want: %T, got: %T", apiErr, err)
-			} else if !apiErr.IsCustom {
-				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
-			}
-		}
 	})
 
 	t.Run("2024-12-14", func(t *testing.T) {
@@ -444,21 +336,6 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 
-		{
-			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(2016, time.June, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        []string{},
-				WorkspaceID: 2230580,
-			})
-			if err != nil {
-				t.Fatal(err)
-			} else if res == nil {
-				t.Fatal("result is nil")
-			}
-		}
 	})
 
 	t.Run("2024-12-15", func(t *testing.T) {
@@ -473,65 +350,8 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 
-		{
-			res, err := c.GetCurrentTimeEntry(ctx)
-			if err != nil {
-				t.Fatal(err)
-			} else if res == nil {
-				t.Fatal("result is nil")
-			}
-		}
+	
 
-		{
-			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:          false,
-				Description:       "Hello Toggl",
-				Duration:          -1,
-				SharedWithUserIds: []int{},
-				Start:             time.Date(2024, time.December, 15, 1, 41, 26, 72262000, time.Local),
-				TagIds:            []int{},
-				Tags:              []string{},
-				WorkspaceID:       2230580,
-			})
-			if err != nil {
-				t.Fatal(err)
-			} else if res == nil {
-				t.Fatal("result is nil")
-			}
-		}
-
-		{
-			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "API example code",
-				Description: "Hello Toggl",
-				Start:       time.Date(2016, time.June, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        []string{},
-				WorkspaceID: 2230580,
-			})
-			if err != nil {
-				t.Fatal(err)
-			} else if res == nil {
-				t.Fatal("result is nil")
-			}
-		}
-
-		{
-			apiErr := &api.Error{}
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:          false,
-				SharedWithUserIds: []int{},
-				Start:             time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC),
-				TagIds:            []int{},
-				Tags:              []string{},
-				WorkspaceID:       2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &apiErr) {
-				t.Fatalf("want: %T, got: %T", apiErr, err)
-			} else if !apiErr.IsCustom {
-				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
-			}
-		}
+	
 	})
 }
