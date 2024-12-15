@@ -130,7 +130,7 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody N
 // You can define a custom result to unmarshal the response into.
 //
 //	POST /workspaces/{workspace_id}/time_entries
-func CreateTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, reqBody NewTimeEntry) (*R, error) {
+func CreateTimeEntry[R any, B any](ctx context.Context, c *Client, workspaceID int, reqBody B) (*R, error) {
 	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
 	req := (&http.Request{
 		Header: http.Header{
