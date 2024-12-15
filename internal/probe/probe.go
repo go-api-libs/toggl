@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/go-api-libs/toggl/pkg/toggl"
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
@@ -34,9 +35,9 @@ func probe() error {
 
 	if _, err := c.CreateTimeEntry(ctx, me.DefaultWorkspaceID, toggl.NewTimeEntry{
 		WorkspaceID: me.DefaultWorkspaceID,
+		Start:       time.Now(),
 	}); err != nil {
-		fmt.Printf("err: %v\n", err)
-		// return err
+		return err
 	}
 
 	return nil
