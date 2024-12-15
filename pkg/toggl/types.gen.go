@@ -235,7 +235,7 @@ type NewTimeEntry struct {
 	// Time entry description, optional
 	Description string `json:"description"`
 	// Time entry duration. For running entries should be negative, preferable -1
-	Duration *int `json:"duration"`
+	Duration int `json:"duration"`
 	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
 	Duronly       *bool          `json:"duronly"`
 	EventMetadata *EventMetadata `json:"event_metadata"`

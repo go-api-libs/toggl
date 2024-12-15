@@ -61,8 +61,7 @@ func TestClient_Error(t *testing.T) {
 			Billable:    false,
 			CreatedWith: "API example code",
 			Description: "Hello Toggl",
-			Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-			Tags:        nil,
+			Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
 			WorkspaceID: 2230580,
 		}); err == nil {
 			t.Fatal("expected error")
@@ -124,8 +123,7 @@ func TestClient_Error(t *testing.T) {
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -143,8 +141,7 @@ func TestClient_Error(t *testing.T) {
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -163,8 +160,7 @@ func TestClient_Error(t *testing.T) {
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -182,8 +178,7 @@ func TestClient_Error(t *testing.T) {
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -202,8 +197,7 @@ func TestClient_Error(t *testing.T) {
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -357,8 +351,7 @@ func TestClient_VCR(t *testing.T) {
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
-				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -396,8 +389,7 @@ func TestClient_VCR(t *testing.T) {
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
-				Start:       time.Date(2016, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Start:       time.Date(2016, time.June, 8, 11, 2, 53, 0, time.UTC),
 				WorkspaceID: 2230580,
 			})
 			if err != nil {
@@ -432,10 +424,10 @@ func TestClient_VCR(t *testing.T) {
 		{
 			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
-				CreatedWith: "API example code",
+				CreatedWith: "",
 				Description: "Hello Toggl",
-				Start:       time.Date(2016, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Duration:    -1,
+				Start:       time.Date(2024, time.December, 15, 1, 41, 26, 72262000, time.Local),
 				WorkspaceID: 2230580,
 			})
 			if err != nil {
@@ -450,8 +442,7 @@ func TestClient_VCR(t *testing.T) {
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
-				Start:       time.Date(2016, time.July, 8, 11, 2, 53, 0, time.UTC),
-				Tags:        nil,
+				Start:       time.Date(2016, time.June, 8, 11, 2, 53, 0, time.UTC),
 				WorkspaceID: 2230580,
 			})
 			if err != nil {

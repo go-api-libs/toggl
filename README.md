@@ -73,8 +73,7 @@ func main() {
 		Billable:    false,
 		CreatedWith: "API example code",
 		Description: "Hello Toggl",
-		Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
-		Tags:        nil,
+		Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
 		WorkspaceID: 2230580,
 	})
 	if err != nil {

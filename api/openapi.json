@@ -968,7 +968,8 @@
           },
           "duration": {
             "description": "Time entry duration. For running entries should be negative, preferable -1",
-            "type": "integer"
+            "type": "integer",
+            "example": -1
           },
           "duronly": {
             "description": "Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.",
@@ -1052,6 +1053,7 @@
         "required": [
           "created_with",
           "description",
+          "duration",
           "tags",
           "billable",
           "workspace_id",
