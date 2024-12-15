@@ -36,6 +36,7 @@ func probe() error {
 	if _, err := c.CreateTimeEntry(ctx, me.DefaultWorkspaceID, toggl.NewTimeEntry{
 		WorkspaceID: me.DefaultWorkspaceID,
 		Start:       time.Now(),
+		CreatedWith: "github.com/go-api-libs/toggl",
 	}); err != nil {
 		return err
 	}
