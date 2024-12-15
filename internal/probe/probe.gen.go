@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -42,6 +44,7 @@ func record() (*recorder.Recorder, error) {
 		return nil, err
 	}
 
+	r.SetMatcher(matcher)
 	r.AddHook(maskAuthorization, recorder.BeforeSaveHook)
 	r.AddHook(maskSecrets, recorder.BeforeSaveHook)
 
@@ -49,6 +52,45 @@ func record() (*recorder.Recorder, error) {
 	http.DefaultClient.Transport = r
 
 	return r, nil
+}
+
+func matcher(r *http.Request, i cassette.Request) bool {
+	if !cassette.DefaultMatcher(r, i) {
+		return false
+	}
+
+	// compare also the request payload
+	return getBody(r) == i.Body
+}
+
+func getBody(r *http.Request) string {
+	if r.Body == nil {
+		return ""
+	}
+
+	if r.GetBody == nil {
+		b, err := io.ReadAll(r.Body)
+		if err != nil {
+			panic(err)
+		}
+
+		r.Body.Close()
+		r.Body = io.NopCloser(bytes.NewReader(b))
+		return string(b)
+	}
+
+	body, err := r.GetBody()
+	if err != nil {
+		panic(err)
+	}
+	defer body.Close()
+
+	b, err := io.ReadAll(body)
+	if err != nil {
+		panic(err)
+	}
+
+	return string(b)
 }
 
 func maskAuthorization(i *cassette.Interaction) error {
