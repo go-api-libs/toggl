@@ -198,3 +198,70 @@ interactions:
         status: 200 OK
         code: 200
         duration: 254.853708ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"created_with":"github.com/go-api-libs/toggl","start":"2024-12-15T21:19:39.215084+01:00","workspace_id":2230580}'
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+            Content-Type:
+                - application/json
+            User-Agent:
+                - TogglGoAPILibrary/9 (https://github.com/go-api-libs/toggl)
+        url: https://api.track.toggl.com/api/v9/workspaces/2230580/time_entries
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 313
+        uncompressed: false
+        body: '{"id":3730143732,"workspace_id":2230580,"project_id":null,"task_id":null,"billable":false,"start":"2024-12-15T20:19:39Z","stop":null,"duration":0,"description":null,"tags":null,"tag_ids":null,"duronly":true,"at":"2024-12-15T20:19:39.362926Z","server_deleted_at":null,"user_id":2166261,"uid":2166261,"wid":2230580}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "313"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Sun, 15 Dec 2024 20:19:39 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-wlr98
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - d60e7bdc1299ba65e1bf79ac868d76a5
+            X-Service-Level:
+                - GREEN
+            X-Toggl-Request-Id:
+                - 7fa0b55f-f0ff-4667-9371-0d0e5ca0222a
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 200 OK
+        code: 200
+        duration: 225.632334ms
