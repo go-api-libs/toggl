@@ -131,4 +131,66 @@ interactions:
         status: 200 OK
         code: 200
         duration: 128.218833ms
- 
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"workspace_id":2230580}'
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+            Content-Type:
+                - application/json
+            User-Agent:
+                - TogglGoAPILibrary/9 (https://github.com/go-api-libs/toggl)
+        url: https://api.track.toggl.com/api/v9/workspaces/2230580/time_entries
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 43
+        uncompressed: false
+        body: '"start is required for time entry creation"'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "43"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Sun, 15 Dec 2024 19:49:39 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-wlr98
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - a0a50a01292c3ea287c6aaa8a38fe104
+            X-Toggl-Request-Id:
+                - 20f22d93-60cf-4350-8f11-ab6c9d826ada
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 400 Bad Request
+        code: 400
+        duration: 197.072375ms
