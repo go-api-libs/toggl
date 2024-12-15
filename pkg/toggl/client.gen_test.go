@@ -57,7 +57,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+		if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 			Billable:    false,
 			CreatedWith: "API example code",
 			Description: "Hello Toggl",
@@ -120,7 +120,7 @@ func TestClient_Error(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
@@ -139,7 +139,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
@@ -159,7 +159,46 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(1984, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
@@ -314,7 +353,7 @@ func TestClient_VCR(t *testing.T) {
 
 		{
 			apiErr := &api.Error{}
-			if err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:    false,
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
@@ -352,6 +391,21 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(2016, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
 	})
 
 	t.Run("2024-12-15", func(t *testing.T) {
@@ -375,5 +429,20 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(2016, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
 	})
 }

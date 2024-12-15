@@ -122,7 +122,15 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 // Creates a new workspace TimeEntry.
 //
 //	POST /workspaces/{workspace_id}/time_entries
-func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody NewTimeEntry) error {
+func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody NewTimeEntry) (*CreateTimeEntryOkJSONResponse, error) {
+	return CreateTimeEntry[CreateTimeEntryOkJSONResponse](ctx, c, workspaceID, reqBody)
+}
+
+// Creates a new workspace TimeEntry.
+// You can define a custom result to unmarshal the response into.
+//
+//	POST /workspaces/{workspace_id}/time_entries
+func CreateTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, reqBody NewTimeEntry) (*R, error) {
 	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
 	req := (&http.Request{
 		Header: http.Header{
@@ -147,7 +155,7 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody N
 
 	rsp, err := c.cli.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer rsp.Body.Close()
 
@@ -158,15 +166,28 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody N
 		case "application/json":
 			var out APIErrorString
 			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
-				return api.WrapDecodingError(rsp, err)
+				return nil, api.WrapDecodingError(rsp, err)
 			}
 
-			return api.NewErrCustom(rsp, &out)
+			return nil, api.NewErrCustom(rsp, &out)
 		default:
-			return api.NewErrUnknownContentType(rsp)
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	case http.StatusOK:
+		// TODO
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	default:
-		return api.NewErrUnknownStatusCode(rsp)
+		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
 

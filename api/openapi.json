@@ -57,6 +57,9 @@
         "responses": {
           "400": {
             "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "200": {
+            "$ref": "#/components/responses/CreateTimeEntryOkResponse"
           }
         }
       }
@@ -1073,6 +1076,116 @@
           "add",
           "delete"
         ]
+      },
+      "CreateTimeEntryOkJSONResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 3729793032
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "project_id": {
+            "type": "object"
+          },
+          "task_id": {
+            "type": "object"
+          },
+          "billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-06-08T11:02:53Z"
+          },
+          "stop": {
+            "type": "object"
+          },
+          "duration": {
+            "type": "integer",
+            "example": 0
+          },
+          "description": {
+            "type": "string",
+            "example": "Hello Toggl"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "tag_ids": {
+            "type": "object"
+          },
+          "duronly": {
+            "type": "boolean",
+            "example": true
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-14T21:52:47.142267Z"
+          },
+          "server_deleted_at": {
+            "type": "object"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "uid": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "wid": {
+            "type": "integer",
+            "example": 2230580
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "project_id",
+          "task_id",
+          "billable",
+          "start",
+          "stop",
+          "duration",
+          "description",
+          "tags",
+          "tag_ids",
+          "duronly",
+          "at",
+          "server_deleted_at",
+          "user_id",
+          "uid",
+          "wid"
+        ],
+        "example": {
+          "id": 3729793032,
+          "workspace_id": 2230580,
+          "project_id": null,
+          "task_id": null,
+          "billable": false,
+          "start": "2016-06-08T11:02:53Z",
+          "stop": null,
+          "duration": 0,
+          "description": "Hello Toggl",
+          "tags": [],
+          "tag_ids": null,
+          "duronly": true,
+          "at": "2024-12-14T21:52:47.142267Z",
+          "server_deleted_at": null,
+          "user_id": 2166261,
+          "uid": 2166261,
+          "wid": 2230580
+        }
       }
     },
     "responses": {
@@ -1150,6 +1263,35 @@
               "$ref": "#/components/schemas/APIErrorString"
             },
             "example": "Start time year must be between 2006 and 2030"
+          }
+        }
+      },
+      "CreateTimeEntryOkResponse": {
+        "description": "TODO",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateTimeEntryOkJSONResponse"
+            },
+            "example": {
+              "id": 3729793032,
+              "workspace_id": 2230580,
+              "project_id": null,
+              "task_id": null,
+              "billable": false,
+              "start": "2016-06-08T11:02:53Z",
+              "stop": null,
+              "duration": 0,
+              "description": "Hello Toggl",
+              "tags": [],
+              "tag_ids": null,
+              "duronly": true,
+              "at": "2024-12-14T21:52:47.142267Z",
+              "server_deleted_at": null,
+              "user_id": 2166261,
+              "uid": 2166261,
+              "wid": 2230580
+            }
           }
         }
       }
