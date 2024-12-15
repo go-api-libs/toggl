@@ -467,7 +467,6 @@ func TestClient_VCR(t *testing.T) {
 			apiErr := &api.Error{}
 			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				Billable:          false,
-				Duration:          0,
 				SharedWithUserIds: []int{},
 				Start:             time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC),
 				TagIds:            []int{},
