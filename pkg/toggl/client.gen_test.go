@@ -463,5 +463,26 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal("result is nil")
 			}
 		}
+
+		{
+			apiErr := &api.Error{}
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				Billable:          false,
+				CreatedWith:       "",
+				Description:       "",
+				Duration:          0,
+				SharedWithUserIds: []int{},
+				Start:             time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC),
+				TagIds:            []int{},
+				Tags:              []string{},
+				WorkspaceID:       2230580,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &apiErr) {
+				t.Fatalf("want: %T, got: %T", apiErr, err)
+			} else if !apiErr.IsCustom {
+				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
+			}
+		}
 	})
 }

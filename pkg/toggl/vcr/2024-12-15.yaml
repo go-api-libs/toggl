@@ -261,3 +261,66 @@ interactions:
         status: 200 OK
         code: 200
         duration: 272.55075ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"billable":false,"created_with":"","description":"","duration":0,"duronly":null,"event_metadata":null,"pid":null,"project_id":null,"shared_with_user_ids":[],"start":"0001-01-01T00:00:00Z","start_date":null,"stop":null,"tag_action":null,"tag_ids":[],"tags":[],"task_id":null,"tid":null,"uid":null,"user_id":null,"wid":null,"workspace_id":2230580}'
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+            Content-Type:
+                - application/json
+            User-Agent:
+                - TogglGoAPILibrary/9 (https://github.com/go-api-libs/toggl)
+        url: https://api.track.toggl.com/api/v9/workspaces/2230580/time_entries
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 47
+        uncompressed: false
+        body: '"Start time year must be between 2006 and 2030"'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "47"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Sun, 15 Dec 2024 18:04:37 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-wlr98
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - 2445dc1e626742416608ea0462e6a995
+            X-Toggl-Request-Id:
+                - 79041c99-f650-4d9a-bdcf-a1491a9a2d09
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 400 Bad Request
+        code: 400
+        duration: 222.520375ms
