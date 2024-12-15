@@ -59,7 +59,11 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+		if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+			CreatedWith: "github.com/go-api-libs/toggl",
+			Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+			WorkspaceID: 2230580,
+		}); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -115,7 +119,11 @@ func TestClient_Error(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
@@ -127,7 +135,11 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
@@ -140,7 +152,11 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
@@ -152,7 +168,11 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
@@ -165,7 +185,11 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)

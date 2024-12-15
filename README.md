@@ -57,6 +57,7 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 
 	"github.com/go-api-libs/toggl/pkg/toggl"
 )
@@ -68,7 +69,11 @@ func main() {
 	}
 
 	ctx := context.Background()
-	timeEntry, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{})
+	timeEntry, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+		CreatedWith: "github.com/go-api-libs/toggl",
+		Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+		WorkspaceID: 2230580,
+	})
 	if err != nil {
 		panic(err)
 	}
