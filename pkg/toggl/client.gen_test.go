@@ -62,6 +62,7 @@ func TestClient_Error(t *testing.T) {
 			CreatedWith: "API example code",
 			Description: "Hello Toggl",
 			Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
+			Tags:        []string{},
 			WorkspaceID: 2230580,
 		}); err == nil {
 			t.Fatal("expected error")
@@ -124,6 +125,7 @@ func TestClient_Error(t *testing.T) {
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
 				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        []string{},
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -142,6 +144,7 @@ func TestClient_Error(t *testing.T) {
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
 				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        []string{},
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -161,6 +164,7 @@ func TestClient_Error(t *testing.T) {
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
 				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        []string{},
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -179,6 +183,7 @@ func TestClient_Error(t *testing.T) {
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
 				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        []string{},
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -198,6 +203,7 @@ func TestClient_Error(t *testing.T) {
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
 				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        []string{},
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -352,6 +358,7 @@ func TestClient_VCR(t *testing.T) {
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
 				Start:       time.Date(1984, time.June, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        []string{},
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -390,6 +397,7 @@ func TestClient_VCR(t *testing.T) {
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
 				Start:       time.Date(2016, time.June, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        []string{},
 				WorkspaceID: 2230580,
 			})
 			if err != nil {
@@ -423,12 +431,15 @@ func TestClient_VCR(t *testing.T) {
 
 		{
 			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				Billable:    false,
-				CreatedWith: "",
-				Description: "Hello Toggl",
-				Duration:    -1,
-				Start:       time.Date(2024, time.December, 15, 1, 41, 26, 72262000, time.Local),
-				WorkspaceID: 2230580,
+				Billable:          false,
+				CreatedWith:       "",
+				Description:       "Hello Toggl",
+				Duration:          -1,
+				SharedWithUserIds: []int{},
+				Start:             time.Date(2024, time.December, 15, 1, 41, 26, 72262000, time.Local),
+				TagIds:            []int{},
+				Tags:              []string{},
+				WorkspaceID:       2230580,
 			})
 			if err != nil {
 				t.Fatal(err)
@@ -443,6 +454,7 @@ func TestClient_VCR(t *testing.T) {
 				CreatedWith: "API example code",
 				Description: "Hello Toggl",
 				Start:       time.Date(2016, time.June, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        []string{},
 				WorkspaceID: 2230580,
 			})
 			if err != nil {
