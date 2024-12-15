@@ -3344,8 +3344,7 @@
           "start": {
             "description": "Start time, required for creation.",
             "type": "string",
-            "format": "date-time",
-            "example": "1984-06-08T11:02:53.000Z"
+            "format": "date-time"
           },
           "start_date": {
             "description": "If provided during creation, the date part will take precedence over the date part of \"start\". Format: 2006-11-07",
@@ -3406,15 +3405,7 @@
           "billable",
           "workspace_id",
           "start"
-        ],
-        "example": {
-          "created_with": "API example code",
-          "description": "Hello Toggl",
-          "tags": [],
-          "billable": false,
-          "workspace_id": 2230580,
-          "start": "1984-06-08T11:02:53.000Z"
-        }
+        ]
       },
       "EventMetadata": {
         "type": "object"
@@ -3536,14 +3527,6 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/NewTimeEntry"
-            },
-            "example": {
-              "created_with": "API example code",
-              "description": "Hello Toggl",
-              "tags": [],
-              "billable": false,
-              "workspace_id": 2230580,
-              "start": "1984-06-08T11:02:53.000Z"
             }
           }
         }
