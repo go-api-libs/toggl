@@ -127,7 +127,7 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody N
 }
 
 // Creates a new workspace TimeEntry.
-// You can define a custom result to unmarshal the response into.
+// You can define a custom request body to marshal and a custom result to unmarshal the response into.
 //
 //	POST /workspaces/{workspace_id}/time_entries
 func CreateTimeEntry[R any, B any](ctx context.Context, c *Client, workspaceID int, reqBody B) (*R, error) {
