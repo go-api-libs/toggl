@@ -229,15 +229,15 @@ type APIErrorString string
 // NewTimeEntry defines a model
 type NewTimeEntry struct {
 	// Whether the time entry is marked as billable, optional, default false
-	Billable bool `json:"billable"`
+	Billable bool `json:"billable,omitzero"`
 	// Must be provided when creating a time entry and should identify the service/application used to create it
 	CreatedWith string `json:"created_with"`
 	// Time entry description, optional
 	Description string `json:"description"`
 	// Time entry duration. For running entries should be negative, preferable -1
-	Duration int `json:"duration"`
+	Duration int `json:"duration,omitzero"`
 	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
-	Duronly       *bool          `json:"duronly"`
+	Duronly       *bool          `json:"duronly,omitempty"`
 	EventMetadata *EventMetadata `json:"event_metadata"`
 	// Project ID, legacy field
 	Pid *int `json:"pid"`
