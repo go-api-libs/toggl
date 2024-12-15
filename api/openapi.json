@@ -3344,7 +3344,8 @@
           "start": {
             "description": "Start time, required for creation.",
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "example": "2024-12-15T21:17:59.593648+01:00"
           },
           "start_date": {
             "description": "If provided during creation, the date part will take precedence over the date part of \"start\". Format: 2006-11-07",
@@ -3405,7 +3406,12 @@
           "billable",
           "workspace_id",
           "start"
-        ]
+        ],
+        "example": {
+          "created_with": "github.com/go-api-libs/toggl",
+          "start": "2024-12-15T21:17:59.593648+01:00",
+          "workspace_id": 2230580
+        }
       },
       "EventMetadata": {
         "type": "object"
