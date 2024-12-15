@@ -160,19 +160,6 @@ func CreateTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, req
 	defer rsp.Body.Close()
 
 	switch rsp.StatusCode {
-	case http.StatusBadRequest:
-		// Returned when the user made a bad request
-		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
-		case "application/json":
-			var out APIErrorString
-			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
-				return nil, api.WrapDecodingError(rsp, err)
-			}
-
-			return nil, api.NewErrCustom(rsp, &out)
-		default:
-			return nil, api.NewErrUnknownContentType(rsp)
-		}
 	case http.StatusOK:
 		// TODO
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
@@ -183,6 +170,19 @@ func CreateTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, req
 			}
 
 			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	case http.StatusBadRequest:
+		// Returned when the user made a bad request
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out APIErrorString
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return nil, api.NewErrCustom(rsp, &out)
 		default:
 			return nil, api.NewErrUnknownContentType(rsp)
 		}

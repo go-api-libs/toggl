@@ -55,11 +55,11 @@
           "$ref": "#/components/requestBodies/TimeEntry"
         },
         "responses": {
-          "400": {
-            "$ref": "#/components/responses/BadRequestResponse"
-          },
           "200": {
             "$ref": "#/components/responses/CreateTimeEntryOkResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
           }
         }
       }
