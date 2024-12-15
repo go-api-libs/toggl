@@ -39,6 +39,7 @@ func probe() error {
 		WorkspaceID: me.DefaultWorkspaceID,
 		Start:       time.Now(),
 		CreatedWith: "github.com/go-api-libs/toggl",
+		// Duration:    time.Hour,
 	}); err != nil {
 		return err
 	}

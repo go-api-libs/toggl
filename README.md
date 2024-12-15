@@ -5,10 +5,7 @@
 ![Code Coverage](https://img.shields.io/badge/coverage-46%25-yellow)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-Public Toggl API.
-Note:
-We use BasicAuth in a specific way. By the standard you provide `Authentication` header with `base64(user_name:password)` as a `credential`.
-In our case it will be `base64(user_name:api_token)`.
+The Toggl API allows developers to interact with Toggl's time tracking service programmatically. It provides endpoints for managing time entries, projects, clients, tags, and user information. With this API, you can automate time tracking, generate detailed reports, and integrate Toggl with other tools and services.
 
 ## Installation
 
