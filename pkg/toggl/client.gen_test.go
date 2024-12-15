@@ -8,11 +8,11 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/go-api-libs/api"
 	"github.com/go-api-libs/toggl/pkg/toggl"
@@ -59,7 +59,11 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		
+		if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
 
 		if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
 			t.Fatal("expected error")
@@ -108,10 +112,64 @@ func TestClient_Error(t *testing.T) {
 		})
 
 		t.Run("CreateTimeEntry", func(t *testing.T) {
-			
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
 
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+
+			// unknown content type for 400 Bad Request
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusBadRequest,
+			}}
+
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusBadRequest,
+			}}
+
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
 		})
 
 		t.Run("GetCurrentTimeEntry", func(t *testing.T) {
@@ -172,32 +230,12 @@ func replay(t *testing.T, cassette string) {
 	http.DefaultClient.Transport = r
 }
 
-
 func matcher(r *http.Request, i cassette.Request) bool {
 	if !cassette.DefaultMatcher(r, i) {
 		return false
 	}
 
-	// compare also the request payload
-	body := getBody(r)
-	if body == i.Body {
-		return true
-	}
-
-	for j, b := range []byte(body) {
-		if j < len(i.Body) && i.Body[j] == b {
-			continue
-		}
-
-		fmt.Printf("same: %v\n", body[:j-1])
-		fmt.Printf(">  got: %v\n", body[j-1:])
-		fmt.Printf("> want: %v\n", i.Body[j-1:])
-		break
-	}
-
-
-
-	return false
+	return getBody(r) == i.Body
 }
 
 func getBody(r *http.Request) string {
@@ -229,7 +267,6 @@ func getBody(r *http.Request) string {
 
 	return string(b)
 }
-
 
 func TestClient_VCR(t *testing.T) {
 	ctx := context.Background()
@@ -312,7 +349,6 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal("result is nil")
 			}
 		}
-
 	})
 
 	t.Run("2024-12-14", func(t *testing.T) {
@@ -335,7 +371,6 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal("result is nil")
 			}
 		}
-
 	})
 
 	t.Run("2024-12-15", func(t *testing.T) {
@@ -350,8 +385,39 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 
-	
+		{
+			res, err := c.GetCurrentTimeEntry(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
 
-	
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       time.Date(2024, time.December, 15, 21, 19, 39, 215084000, time.Local),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
 	})
 }
