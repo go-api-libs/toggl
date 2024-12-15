@@ -444,5 +444,21 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal("result is nil")
 			}
 		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				Billable:    false,
+				CreatedWith: "API example code",
+				Description: "Hello Toggl",
+				Start:       time.Date(2016, time.July, 8, 11, 2, 53, 0, time.UTC),
+				Tags:        nil,
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
 	})
 }
