@@ -1823,8 +1823,8 @@
           },
           "duration": {
             "type": "integer",
-            "example": -1734035934,
-            "format": "duration"
+            "format": "duration",
+            "example": -1734035934
           },
           "description": {
             "type": "string",
@@ -3318,8 +3318,8 @@
           "duration": {
             "description": "Time entry duration. For running entries should be negative, preferable -1",
             "type": "integer",
-            "example": -1,
-            "format": "duration"
+            "format": "duration",
+            "example": -1
           },
           "duronly": {
             "description": "Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.",

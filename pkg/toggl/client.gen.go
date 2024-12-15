@@ -13,10 +13,12 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/MarkRosemaker/jsonutil"
 	"github.com/go-api-libs/api"
 	"github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 const (
@@ -32,8 +34,25 @@ var (
 
 	jsonOpts = json.JoinOptions(
 		json.RejectUnknownMembers(true),
-		json.WithMarshalers(json.MarshalFuncV2(jsonutil.URLMarshal)),
-		json.WithUnmarshalers(json.UnmarshalFuncV2(jsonutil.URLUnmarshal)))
+		json.WithMarshalers(json.NewMarshalers(
+			json.MarshalFuncV2(jsonutil.URLMarshal),
+			json.MarshalFuncV2(func(enc *jsontext.Encoder, d *time.Duration, opts json.Options) error {
+				return enc.WriteToken(jsontext.Int(int64(*d / time.Second)))
+			}),
+		)),
+		json.WithUnmarshalers(json.NewUnmarshalers(
+			json.UnmarshalFuncV2(jsonutil.URLUnmarshal),
+			json.UnmarshalFuncV2(func(dec *jsontext.Decoder, d *time.Duration, opts json.Options) error {
+				var seconds int
+				if err := json.UnmarshalDecode(dec, &seconds, opts); err != nil {
+					return err
+				}
+
+				*d = time.Duration(seconds)*time.Second
+
+				return nil
+			}),
+		)))
 )
 
 // Client conforms to the OpenAPI3 specification for this service.

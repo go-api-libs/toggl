@@ -94,24 +94,24 @@ type TimeEntries []TimeEntry
 
 // TimeEntry defines a model
 type TimeEntry struct {
-	ID              int       `json:"id,omitzero"`
-	WorkspaceID     int       `json:"workspace_id,omitzero"`
-	ProjectID       int       `json:"project_id,omitzero"`
-	TaskID          struct{}  `json:"task_id"`
-	Billable        bool      `json:"billable,omitzero"`
-	Start           time.Time `json:"start,omitzero"`
-	Stop            time.Time `json:"stop,omitzero"`
-	Duration        int       `json:"duration,omitzero"`
-	Description     string    `json:"description,omitzero"`
-	Tags            []string  `json:"tags,omitempty"`
-	TagIds          []string  `json:"tag_ids,omitempty"`
-	Duronly         bool      `json:"duronly,omitzero"`
-	At              time.Time `json:"at,omitzero"`
-	ServerDeletedAt struct{}  `json:"server_deleted_at"`
-	UserID          int       `json:"user_id,omitzero"`
-	UID             int       `json:"uid,omitzero"`
-	Wid             int       `json:"wid,omitzero"`
-	Pid             int       `json:"pid,omitzero"`
+	ID              int           `json:"id,omitzero"`
+	WorkspaceID     int           `json:"workspace_id,omitzero"`
+	ProjectID       int           `json:"project_id,omitzero"`
+	TaskID          struct{}      `json:"task_id"`
+	Billable        bool          `json:"billable,omitzero"`
+	Start           time.Time     `json:"start,omitzero"`
+	Stop            time.Time     `json:"stop,omitzero"`
+	Duration        time.Duration `json:"duration,omitzero"`
+	Description     string        `json:"description,omitzero"`
+	Tags            []string      `json:"tags,omitempty"`
+	TagIds          []string      `json:"tag_ids,omitempty"`
+	Duronly         bool          `json:"duronly,omitzero"`
+	At              time.Time     `json:"at,omitzero"`
+	ServerDeletedAt struct{}      `json:"server_deleted_at"`
+	UserID          int           `json:"user_id,omitzero"`
+	UID             int           `json:"uid,omitzero"`
+	Wid             int           `json:"wid,omitzero"`
+	Pid             int           `json:"pid,omitzero"`
 }
 
 // Options defines a model
@@ -235,7 +235,7 @@ type NewTimeEntry struct {
 	// Time entry description, optional
 	Description string `json:"description,omitzero"`
 	// Time entry duration. For running entries should be negative, preferable -1
-	Duration int `json:"duration,omitzero"`
+	Duration time.Duration `json:"duration,omitzero"`
 	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
 	Duronly       *bool          `json:"duronly,omitempty"`
 	EventMetadata *EventMetadata `json:"event_metadata,omitempty"`
