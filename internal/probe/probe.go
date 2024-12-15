@@ -33,6 +33,8 @@ func probe() error {
 		return err
 	}
 
+	return nil
+
 	if _, err := c.CreateTimeEntry(ctx, me.DefaultWorkspaceID, toggl.NewTimeEntry{
 		WorkspaceID: me.DefaultWorkspaceID,
 		Start:       time.Now(),
@@ -40,8 +42,6 @@ func probe() error {
 	}); err != nil {
 		return err
 	}
-
-	return nil
 
 	req, err := http.NewRequest(http.MethodPost, serverURL+fmt.Sprintf("/workspaces/%d/time_entries", me.DefaultWorkspaceID), strings.NewReader(fmt.Sprintf(`{"workspace_id":%d}`, me.DefaultWorkspaceID)))
 	if err != nil {
