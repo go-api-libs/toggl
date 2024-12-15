@@ -69,7 +69,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	createTimeEntryOkJSONResponse, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+	timeEntry, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 		Billable:    false,
 		CreatedWith: "API example code",
 		Description: "Hello Toggl",
@@ -81,7 +81,7 @@ func main() {
 		panic(err)
 	}
 
-	// Use createTimeEntryOkJSONResponse object
+	// Use timeEntry object
 }
 
 ```

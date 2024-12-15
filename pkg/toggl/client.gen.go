@@ -122,8 +122,8 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 // Creates a new workspace TimeEntry.
 //
 //	POST /workspaces/{workspace_id}/time_entries
-func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody NewTimeEntry) (*CreateTimeEntryOkJSONResponse, error) {
-	return CreateTimeEntry[CreateTimeEntryOkJSONResponse](ctx, c, workspaceID, reqBody)
+func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody NewTimeEntry) (*TimeEntry, error) {
+	return CreateTimeEntry[TimeEntry](ctx, c, workspaceID, reqBody)
 }
 
 // Creates a new workspace TimeEntry.
@@ -161,7 +161,7 @@ func CreateTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, req
 
 	switch rsp.StatusCode {
 	case http.StatusOK:
-		// TODO
+		// Returns a time entry
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			var out R
