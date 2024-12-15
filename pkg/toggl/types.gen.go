@@ -231,45 +231,45 @@ type NewTimeEntry struct {
 	// Whether the time entry is marked as billable, optional, default false
 	Billable bool `json:"billable,omitzero"`
 	// Must be provided when creating a time entry and should identify the service/application used to create it
-	CreatedWith string `json:"created_with"`
+	CreatedWith string `json:"created_with,omitzero"`
 	// Time entry description, optional
 	Description string `json:"description"`
 	// Time entry duration. For running entries should be negative, preferable -1
 	Duration int `json:"duration,omitzero"`
 	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
 	Duronly       *bool          `json:"duronly,omitempty"`
-	EventMetadata *EventMetadata `json:"event_metadata"`
+	EventMetadata *EventMetadata `json:"event_metadata,omitempty"`
 	// Project ID, legacy field
-	Pid *int `json:"pid"`
+	Pid *int `json:"pid,omitempty"`
 	// Project ID, optional
-	ProjectID *int `json:"project_id"`
+	ProjectID *int `json:"project_id,omitempty"`
 	// List of user IDs to share this time entry with
-	SharedWithUserIds []int `json:"shared_with_user_ids"`
+	SharedWithUserIds []int `json:"shared_with_user_ids,omitempty"`
 	// Start time, required for creation.
-	Start time.Time `json:"start"`
+	Start time.Time `json:"start,omitzero"`
 	// If provided during creation, the date part will take precedence over the date part of "start". Format: 2006-11-07
-	StartDate *string `json:"start_date"`
+	StartDate *string `json:"start_date,omitempty"`
 	/*
 	   Stop time in UTC, can be omitted if it's still running or created with "duration".
 	   If "stop" and "duration" are provided, values must be consistent (start + duration == stop)
 	*/
-	Stop *string `json:"stop"`
+	Stop *string `json:"stop,omitempty"`
 	// Used when updating an existing time entry
-	TagAction *TagAction `json:"tag_action"`
+	TagAction *TagAction `json:"tag_action,omitempty"`
 	// IDs of tags to add/remove
-	TagIds []int `json:"tag_ids"`
+	TagIds []int `json:"tag_ids,omitempty"`
 	// Names of tags to add/remove. If name does not exist as tag, one will be created automatically
-	Tags []string `json:"tags"`
+	Tags []string `json:"tags,omitempty"`
 	// Task ID, optional
-	TaskID *int `json:"task_id"`
+	TaskID *int `json:"task_id,omitempty"`
 	// Task ID, legacy field
-	Tid *int `json:"tid"`
+	Tid *int `json:"tid,omitempty"`
 	// Time Entry creator ID, legacy field
-	UID *int `json:"uid"`
+	UID *int `json:"uid,omitempty"`
 	// Time Entry creator ID, if omitted will use the requester user ID
-	UserID *int `json:"user_id"`
+	UserID *int `json:"user_id,omitempty"`
 	// Workspace ID, legacy field
-	Wid *int `json:"wid"`
+	Wid *int `json:"wid,omitempty"`
 	// Workspace ID
 	WorkspaceID int `json:"workspace_id"`
 }
