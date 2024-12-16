@@ -265,3 +265,70 @@ interactions:
         status: 200 OK
         code: 200
         duration: 264.528916ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"created_with":"github.com/go-api-libs/toggl","description":"Hello Toggl","duration":-1,"start":"2024-12-16T02:31:14.086355+01:00","workspace_id":2230580}'
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+            Content-Type:
+                - application/json
+            User-Agent:
+                - TogglGoAPILibrary/9 (https://github.com/go-api-libs/toggl)
+        url: https://api.track.toggl.com/api/v9/workspaces/2230580/time_entries
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 323
+        uncompressed: false
+        body: '{"id":3730289470,"workspace_id":2230580,"project_id":null,"task_id":null,"billable":false,"start":"2024-12-16T01:31:14Z","stop":null,"duration":-1,"description":"Hello Toggl","tags":null,"tag_ids":null,"duronly":true,"at":"2024-12-16T01:41:14.252244Z","server_deleted_at":null,"user_id":2166261,"uid":2166261,"wid":2230580}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "323"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Mon, 16 Dec 2024 01:41:14 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-l4vmk
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - 236220d0c3ee146e33b54cac089f3d8b
+            X-Service-Level:
+                - GREEN
+            X-Toggl-Request-Id:
+                - 2d18ccc4-0f6e-4ab8-9404-944638e38956
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 200 OK
+        code: 200
+        duration: 236.531834ms

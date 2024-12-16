@@ -493,5 +493,20 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal("result is nil")
 			}
 		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Description: "Hello Toggl",
+				Duration:    -1 * time.Second,
+				Start:       time.Date(2024, time.December, 16, 2, 31, 14, 86355000, time.Local),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
 	})
 }
