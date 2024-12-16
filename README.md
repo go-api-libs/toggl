@@ -128,12 +128,12 @@ func main() {
 	}
 
 	ctx := context.Background()
-	patchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, err := c.StopTimeEntry(ctx, 2230580, 3730303299)
+	timeEntry, err := c.StopTimeEntry(ctx, 2230580, 3730303299)
 	if err != nil {
 		panic(err)
 	}
 
-	// Use patchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse object
+	// Use timeEntry object
 }
 
 ```

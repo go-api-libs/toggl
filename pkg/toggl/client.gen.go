@@ -249,8 +249,8 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 // Stops a workspace time entry.
 //
 //	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
-func (c *Client) StopTimeEntry(ctx context.Context, workspaceID int, timeEntryID int) (*PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, error) {
-	return StopTimeEntry[PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse](ctx, c, workspaceID, timeEntryID)
+func (c *Client) StopTimeEntry(ctx context.Context, workspaceID int, timeEntryID int) (*TimeEntry, error) {
+	return StopTimeEntry[TimeEntry](ctx, c, workspaceID, timeEntryID)
 }
 
 // Stops a workspace time entry.
@@ -280,7 +280,7 @@ func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeE
 
 	switch rsp.StatusCode {
 	case http.StatusOK:
-		// TODO
+		// Returns a time entry
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			var out R
