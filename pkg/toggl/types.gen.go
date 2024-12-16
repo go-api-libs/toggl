@@ -18,9 +18,9 @@ type GetMeParams struct {
 }
 
 type GetTimeEntriesParams struct {
+	Since     int
 	StartDate string
 	EndDate   string
-	Since     int
 }
 
 // UserWithRelated defines a model

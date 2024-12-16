@@ -106,13 +106,13 @@
     "/me/time_entries": {
       "parameters": [
         {
+          "$ref": "#/components/parameters/since"
+        },
+        {
           "$ref": "#/components/parameters/start_date"
         },
         {
           "$ref": "#/components/parameters/end_date"
-        },
-        {
-          "$ref": "#/components/parameters/since"
         }
       ],
       "get": {

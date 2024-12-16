@@ -314,16 +314,16 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 	if params != nil {
 		q := make(url.Values, 3)
 
+		if params.Since != 0 {
+			q["since"] = []string{strconv.Itoa(params.Since)}
+		}
+
 		if params.StartDate != "" {
 			q["start_date"] = []string{params.StartDate}
 		}
 
 		if params.EndDate != "" {
 			q["end_date"] = []string{params.EndDate}
-		}
-
-		if params.Since != 0 {
-			q["since"] = []string{strconv.Itoa(params.Since)}
 		}
 
 		u.RawQuery = q.Encode()
