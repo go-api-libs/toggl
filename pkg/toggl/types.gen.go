@@ -17,7 +17,7 @@ type GetMeParams struct {
 	WithRelatedData bool
 }
 
-type ListMeTimeEntriesParams struct {
+type GetTimeEntriesParams struct {
 	StartDate string
 	EndDate   string
 }

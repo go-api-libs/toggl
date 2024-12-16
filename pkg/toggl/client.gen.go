@@ -297,10 +297,10 @@ func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeE
 	}
 }
 
-// ListMeTimeEntries defines an operation.
+// Lists latest time entries.
 //
 //	GET /me/time_entries
-func (c *Client) ListMeTimeEntries(ctx context.Context, params *ListMeTimeEntriesParams) error {
+func (c *Client) GetTimeEntries(ctx context.Context, params *GetTimeEntriesParams) error {
 	u := baseURL.JoinPath("/me/time_entries")
 
 	if params != nil {

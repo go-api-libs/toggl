@@ -138,7 +138,7 @@ func main() {
 
 ```
 
-### Example 5: 
+### Example 5: List time entries
 
 ```go
 package main
@@ -157,7 +157,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	err := c.ListMeTimeEntries(ctx, &toggl.ListMeTimeEntriesParams{
+	err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 		EndDate:   "1984-03-12",
 		StartDate: "1984-03-10",
 	})

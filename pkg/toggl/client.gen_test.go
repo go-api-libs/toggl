@@ -84,7 +84,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if err := c.ListMeTimeEntries(ctx, &toggl.ListMeTimeEntriesParams{
+		if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 			EndDate:   "1984-03-12",
 			StartDate: "1984-03-10",
 		}); err == nil {
@@ -286,11 +286,11 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
-		t.Run("ListMeTimeEntries", func(t *testing.T) {
+		t.Run("GetTimeEntries", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if err := c.ListMeTimeEntries(ctx, &toggl.ListMeTimeEntriesParams{
+			if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				EndDate:   "1984-03-12",
 				StartDate: "1984-03-10",
 			}); err == nil {
@@ -305,7 +305,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if err := c.ListMeTimeEntries(ctx, &toggl.ListMeTimeEntriesParams{
+			if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				EndDate:   "1984-03-12",
 				StartDate: "1984-03-10",
 			}); err == nil {
@@ -321,7 +321,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if err := c.ListMeTimeEntries(ctx, &toggl.ListMeTimeEntriesParams{
+			if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				EndDate:   "1984-03-12",
 				StartDate: "1984-03-10",
 			}); err == nil {
@@ -642,7 +642,7 @@ func TestClient_VCR(t *testing.T) {
 
 		{
 			apiErr := &api.Error{}
-			if err := c.ListMeTimeEntries(ctx, &toggl.ListMeTimeEntriesParams{
+			if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				EndDate:   "1984-03-12",
 				StartDate: "1984-03-10",
 			}); err == nil {

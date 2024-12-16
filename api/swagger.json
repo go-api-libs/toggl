@@ -3482,20 +3482,6 @@
         },
         "/me/time_entries": {
             "get": {
-                "security": [
-                    {
-                        "BasicAuth": []
-                    }
-                ],
-                "description": "Lists latest time entries.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "time_entries"
-                ],
-                "summary": "TimeEntries",
-                "operationId": "get-time-entries",
                 "parameters": [
                     {
                         "type": "integer",

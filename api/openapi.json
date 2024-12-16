@@ -113,7 +113,12 @@
         }
       ],
       "get": {
-        "operationId": "ListMeTimeEntries",
+        "tags": [
+          "time_entries"
+        ],
+        "summary": "List time entries",
+        "description": "Lists latest time entries.",
+        "operationId": "GetTimeEntries",
         "responses": {
           "400": {
             "$ref": "#/components/responses/BadRequestResponse"
