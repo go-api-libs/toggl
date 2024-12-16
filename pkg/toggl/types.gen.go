@@ -207,14 +207,13 @@ type Workspaces []Workspace
 
 // Workspace defines a model
 type Workspace struct {
-	ID             int    `json:"id,omitzero"`
-	OrganizationID int    `json:"organization_id,omitzero"`
-	Name           string `json:"name,omitzero"`
-	Premium        bool   `json:"premium,omitzero"`
-	BusinessWs     bool   `json:"business_ws,omitzero"`
-	Admin          bool   `json:"admin,omitzero"`
-	Role           string `json:"role,omitzero"`
-	// Whether the organization is currently suspended
+	ID                          int       `json:"id,omitzero"`
+	OrganizationID              int       `json:"organization_id,omitzero"`
+	Name                        string    `json:"name,omitzero"`
+	Premium                     bool      `json:"premium,omitzero"`
+	BusinessWs                  bool      `json:"business_ws,omitzero"`
+	Admin                       bool      `json:"admin,omitzero"`
+	Role                        string    `json:"role,omitzero"`
 	SuspendedAt                 string    `json:"suspended_at,omitzero"`
 	ServerDeletedAt             struct{}  `json:"server_deleted_at"`
 	DefaultHourlyRate           struct{}  `json:"default_hourly_rate"`
@@ -342,8 +341,9 @@ type Organization struct {
 	At              time.Time `json:"at,omitzero"`
 	ServerDeletedAt struct{}  `json:"server_deleted_at"`
 	// Is true when the organization option is_multi_workspace_enabled is set
-	IsMultiWorkspaceEnabled bool     `json:"is_multi_workspace_enabled,omitzero"`
-	SuspendedAt             struct{} `json:"suspended_at"`
+	IsMultiWorkspaceEnabled bool `json:"is_multi_workspace_enabled,omitzero"`
+	// Whether the organization is currently suspended
+	SuspendedAt struct{} `json:"suspended_at"`
 	// Number of organization users
 	UserCount int       `json:"user_count,omitzero"`
 	TrialInfo TrialInfo `json:"trial_info"`

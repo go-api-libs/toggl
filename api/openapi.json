@@ -1964,7 +1964,6 @@
             "example": "admin"
           },
           "suspended_at": {
-            "description": "Whether the organization is currently suspended",
             "type": "string"
           },
           "server_deleted_at": {
@@ -2433,6 +2432,7 @@
             "example": false
           },
           "suspended_at": {
+            "description": "Whether the organization is currently suspended",
             "type": "object"
           },
           "user_count": {
