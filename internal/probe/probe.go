@@ -25,10 +25,8 @@ func probe() error {
 	_ = c
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		serverURL+"/me/organizations",
-		nil,
-		// strings.NewReader(`{"name":"Your Organization","workspace_name":"Your Workspace"}`),
-	)
+		serverURL+"/organizations",
+		strings.NewReader(`{"name":"Your Organization","workspace_name":"Your Workspace"}`))
 	if err != nil {
 		return err
 	}
