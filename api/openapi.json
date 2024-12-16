@@ -2425,18 +2425,20 @@
         },
         "example": "2024-12-16T03:25:20+01:00"
       },
-      "include_sharing": {
-        "name": "include_sharing",
+      "meta": {
+        "name": "meta",
         "in": "query",
+        "description": "Should the response contain data for meta entities",
         "schema": {
           "type": "boolean",
           "example": true
         },
         "example": true
       },
-      "meta": {
-        "name": "meta",
+      "include_sharing": {
+        "name": "include_sharing",
         "in": "query",
+        "description": "Include sharing details in the response",
         "schema": {
           "type": "boolean",
           "example": true
