@@ -154,8 +154,7 @@
         },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/PostOrganizationsOkResponse",
-            "description": "Organization and workspace IDs"
+            "$ref": "#/components/responses/OrganizationResponse"
           }
         }
       }
@@ -2258,7 +2257,7 @@
           "delete"
         ]
       },
-      "PostOrganizationsOkJSONResponse": {
+      "Organization": {
         "type": "object",
         "properties": {
           "id": {
@@ -2268,6 +2267,9 @@
           "name": {
             "type": "string",
             "example": "Your Organization"
+          },
+          "permissions": {
+            "type": "string"
           },
           "workspace_id": {
             "type": "integer",
@@ -2425,12 +2427,12 @@
           }
         }
       },
-      "PostOrganizationsOkResponse": {
-        "description": "TODO",
+      "OrganizationResponse": {
+        "description": "Organization and workspace IDs",
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/PostOrganizationsOkJSONResponse"
+              "$ref": "#/components/schemas/Organization"
             },
             "example": {
               "id": 9011051,

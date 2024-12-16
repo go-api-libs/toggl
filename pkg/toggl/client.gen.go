@@ -396,8 +396,8 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 // Creates a new organization with a single workspace and assigns current user as the organization owner
 //
 //	POST /organizations
-func (c *Client) CreateOrganization(ctx context.Context, reqBody NewOrganization) (*PostOrganizationsOkJSONResponse, error) {
-	return CreateOrganization[PostOrganizationsOkJSONResponse](ctx, c, reqBody)
+func (c *Client) CreateOrganization(ctx context.Context, reqBody NewOrganization) (*Organization, error) {
+	return CreateOrganization[Organization](ctx, c, reqBody)
 }
 
 // Creates a new organization with a single workspace and assigns current user as the organization owner
@@ -435,7 +435,7 @@ func CreateOrganization[R any, B any](ctx context.Context, c *Client, reqBody B)
 
 	switch rsp.StatusCode {
 	case http.StatusOK:
-		// TODO
+		// Organization and workspace IDs
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			var out R

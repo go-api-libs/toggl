@@ -307,12 +307,13 @@ const (
 	TagActionDelete TagAction = "delete"
 )
 
-// PostOrganizationsOkJSONResponse defines a model
-type PostOrganizationsOkJSONResponse struct {
-	ID            int    `json:"id,omitzero"`
-	Name          string `json:"name,omitzero"`
-	WorkspaceID   int    `json:"workspace_id,omitzero"`
-	WorkspaceName string `json:"workspace_name,omitzero"`
+// Organization defines a model
+type Organization struct {
+	ID            int     `json:"id,omitzero"`
+	Name          string  `json:"name,omitzero"`
+	Permissions   *string `json:"permissions,omitempty"`
+	WorkspaceID   int     `json:"workspace_id,omitzero"`
+	WorkspaceName string  `json:"workspace_name,omitzero"`
 }
 
 // NewOrganization defines a model

@@ -194,7 +194,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	postOrganizationsOkJSONResponse, err := c.CreateOrganization(ctx, toggl.NewOrganization{
+	organization, err := c.CreateOrganization(ctx, toggl.NewOrganization{
 		Name:          "Your Organization",
 		WorkspaceName: "Your Workspace",
 	})
@@ -202,7 +202,7 @@ func main() {
 		panic(err)
 	}
 
-	// Use postOrganizationsOkJSONResponse object
+	// Use organization object
 }
 
 ```

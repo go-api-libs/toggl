@@ -4121,11 +4121,6 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "schema": {
-                            "$ref": "#/definitions/organization.PostOrganizationReply"
-                        }
-                    },
                     "400": {
                         "description": "\u003cp\u003ePossible error messages:\u003c/p\u003e\u003cul\u003e\u003cli\u003eInvalid JSON input\u003c/li\u003e\u003cli\u003eField 'name' cannot be empty.\u003c/li\u003e\u003cli\u003eorganization name too long, maximum length is 140\u003c/li\u003e\u003cli\u003eworkspace name must contain non-space characters\u003c/li\u003e\u003cli\u003eworkspace name must be provided\u003c/li\u003e\u003cli\u003eworkspace name must not be longer than 140\u003c/li\u003e\u003c/ul\u003e",
                         "schema": {
@@ -24313,26 +24308,6 @@
                             "type": "integer"
                         }
                     }
-                }
-            }
-        },
-        "organization.PostOrganizationReply": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "permissions": {
-                    "type": "string"
-                },
-                "workspace_id": {
-                    "type": "integer"
-                },
-                "workspace_name": {
-                    "type": "string"
                 }
             }
         },
