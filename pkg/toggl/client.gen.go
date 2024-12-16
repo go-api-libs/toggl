@@ -327,8 +327,8 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 			q["start_date"] = []string{params.StartDate.Format(time.RFC3339)}
 		}
 
-		if params.EndDate != "" {
-			q["end_date"] = []string{params.EndDate}
+		if !params.EndDate.IsZero() {
+			q["end_date"] = []string{params.EndDate.Format(time.RFC3339)}
 		}
 
 		u.RawQuery = q.Encode()

@@ -86,7 +86,7 @@ func TestClient_Error(t *testing.T) {
 
 		if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 			Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-			EndDate:   "1984-03-12",
+			EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			Since:     1734304527,
 			StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 		}); err == nil {
@@ -294,7 +294,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   "1984-03-12",
+				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				Since:     1734304527,
 				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
@@ -311,7 +311,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   "1984-03-12",
+				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				Since:     1734304527,
 				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
@@ -329,7 +329,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   "1984-03-12",
+				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				Since:     1734304527,
 				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
@@ -346,7 +346,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   "1984-03-12",
+				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				Since:     1734304527,
 				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
@@ -364,7 +364,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   "1984-03-12",
+				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				Since:     1734304527,
 				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {

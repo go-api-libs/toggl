@@ -3484,18 +3484,6 @@
             "get": {
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Get entries with start time, from start_date YYYY-MM-DD or with time in RFC3339 format. To be used with end_date.",
-                        "name": "start_date",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Get entries with start time, until end_date YYYY-MM-DD or with time in RFC3339 format. To be used with start_date.",
-                        "name": "end_date",
-                        "in": "formData"
-                    },
-                    {
                         "type": "boolean",
                         "description": "Should the response contain data for meta entities",
                         "name": "meta",
