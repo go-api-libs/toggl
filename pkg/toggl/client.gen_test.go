@@ -875,4 +875,15 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("2024-12-17", func(t *testing.T) {
+		replay(t, "../../pkg/toggl/vcr/2024-12-17")
+
+		res, err := c.ListOrganizations(ctx)
+		if err != nil {
+			t.Fatal(err)
+		} else if res == nil {
+			t.Fatal("result is nil")
+		}
+	})
 }
