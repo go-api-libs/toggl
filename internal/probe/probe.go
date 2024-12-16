@@ -33,7 +33,7 @@ func probe() error {
 		return err
 	}
 
-	// return nil
+	return nil
 
 	ts := time.Now().Add(-4 * time.Hour)
 
