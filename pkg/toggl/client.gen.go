@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/MarkRosemaker/jsonutil"
 	"github.com/go-api-libs/api"
@@ -312,10 +313,14 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 	u := baseURL.JoinPath("/me/time_entries")
 
 	if params != nil {
-		q := make(url.Values, 3)
+		q := make(url.Values, 4)
 
 		if params.Since != 0 {
 			q["since"] = []string{strconv.Itoa(params.Since)}
+		}
+
+		if !params.Before.IsZero() {
+			q["before"] = []string{params.Before.Format(time.RFC3339)}
 		}
 
 		if params.StartDate != "" {
