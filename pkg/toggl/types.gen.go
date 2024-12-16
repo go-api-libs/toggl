@@ -26,10 +26,10 @@ type GetTimeEntriesParams struct {
 	StartDate time.Time
 	// Get entries with start time until the given time. To be used with start_date.
 	EndDate time.Time
-	// Include sharing details in the response
-	IncludeSharing bool
 	// Should the response contain data for meta entities
 	Meta bool
+	// Include sharing details in the response
+	IncludeSharing bool
 }
 
 // UserWithRelated defines a model

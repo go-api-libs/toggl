@@ -731,5 +731,18 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal("result is nil")
 			}
 		}
+
+		{
+			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				EndDate:   time.Date(2024, time.December, 16, 18, 55, 20, 0, time.Local),
+				Meta:      true,
+				StartDate: time.Date(2024, time.December, 16, 15, 55, 20, 0, time.Local),
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
 	})
 }

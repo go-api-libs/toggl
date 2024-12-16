@@ -118,10 +118,10 @@
           "$ref": "#/components/parameters/end_date"
         },
         {
-          "$ref": "#/components/parameters/include_sharing"
+          "$ref": "#/components/parameters/meta"
         },
         {
-          "$ref": "#/components/parameters/meta"
+          "$ref": "#/components/parameters/include_sharing"
         }
       ],
       "get": {

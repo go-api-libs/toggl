@@ -331,12 +331,12 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 			q["end_date"] = []string{params.EndDate.Format(time.RFC3339)}
 		}
 
-		if params.IncludeSharing {
-			q["include_sharing"] = []string{"true"}
-		}
-
 		if params.Meta {
 			q["meta"] = []string{"true"}
+		}
+
+		if params.IncludeSharing {
+			q["include_sharing"] = []string{"true"}
 		}
 
 		u.RawQuery = q.Encode()
