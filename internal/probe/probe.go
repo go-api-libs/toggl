@@ -33,6 +33,8 @@ func probe() error {
 		return err
 	}
 
+	return nil
+
 	const timeEntryID = 3730303299
 
 	req, err := http.NewRequest(http.MethodPatch, serverURL+fmt.Sprintf("/workspaces/%d/time_entries/%d/stop", me.DefaultWorkspaceID, timeEntryID), nil)

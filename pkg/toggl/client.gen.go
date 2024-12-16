@@ -246,19 +246,19 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 	}
 }
 
-// PatchWorkspaces2230580TimeEntries3730303299Stop defines an operation.
+// Stop an existing time entry
 //
-//	PATCH /workspaces/2230580/time_entries/3730303299/stop
-func (c *Client) PatchWorkspaces2230580TimeEntries3730303299Stop(ctx context.Context) (*PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, error) {
-	return PatchWorkspaces2230580TimeEntries3730303299Stop[PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse](ctx, c)
+//	PATCH /workspaces/{workspace_id}/time_entries/3730303299/stop
+func (c *Client) PatchWorkspaces2230580TimeEntries3730303299Stop(ctx context.Context, workspaceID int) (*PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, error) {
+	return PatchWorkspaces2230580TimeEntries3730303299Stop[PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse](ctx, c, workspaceID)
 }
 
-// PatchWorkspaces2230580TimeEntries3730303299Stop defines an operation.
+// Stop an existing time entry
 // You can define a custom result to unmarshal the response into.
 //
-//	PATCH /workspaces/2230580/time_entries/3730303299/stop
-func PatchWorkspaces2230580TimeEntries3730303299Stop[R any](ctx context.Context, c *Client) (*R, error) {
-	u := baseURL.JoinPath("/workspaces/2230580/time_entries/3730303299/stop")
+//	PATCH /workspaces/{workspace_id}/time_entries/3730303299/stop
+func PatchWorkspaces2230580TimeEntries3730303299Stop[R any](ctx context.Context, c *Client, workspaceID int) (*R, error) {
+	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries", "3730303299", "stop")
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.authHeader},

@@ -109,7 +109,7 @@ func main() {
 
 ```
 
-### Example 4: 
+### Example 4: Stop an existing time entry
 
 ```go
 package main
@@ -128,7 +128,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	patchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx)
+	patchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx, 2230580)
 	if err != nil {
 		panic(err)
 	}
