@@ -2374,8 +2374,10 @@
         "description": "Get entries with start time from the given time. To be used with end_date.",
         "schema": {
           "type": "string",
-          "format": "date-time"
-        }
+          "format": "date-time",
+          "example": "2024-12-16T03:25:20+01:00"
+        },
+        "example": "2024-12-16T03:25:20+01:00"
       },
       "end_date": {
         "name": "end_date",

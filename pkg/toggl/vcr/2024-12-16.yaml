@@ -462,7 +462,7 @@ interactions:
         status: 200 OK
         code: 200
         duration: 231.212708ms
-    - id: 9
+    - id: 7
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -525,7 +525,7 @@ interactions:
         status: 200 OK
         code: 200
         duration: 237.606708ms
-    - id: 10
+    - id: 8
       request:
         proto: HTTP/1.1
         proto_major: 1

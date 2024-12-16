@@ -23,7 +23,7 @@ type GetTimeEntriesParams struct {
 	// Get entries with start time before the given date.
 	Before time.Time
 	// Get entries with start time from the given time. To be used with end_date.
-	StartDate string
+	StartDate time.Time
 	// Get entries with start time until the given time. To be used with start_date.
 	EndDate string
 }

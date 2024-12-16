@@ -88,7 +88,7 @@ func TestClient_Error(t *testing.T) {
 			Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			EndDate:   "1984-03-12",
 			Since:     1734304527,
-			StartDate: "1984-03-10",
+			StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 		}); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
@@ -296,7 +296,7 @@ func TestClient_Error(t *testing.T) {
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
-				StartDate: "1984-03-10",
+				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
@@ -313,7 +313,7 @@ func TestClient_Error(t *testing.T) {
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
-				StartDate: "1984-03-10",
+				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
@@ -331,7 +331,7 @@ func TestClient_Error(t *testing.T) {
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
-				StartDate: "1984-03-10",
+				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
@@ -348,7 +348,7 @@ func TestClient_Error(t *testing.T) {
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
-				StartDate: "1984-03-10",
+				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
@@ -366,7 +366,7 @@ func TestClient_Error(t *testing.T) {
 				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
-				StartDate: "1984-03-10",
+				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
@@ -682,7 +682,6 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal("result is nil")
 			}
 		}
-
 
 		{
 			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{Since: 1734304527})

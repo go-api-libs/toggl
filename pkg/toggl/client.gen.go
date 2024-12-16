@@ -323,8 +323,8 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 			q["before"] = []string{params.Before.Format(time.RFC3339)}
 		}
 
-		if params.StartDate != "" {
-			q["start_date"] = []string{params.StartDate}
+		if !params.StartDate.IsZero() {
+			q["start_date"] = []string{params.StartDate.Format(time.RFC3339)}
 		}
 
 		if params.EndDate != "" {
