@@ -157,7 +157,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	getTimeEntriesOkJSONResponse, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+	timeEntries, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 		EndDate:   "1984-03-12",
 		StartDate: "1984-03-10",
 	})
@@ -165,7 +165,7 @@ func main() {
 		panic(err)
 	}
 
-	// Use getTimeEntriesOkJSONResponse array
+	// Use timeEntries array
 }
 
 ```

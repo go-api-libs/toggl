@@ -300,8 +300,8 @@ func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeE
 // Lists latest time entries.
 //
 //	GET /me/time_entries
-func (c *Client) GetTimeEntries(ctx context.Context, params *GetTimeEntriesParams) (GetTimeEntriesOkJSONResponse, error) {
-	return GetTimeEntries[GetTimeEntriesOkJSONResponse](ctx, c, params)
+func (c *Client) GetTimeEntries(ctx context.Context, params *GetTimeEntriesParams) (TimeEntries, error) {
+	return GetTimeEntries[TimeEntries](ctx, c, params)
 }
 
 // Lists latest time entries.
@@ -347,7 +347,7 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 
 	switch rsp.StatusCode {
 	case http.StatusOK:
-		// TODO
+		// Returns a list of time entries
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
