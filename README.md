@@ -146,6 +146,7 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 
 	"github.com/go-api-libs/toggl/pkg/toggl"
 )
@@ -158,6 +159,7 @@ func main() {
 
 	ctx := context.Background()
 	timeEntries, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+		Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 		EndDate:   "1984-03-12",
 		Since:     1734304527,
 		StartDate: "1984-03-10",

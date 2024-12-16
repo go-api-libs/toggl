@@ -85,6 +85,7 @@ func TestClient_Error(t *testing.T) {
 		}
 
 		if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			EndDate:   "1984-03-12",
 			Since:     1734304527,
 			StartDate: "1984-03-10",
@@ -292,6 +293,7 @@ func TestClient_Error(t *testing.T) {
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
 				StartDate: "1984-03-10",
@@ -308,6 +310,7 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
 				StartDate: "1984-03-10",
@@ -325,6 +328,7 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
 				StartDate: "1984-03-10",
@@ -341,6 +345,7 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
 				StartDate: "1984-03-10",
@@ -358,6 +363,7 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:   "1984-03-12",
 				Since:     1734304527,
 				StartDate: "1984-03-10",
@@ -709,6 +715,20 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatal(err)
 			} else if res == nil {
 				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			apiErr := &api.Error{}
+			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				Before: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Since:  1734305120,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &apiErr) {
+				t.Fatalf("want: %T, got: %T", apiErr, err)
+			} else if !apiErr.IsCustom {
+				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
 			}
 		}
 	})
