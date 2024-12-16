@@ -3485,7 +3485,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Get entries with start time, before given date (YYYY-MM-DD) or with time in RFC3339 format.",
+                        "description": "Get entries with start time before the given date in RFC3339 format.",
                         "name": "before",
                         "in": "formData"
                     },
