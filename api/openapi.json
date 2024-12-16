@@ -158,6 +158,16 @@
           }
         }
       }
+    },
+    "/me/organizations": {
+      "post": {
+        "operationId": "PostMeOrganizations",
+        "responses": {
+          "405": {
+            "$ref": "#/components/responses/PostMeOrganizationsMethodNotAllowedResponse"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2319,7 +2329,7 @@
     },
     "responses": {
       "UnauthorizedResponse": {
-        "description": "User is unauthorized to use the API"
+        "$ref": "#/components/responses/PostMeOrganizationsMethodNotAllowedResponse"
       },
       "UserResponse": {
         "description": "Returns the user.",
@@ -2442,6 +2452,9 @@
             }
           }
         }
+      },
+      "PostMeOrganizationsMethodNotAllowedResponse": {
+        "description": "User is unauthorized to use the API"
       }
     },
     "parameters": {

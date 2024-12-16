@@ -451,3 +451,36 @@ func CreateOrganization[R any, B any](ctx context.Context, c *Client, reqBody B)
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
+
+// PostMeOrganizations defines an operation.
+//
+//	POST /me/organizations
+func (c *Client) PostMeOrganizations(ctx context.Context) error {
+	u := baseURL.JoinPath("/me/organizations")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodPost,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusMethodNotAllowed:
+		// User is unauthorized to use the API
+		return api.NewErrStatusCode(rsp)
+	default:
+		return api.NewErrUnknownStatusCode(rsp)
+	}
+}
