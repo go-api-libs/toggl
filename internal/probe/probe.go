@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -34,18 +35,9 @@ func probe() error {
 
 	return nil
 
-	if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-		StartDate: "2024-12-16",
-		EndDate:   "2024-12-17",
-	}); err != nil {
-		return err
-	}
+	ts := time.Now().Add(-4 * time.Hour)
 
-	return nil
-
-	const timeEntryID = 3730303299
-
-	req, err := http.NewRequest(http.MethodGet, serverURL+"/me/time_entries?start_date=1984-03-10&end_date=1984-03-12", nil)
+	req, err := http.NewRequest(http.MethodGet, serverURL+"/me/time_entries?since="+strconv.Itoa(int(ts.Unix())), nil)
 	if err != nil {
 		return err
 	}
@@ -53,6 +45,15 @@ func probe() error {
 	req.SetBasicAuth(tkn, "api_token")
 
 	if _, err := http.DefaultClient.Do(req); err != nil {
+		return err
+	}
+
+	return nil
+
+	if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+		StartDate: "2024-12-16",
+		EndDate:   "2024-12-17",
+	}); err != nil {
 		return err
 	}
 

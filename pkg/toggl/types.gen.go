@@ -20,6 +20,7 @@ type GetMeParams struct {
 type GetTimeEntriesParams struct {
 	StartDate string
 	EndDate   string
+	Since     int
 }
 
 // UserWithRelated defines a model
@@ -112,7 +113,7 @@ type TimeEntry struct {
 	TagIds          []string      `json:"tag_ids,omitempty"`
 	Duronly         bool          `json:"duronly,omitzero"`
 	At              time.Time     `json:"at,omitzero"`
-	ServerDeletedAt struct{}      `json:"server_deleted_at"`
+	ServerDeletedAt time.Time     `json:"server_deleted_at,omitzero"`
 	UserID          int           `json:"user_id,omitzero"`
 	UID             int           `json:"uid,omitzero"`
 	Wid             int           `json:"wid,omitzero"`

@@ -159,6 +159,7 @@ func main() {
 	ctx := context.Background()
 	timeEntries, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 		EndDate:   "1984-03-12",
+		Since:     1734304527,
 		StartDate: "1984-03-10",
 	})
 	if err != nil {

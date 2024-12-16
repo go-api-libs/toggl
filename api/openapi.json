@@ -110,6 +110,9 @@
         },
         {
           "$ref": "#/components/parameters/end_date"
+        },
+        {
+          "$ref": "#/components/parameters/since"
         }
       ],
       "get": {
@@ -622,7 +625,9 @@
             "example": "2024-12-12T20:40:28.056447Z"
           },
           "server_deleted_at": {
-            "type": "object"
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-16T01:38:02+00:00"
           },
           "user_id": {
             "type": "integer",
@@ -2356,6 +2361,15 @@
           "example": "1984-03-12"
         },
         "example": "1984-03-12"
+      },
+      "since": {
+        "name": "since",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "example": 1734304527
+        },
+        "example": 1734304527
       }
     },
     "requestBodies": {

@@ -586,3 +586,66 @@ interactions:
         status: 200 OK
         code: 200
         duration: 197.145416ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+        url: https://api.track.toggl.com/api/v9/me/time_entries?since=1734304527
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 1845
+        uncompressed: false
+        body: '[{"id":3730276799,"workspace_id":2230580,"project_id":null,"task_id":null,"billable":false,"start":"2024-12-16T02:18:20+00:00","stop":"2024-12-16T03:18:20+00:00","duration":3600,"description":null,"tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T01:38:02.034497Z","server_deleted_at":"2024-12-16T01:38:02+00:00","user_id":2166261,"uid":2166261,"wid":2230580},{"id":3730303299,"workspace_id":2230580,"project_id":null,"task_id":null,"billable":false,"start":"2024-12-16T01:55:24+00:00","stop":"2024-12-16T02:11:58+00:00","duration":994,"description":"Hello Toggl","tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T02:24:56.5667Z","server_deleted_at":"2024-12-16T02:24:56+00:00","user_id":2166261,"uid":2166261,"wid":2230580},{"id":3730289470,"workspace_id":2230580,"project_id":null,"task_id":null,"billable":false,"start":"2024-12-16T01:31:14+00:00","stop":"2024-12-16T02:05:25+00:00","duration":2051,"description":"Hello Toggl","tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T02:06:20.112262Z","server_deleted_at":"2024-12-16T02:06:20+00:00","user_id":2166261,"uid":2166261,"wid":2230580},{"id":3730288662,"workspace_id":2230580,"project_id":null,"task_id":null,"billable":false,"start":"2024-12-16T01:29:40+00:00","stop":"2024-12-16T01:29:40+00:00","duration":0,"description":"Hello Toggl","tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T01:40:31.590575Z","server_deleted_at":"2024-12-16T01:40:31+00:00","user_id":2166261,"uid":2166261,"wid":2230580},{"id":3730256173,"workspace_id":2230580,"project_id":63334409,"task_id":null,"billable":false,"start":"2024-12-16T00:41:29+00:00","stop":"2024-12-16T01:11:29+00:00","duration":1800,"description":"Inbox Zero","tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T01:16:26.41113Z","server_deleted_at":null,"user_id":2166261,"uid":2166261,"wid":2230580,"pid":63334409}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "1845"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Mon, 16 Dec 2024 03:15:28 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-wlr98
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - f69c196828079ee551c1f691f0042ebb
+            X-Service-Level:
+                - GREEN
+            X-Toggl-Request-Id:
+                - 1a584bb3-5eae-4e48-acae-b1b9e54c24d8
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 200 OK
+        code: 200
+        duration: 237.606708ms

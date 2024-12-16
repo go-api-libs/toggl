@@ -3521,15 +3521,6 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Successful operation.",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.TimeEntry"
-                            }
-                        }
-                    },
                     "403": {
                         "description": "User does not have access to this resource.",
                         "schema": {
