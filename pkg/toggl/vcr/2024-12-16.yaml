@@ -710,3 +710,66 @@ interactions:
         status: 200 OK
         code: 200
         duration: 205.473459ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+        url: https://api.track.toggl.com/api/v9/me/time_entries?end_date=2024-12-16T18%3A58%3A15%2B01%3A00&include_sharing=true&start_date=2024-12-16T15%3A58%3A15%2B01%3A00
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 1101
+        uncompressed: false
+        body: '[{"id":3731531776,"workspace_id":2230580,"project_id":63334409,"task_id":null,"billable":false,"start":"2024-12-16T17:05:25+00:00","stop":"2024-12-16T18:07:05+00:00","duration":3700,"description":"Inbox Zero","tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T18:07:05.694469Z","server_deleted_at":null,"user_id":2166261,"uid":2166261,"wid":2230580,"pid":63334409},{"id":3731416928,"workspace_id":2230580,"project_id":65728232,"task_id":null,"billable":false,"start":"2024-12-16T16:05:02+00:00","stop":"2024-12-16T17:04:53+00:00","duration":3591,"description":"Silvia","tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T17:04:55.177356Z","server_deleted_at":null,"user_id":2166261,"uid":2166261,"wid":2230580,"pid":65728232},{"id":3731292842,"workspace_id":2230580,"project_id":65728232,"task_id":null,"billable":false,"start":"2024-12-16T15:00:00+00:00","stop":"2024-12-16T16:04:58+00:00","duration":3898,"description":"Paul Edney","tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T16:04:59.307575Z","server_deleted_at":null,"user_id":2166261,"uid":2166261,"wid":2230580,"pid":65728232}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "1101"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Mon, 16 Dec 2024 18:58:15 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-zxq96
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - 79745ceedc27a6dd17bf6abb62d60c2d
+            X-Service-Level:
+                - GREEN
+            X-Toggl-Request-Id:
+                - 3f7fd354-aba1-40b7-8650-aff69fd1720c
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 200 OK
+        code: 200
+        duration: 217.465583ms

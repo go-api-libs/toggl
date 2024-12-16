@@ -2428,7 +2428,7 @@
       "meta": {
         "name": "meta",
         "in": "query",
-        "description": "Should the response contain data for meta entities",
+        "description": "Should the response contain meta data such as `client_name`, `project_name`, `project_color`, `project_active`, `project_billable`, `user_name`, and `user_avatar_url`.",
         "schema": {
           "type": "boolean",
           "example": true

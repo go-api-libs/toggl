@@ -26,7 +26,7 @@ type GetTimeEntriesParams struct {
 	StartDate time.Time
 	// Get entries with start time until the given time. To be used with start_date.
 	EndDate time.Time
-	// Should the response contain data for meta entities
+	// Should the response contain meta data such as `client_name`, `project_name`, `project_color`, `project_active`, `project_billable`, `user_name`, and `user_avatar_url`.
 	Meta bool
 	// Include sharing details in the response
 	IncludeSharing bool
