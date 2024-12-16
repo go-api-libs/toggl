@@ -74,6 +74,12 @@ func TestClient_Error(t *testing.T) {
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
+
+		if _, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
 	})
 
 	t.Run("Unmarshal", func(t *testing.T) {
@@ -226,6 +232,42 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
+
+		t.Run("PatchWorkspaces2230580TimeEntries3730303299Stop", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if _, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
@@ -517,6 +559,15 @@ func TestClient_VCR(t *testing.T) {
 				Start:       time.Date(2024, time.December, 16, 2, 55, 24, 837112000, time.Local),
 				WorkspaceID: 2230580,
 			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx)
 			if err != nil {
 				t.Fatal(err)
 			} else if res == nil {

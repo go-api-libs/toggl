@@ -78,6 +78,16 @@
           }
         }
       }
+    },
+    "/workspaces/2230580/time_entries/3730303299/stop": {
+      "patch": {
+        "operationId": "PatchWorkspaces2230580TimeEntries3730303299Stop",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/PatchWorkspaces2230580TimeEntries3730303299StopOkResponse"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3425,6 +3435,121 @@
           "add",
           "delete"
         ]
+      },
+      "PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 3730303299
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "project_id": {
+            "type": "object"
+          },
+          "task_id": {
+            "type": "object"
+          },
+          "billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-16T01:55:24Z"
+          },
+          "stop": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-16T02:11:58Z"
+          },
+          "duration": {
+            "type": "integer",
+            "example": 994
+          },
+          "description": {
+            "type": "string",
+            "example": "Hello Toggl"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "tag_ids": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "duronly": {
+            "type": "boolean",
+            "example": true
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-16T02:11:58.489116Z"
+          },
+          "server_deleted_at": {
+            "type": "object"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "uid": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "wid": {
+            "type": "integer",
+            "example": 2230580
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "project_id",
+          "task_id",
+          "billable",
+          "start",
+          "stop",
+          "duration",
+          "description",
+          "tags",
+          "tag_ids",
+          "duronly",
+          "at",
+          "server_deleted_at",
+          "user_id",
+          "uid",
+          "wid"
+        ],
+        "example": {
+          "id": 3730303299,
+          "workspace_id": 2230580,
+          "project_id": null,
+          "task_id": null,
+          "billable": false,
+          "start": "2024-12-16T01:55:24Z",
+          "stop": "2024-12-16T02:11:58Z",
+          "duration": 994,
+          "description": "Hello Toggl",
+          "tags": [],
+          "tag_ids": [],
+          "duronly": true,
+          "at": "2024-12-16T02:11:58.489116Z",
+          "server_deleted_at": null,
+          "user_id": 2166261,
+          "uid": 2166261,
+          "wid": 2230580
+        }
       }
     },
     "responses": {
@@ -3502,6 +3627,35 @@
               "$ref": "#/components/schemas/APIErrorString"
             },
             "example": "Start time year must be between 2006 and 2030"
+          }
+        }
+      },
+      "PatchWorkspaces2230580TimeEntries3730303299StopOkResponse": {
+        "description": "TODO",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse"
+            },
+            "example": {
+              "id": 3730303299,
+              "workspace_id": 2230580,
+              "project_id": null,
+              "task_id": null,
+              "billable": false,
+              "start": "2024-12-16T01:55:24Z",
+              "stop": "2024-12-16T02:11:58Z",
+              "duration": 994,
+              "description": "Hello Toggl",
+              "tags": [],
+              "tag_ids": [],
+              "duronly": true,
+              "at": "2024-12-16T02:11:58.489116Z",
+              "server_deleted_at": null,
+              "user_id": 2166261,
+              "uid": 2166261,
+              "wid": 2230580
+            }
           }
         }
       }

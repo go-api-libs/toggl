@@ -2,7 +2,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/go-api-libs/toggl.svg)](https://pkg.go.dev/github.com/go-api-libs/toggl/pkg/toggl)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-blue)](/api/openapi.json)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-api-libs/toggl)](https://goreportcard.com/report/github.com/go-api-libs/toggl)
-![Code Coverage](https://img.shields.io/badge/coverage-45%25-yellow)
+![Code Coverage](https://img.shields.io/badge/coverage-52%25-yellow)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 The Toggl API allows developers to interact with Toggl's time tracking service programmatically. It provides endpoints for managing time entries, projects, clients, tags, and user information. With this API, you can automate time tracking, generate detailed reports, and integrate Toggl with other tools and services.
@@ -105,6 +105,35 @@ func main() {
 	}
 
 	// Use timeEntry object
+}
+
+```
+
+### Example 4: 
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	patchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use patchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse object
 }
 
 ```

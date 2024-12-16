@@ -40,6 +40,12 @@ func probe() error {
 		return err
 	}
 
+	req.SetBasicAuth(tkn, "api_token")
+
+	if _, err := http.DefaultClient.Do(req); err != nil {
+		return err
+	}
+
 	return nil
 
 	if _, err := c.CreateTimeEntry(ctx, me.DefaultWorkspaceID, toggl.NewTimeEntry{
@@ -52,18 +58,7 @@ func probe() error {
 		return err
 	}
 
-	strings.NewReader(fmt.Sprintf(`{"workspace_id":%d}`, me.DefaultWorkspaceID))
-
-	req.SetBasicAuth(tkn, "api_token")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-
-	if resp.StatusCode == http.StatusUnauthorized {
-		return fmt.Errorf("got %s", resp.Status)
-	}
+	// strings.NewReader(fmt.Sprintf(`{"workspace_id":%d}`, me.DefaultWorkspaceID))
 
 	return nil
 }

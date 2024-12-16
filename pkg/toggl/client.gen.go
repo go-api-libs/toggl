@@ -245,3 +245,54 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
+
+// PatchWorkspaces2230580TimeEntries3730303299Stop defines an operation.
+//
+//	PATCH /workspaces/2230580/time_entries/3730303299/stop
+func (c *Client) PatchWorkspaces2230580TimeEntries3730303299Stop(ctx context.Context) (*PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, error) {
+	return PatchWorkspaces2230580TimeEntries3730303299Stop[PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse](ctx, c)
+}
+
+// PatchWorkspaces2230580TimeEntries3730303299Stop defines an operation.
+// You can define a custom result to unmarshal the response into.
+//
+//	PATCH /workspaces/2230580/time_entries/3730303299/stop
+func PatchWorkspaces2230580TimeEntries3730303299Stop[R any](ctx context.Context, c *Client) (*R, error) {
+	u := baseURL.JoinPath("/workspaces/2230580/time_entries/3730303299/stop")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodPatch,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// TODO
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return nil, api.NewErrUnknownStatusCode(rsp)
+	}
+}
