@@ -2359,8 +2359,8 @@
       },
       "before": {
         "name": "before",
-        "description": "Get entries with start time before the given date.",
         "in": "query",
+        "description": "Get entries with start time before the given date.",
         "schema": {
           "type": "string",
           "format": "date-time",
