@@ -2371,6 +2371,7 @@
       "start_date": {
         "name": "start_date",
         "in": "query",
+        "description": "Get entries with start time from the given time. To be used with end_date.",
         "schema": {
           "type": "string",
           "example": "1984-03-10"
@@ -2380,6 +2381,7 @@
       "end_date": {
         "name": "end_date",
         "in": "query",
+        "description": "Get entries with start time until the given time. To be used with start_date.",
         "schema": {
           "type": "string",
           "example": "1984-03-12"
