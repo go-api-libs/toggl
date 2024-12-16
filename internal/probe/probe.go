@@ -34,6 +34,15 @@ func probe() error {
 
 	return nil
 
+	if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+		StartDate: "2024-12-16",
+		EndDate:   "2024-12-17",
+	}); err != nil {
+		return err
+	}
+
+	return nil
+
 	const timeEntryID = 3730303299
 
 	req, err := http.NewRequest(http.MethodGet, serverURL+"/me/time_entries?start_date=1984-03-10&end_date=1984-03-12", nil)

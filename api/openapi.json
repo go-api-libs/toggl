@@ -120,6 +120,9 @@
         "description": "Lists latest time entries.",
         "operationId": "GetTimeEntries",
         "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetTimeEntriesOkResponse"
+          },
           "400": {
             "$ref": "#/components/responses/BadRequestResponse"
           }
@@ -3472,6 +3475,156 @@
           "add",
           "delete"
         ]
+      },
+      "GetTimeEntriesOkJSONResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/GetTimeEntriesOkJSONResponseItems"
+        },
+        "example": [
+          {
+            "id": 3730256173,
+            "workspace_id": 2230580,
+            "project_id": 63334409,
+            "task_id": null,
+            "billable": false,
+            "start": "2024-12-16T00:41:29+00:00",
+            "stop": "2024-12-16T01:11:29+00:00",
+            "duration": 1800,
+            "description": "Inbox Zero",
+            "tags": [],
+            "tag_ids": [],
+            "duronly": true,
+            "at": "2024-12-16T01:16:26.41113Z",
+            "server_deleted_at": null,
+            "user_id": 2166261,
+            "uid": 2166261,
+            "wid": 2230580,
+            "pid": 63334409
+          }
+        ]
+      },
+      "GetTimeEntriesOkJSONResponseItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 3730256173
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "project_id": {
+            "type": "integer",
+            "example": 63334409
+          },
+          "task_id": {
+            "type": "object"
+          },
+          "billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-16T00:41:29+00:00"
+          },
+          "stop": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-16T01:11:29+00:00"
+          },
+          "duration": {
+            "type": "integer",
+            "example": 1800
+          },
+          "description": {
+            "type": "string",
+            "example": "Inbox Zero"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "tag_ids": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "duronly": {
+            "type": "boolean",
+            "example": true
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-16T01:16:26.41113Z"
+          },
+          "server_deleted_at": {
+            "type": "object"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "uid": {
+            "type": "integer",
+            "example": 2166261
+          },
+          "wid": {
+            "type": "integer",
+            "example": 2230580
+          },
+          "pid": {
+            "type": "integer",
+            "example": 63334409
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "project_id",
+          "task_id",
+          "billable",
+          "start",
+          "stop",
+          "duration",
+          "description",
+          "tags",
+          "tag_ids",
+          "duronly",
+          "at",
+          "server_deleted_at",
+          "user_id",
+          "uid",
+          "wid",
+          "pid"
+        ],
+        "example": {
+          "id": 3730256173,
+          "workspace_id": 2230580,
+          "project_id": 63334409,
+          "task_id": null,
+          "billable": false,
+          "start": "2024-12-16T00:41:29+00:00",
+          "stop": "2024-12-16T01:11:29+00:00",
+          "duration": 1800,
+          "description": "Inbox Zero",
+          "tags": [],
+          "tag_ids": [],
+          "duronly": true,
+          "at": "2024-12-16T01:16:26.41113Z",
+          "server_deleted_at": null,
+          "user_id": 2166261,
+          "uid": 2166261,
+          "wid": 2230580,
+          "pid": 63334409
+        }
       }
     },
     "responses": {
@@ -3549,6 +3702,38 @@
               "$ref": "#/components/schemas/APIErrorString"
             },
             "example": "Start time year must be between 2006 and 2030"
+          }
+        }
+      },
+      "GetTimeEntriesOkResponse": {
+        "description": "TODO",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GetTimeEntriesOkJSONResponse"
+            },
+            "example": [
+              {
+                "id": 3730256173,
+                "workspace_id": 2230580,
+                "project_id": 63334409,
+                "task_id": null,
+                "billable": false,
+                "start": "2024-12-16T00:41:29+00:00",
+                "stop": "2024-12-16T01:11:29+00:00",
+                "duration": 1800,
+                "description": "Inbox Zero",
+                "tags": [],
+                "tag_ids": [],
+                "duronly": true,
+                "at": "2024-12-16T01:16:26.41113Z",
+                "server_deleted_at": null,
+                "user_id": 2166261,
+                "uid": 2166261,
+                "wid": 2230580,
+                "pid": 63334409
+              }
+            ]
           }
         }
       }

@@ -521,3 +521,68 @@ interactions:
         status: 400 Bad Request
         code: 400
         duration: 211.440875ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+            User-Agent:
+                - TogglGoAPILibrary/9 (https://github.com/go-api-libs/toggl)
+        url: https://api.track.toggl.com/api/v9/me/time_entries?end_date=2024-12-17&start_date=2024-12-16
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 368
+        uncompressed: false
+        body: '[{"id":3730256173,"workspace_id":2230580,"project_id":63334409,"task_id":null,"billable":false,"start":"2024-12-16T00:41:29+00:00","stop":"2024-12-16T01:11:29+00:00","duration":1800,"description":"Inbox Zero","tags":[],"tag_ids":[],"duronly":true,"at":"2024-12-16T01:16:26.41113Z","server_deleted_at":null,"user_id":2166261,"uid":2166261,"wid":2230580,"pid":63334409}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "368"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Mon, 16 Dec 2024 03:03:59 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-l4vmk
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - adeeb875a29bc47be0883d24226584d8
+            X-Service-Level:
+                - GREEN
+            X-Toggl-Request-Id:
+                - f5463683-0c4f-4780-8111-ecdbe8f505f9
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 200 OK
+        code: 200
+        duration: 197.145416ms

@@ -84,7 +84,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+		if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 			EndDate:   "1984-03-12",
 			StartDate: "1984-03-10",
 		}); err == nil {
@@ -290,7 +290,7 @@ func TestClient_Error(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				EndDate:   "1984-03-12",
 				StartDate: "1984-03-10",
 			}); err == nil {
@@ -299,13 +299,44 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
 			}
 
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				EndDate:   "1984-03-12",
+				StartDate: "1984-03-10",
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				EndDate:   "1984-03-12",
+				StartDate: "1984-03-10",
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+
 			// unknown content type for 400 Bad Request
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
 				Header:     http.Header{"Content-Type": []string{"foo"}},
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				EndDate:   "1984-03-12",
 				StartDate: "1984-03-10",
 			}); err == nil {
@@ -321,7 +352,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				EndDate:   "1984-03-12",
 				StartDate: "1984-03-10",
 			}); err == nil {
@@ -642,7 +673,7 @@ func TestClient_VCR(t *testing.T) {
 
 		{
 			apiErr := &api.Error{}
-			if err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
 				EndDate:   "1984-03-12",
 				StartDate: "1984-03-10",
 			}); err == nil {
@@ -651,6 +682,18 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatalf("want: %T, got: %T", apiErr, err)
 			} else if !apiErr.IsCustom {
 				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
+			}
+		}
+
+		{
+			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				EndDate:   "2024-12-17",
+				StartDate: "2024-12-16",
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
 			}
 		}
 	})

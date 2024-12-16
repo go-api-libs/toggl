@@ -181,12 +181,12 @@ func CreateTimeEntry[R any, B any](ctx context.Context, c *Client, workspaceID i
 		// Returned when the user made a bad request
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out APIErrorString
-			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+			var errOut APIErrorString
+			if err := json.UnmarshalRead(rsp.Body, &errOut, jsonOpts); err != nil {
 				return nil, api.WrapDecodingError(rsp, err)
 			}
 
-			return nil, api.NewErrCustom(rsp, &out)
+			return nil, api.NewErrCustom(rsp, &errOut)
 		default:
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
@@ -300,7 +300,15 @@ func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeE
 // Lists latest time entries.
 //
 //	GET /me/time_entries
-func (c *Client) GetTimeEntries(ctx context.Context, params *GetTimeEntriesParams) error {
+func (c *Client) GetTimeEntries(ctx context.Context, params *GetTimeEntriesParams) (GetTimeEntriesOkJSONResponse, error) {
+	return GetTimeEntries[GetTimeEntriesOkJSONResponse](ctx, c, params)
+}
+
+// Lists latest time entries.
+// You can define a custom result to unmarshal the response into.
+//
+//	GET /me/time_entries
+func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntriesParams) (R, error) {
 	u := baseURL.JoinPath("/me/time_entries")
 
 	if params != nil {
@@ -330,27 +338,40 @@ func (c *Client) GetTimeEntries(ctx context.Context, params *GetTimeEntriesParam
 		URL:        u,
 	}).WithContext(ctx)
 
+	var out R
 	rsp, err := c.cli.Do(req)
 	if err != nil {
-		return err
+		return out, err
 	}
 	defer rsp.Body.Close()
 
 	switch rsp.StatusCode {
+	case http.StatusOK:
+		// TODO
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return out, api.WrapDecodingError(rsp, err)
+			}
+
+			return out, nil
+		default:
+			return out, api.NewErrUnknownContentType(rsp)
+		}
 	case http.StatusBadRequest:
 		// Returned when the user made a bad request
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out APIErrorString
-			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
-				return api.WrapDecodingError(rsp, err)
+			var errOut APIErrorString
+			if err := json.UnmarshalRead(rsp.Body, &errOut, jsonOpts); err != nil {
+				return out, api.WrapDecodingError(rsp, err)
 			}
 
-			return api.NewErrCustom(rsp, &out)
+			return out, api.NewErrCustom(rsp, &errOut)
 		default:
-			return api.NewErrUnknownContentType(rsp)
+			return out, api.NewErrUnknownContentType(rsp)
 		}
 	default:
-		return api.NewErrUnknownStatusCode(rsp)
+		return out, api.NewErrUnknownStatusCode(rsp)
 	}
 }

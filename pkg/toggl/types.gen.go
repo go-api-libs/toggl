@@ -289,3 +289,28 @@ const (
 	TagActionAdd    TagAction = "add"
 	TagActionDelete TagAction = "delete"
 )
+
+// GetTimeEntriesOkJSONResponse defines a model
+type GetTimeEntriesOkJSONResponse []GetTimeEntriesOkJSONResponseItems
+
+// GetTimeEntriesOkJSONResponseItems defines a model
+type GetTimeEntriesOkJSONResponseItems struct {
+	ID              int        `json:"id,omitzero"`
+	WorkspaceID     int        `json:"workspace_id,omitzero"`
+	ProjectID       int        `json:"project_id,omitzero"`
+	TaskID          struct{}   `json:"task_id"`
+	Billable        bool       `json:"billable,omitzero"`
+	Start           time.Time  `json:"start,omitzero"`
+	Stop            time.Time  `json:"stop,omitzero"`
+	Duration        int        `json:"duration,omitzero"`
+	Description     string     `json:"description,omitzero"`
+	Tags            []struct{} `json:"tags,omitempty"`
+	TagIds          []struct{} `json:"tag_ids,omitempty"`
+	Duronly         bool       `json:"duronly,omitzero"`
+	At              time.Time  `json:"at,omitzero"`
+	ServerDeletedAt struct{}   `json:"server_deleted_at"`
+	UserID          int        `json:"user_id,omitzero"`
+	UID             int        `json:"uid,omitzero"`
+	Wid             int        `json:"wid,omitzero"`
+	Pid             int        `json:"pid,omitzero"`
+}
