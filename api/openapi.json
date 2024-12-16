@@ -116,7 +116,7 @@
         "operationId": "ListMeTimeEntries",
         "responses": {
           "400": {
-            "$ref": "#/components/responses/ListMeTimeEntriesBadRequestResponse"
+            "$ref": "#/components/responses/BadRequestResponse"
           }
         }
       }
@@ -3473,9 +3473,6 @@
       "UnauthorizedResponse": {
         "description": "User is unauthorized to use the API"
       },
-      "BadRequestResponse": {
-        "$ref": "#/components/responses/ListMeTimeEntriesBadRequestResponse"
-      },
       "UserResponse": {
         "description": "Returns the user.",
         "content": {
@@ -3539,7 +3536,7 @@
           }
         }
       },
-      "ListMeTimeEntriesBadRequestResponse": {
+      "BadRequestResponse": {
         "description": "Returned when the user made a bad request",
         "content": {
           "application/json": {
