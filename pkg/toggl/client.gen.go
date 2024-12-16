@@ -301,15 +301,15 @@ func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeE
 // Lists latest time entries.
 //
 //	GET /me/time_entries
-func (c *Client) GetTimeEntries(ctx context.Context, params *GetTimeEntriesParams) (TimeEntries, error) {
-	return GetTimeEntries[TimeEntries](ctx, c, params)
+func (c *Client) ListTimeEntries(ctx context.Context, params *ListTimeEntriesParams) (TimeEntries, error) {
+	return ListTimeEntries[TimeEntries](ctx, c, params)
 }
 
 // Lists latest time entries.
 // You can define a custom result to unmarshal the response into.
 //
 //	GET /me/time_entries
-func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntriesParams) (R, error) {
+func ListTimeEntries[R any](ctx context.Context, c *Client, params *ListTimeEntriesParams) (R, error) {
 	u := baseURL.JoinPath("/me/time_entries")
 
 	if params != nil {
@@ -452,18 +452,18 @@ func CreateOrganization[R any, B any](ctx context.Context, c *Client, reqBody B)
 	}
 }
 
-// ListMeOrganizations defines an operation.
+// Get all organizations a given user is part of.
 //
 //	GET /me/organizations
-func (c *Client) ListMeOrganizations(ctx context.Context) (ListMeOrganizationsOkJSONResponse, error) {
-	return ListMeOrganizations[ListMeOrganizationsOkJSONResponse](ctx, c)
+func (c *Client) ListOrganizations(ctx context.Context) (Organizations, error) {
+	return ListOrganizations[Organizations](ctx, c)
 }
 
-// ListMeOrganizations defines an operation.
+// Get all organizations a given user is part of.
 // You can define a custom result to unmarshal the response into.
 //
 //	GET /me/organizations
-func ListMeOrganizations[R any](ctx context.Context, c *Client) (R, error) {
+func ListOrganizations[R any](ctx context.Context, c *Client) (R, error) {
 	u := baseURL.JoinPath("/me/organizations")
 	req := (&http.Request{
 		Header: http.Header{
@@ -487,7 +487,7 @@ func ListMeOrganizations[R any](ctx context.Context, c *Client) (R, error) {
 
 	switch rsp.StatusCode {
 	case http.StatusOK:
-		// TODO
+		// Returns an array of organisations
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {

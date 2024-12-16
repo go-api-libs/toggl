@@ -72,7 +72,7 @@ func runAll(ctx context.Context, c *toggl.Client) error {
 	}
 
 	now := time.Now()
-	if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+	if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 		StartDate: now,
 		EndDate:   now,
 	}); err != nil {

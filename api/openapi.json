@@ -130,7 +130,7 @@
         ],
         "summary": "List time entries",
         "description": "Lists latest time entries.",
-        "operationId": "GetTimeEntries",
+        "operationId": "ListTimeEntries",
         "responses": {
           "200": {
             "$ref": "#/components/responses/TimeEntriesResponse"
@@ -161,10 +161,15 @@
     },
     "/me/organizations": {
       "get": {
-        "operationId": "ListMeOrganizations",
+        "tags": [
+          "me"
+        ],
+        "summary": "List my organizations",
+        "description": "Get all organizations a given user is part of.",
+        "operationId": "ListOrganizations",
         "responses": {
           "200": {
-            "$ref": "#/components/responses/ListMeOrganizationsOkResponse"
+            "$ref": "#/components/responses/OrganizationsResponse"
           }
         }
       }
@@ -2326,10 +2331,10 @@
           "workspace_name": "Your Workspace"
         }
       },
-      "ListMeOrganizationsOkJSONResponse": {
+      "Organizations": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/ListMeOrganizationsOkJSONResponseItems"
+          "$ref": "#/components/schemas/OrganizationDetails"
         },
         "example": [
           {
@@ -2388,7 +2393,7 @@
           }
         ]
       },
-      "ListMeOrganizationsOkJSONResponseItems": {
+      "OrganizationDetails": {
         "type": "object",
         "properties": {
           "id": {
@@ -2397,7 +2402,7 @@
           },
           "name": {
             "type": "string",
-            "example": "Atlantean Renaissance"
+            "example": "Your Organization"
           },
           "pricing_plan_id": {
             "type": "integer",
@@ -2428,7 +2433,7 @@
             "example": 1
           },
           "trial_info": {
-            "$ref": "#/components/schemas/ListMeOrganizationsOkJSONResponseItemsTrialInfo"
+            "$ref": "#/components/schemas/OrganizationDetailsTrialInfo"
           },
           "is_unified": {
             "type": "boolean",
@@ -2505,7 +2510,7 @@
           "pricing_plan_enterprise": false
         }
       },
-      "ListMeOrganizationsOkJSONResponseItemsTrialInfo": {
+      "OrganizationDetailsTrialInfo": {
         "type": "object",
         "properties": {
           "trial": {
@@ -2679,12 +2684,12 @@
           }
         }
       },
-      "ListMeOrganizationsOkResponse": {
-        "description": "TODO",
+      "OrganizationsResponse": {
+        "description": "Returns an array of organisations",
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/ListMeOrganizationsOkJSONResponse"
+              "$ref": "#/components/schemas/Organizations"
             },
             "example": [
               {

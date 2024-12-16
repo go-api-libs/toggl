@@ -84,7 +84,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+		if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 			Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			IncludeSharing: true,
@@ -106,7 +106,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.ListMeOrganizations(ctx); err == nil {
+		if _, err := c.ListOrganizations(ctx); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -305,11 +305,11 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
-		t.Run("GetTimeEntries", func(t *testing.T) {
+		t.Run("ListTimeEntries", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				IncludeSharing: true,
@@ -328,7 +328,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				IncludeSharing: true,
@@ -348,7 +348,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				IncludeSharing: true,
@@ -367,7 +367,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				IncludeSharing: true,
@@ -387,7 +387,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusBadRequest,
 			}}
 
-			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				IncludeSharing: true,
@@ -446,11 +446,11 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
-		t.Run("ListMeOrganizations", func(t *testing.T) {
+		t.Run("ListOrganizations", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if _, err := c.ListMeOrganizations(ctx); err == nil {
+			if _, err := c.ListOrganizations(ctx); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
@@ -462,7 +462,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.ListMeOrganizations(ctx); err == nil {
+			if _, err := c.ListOrganizations(ctx); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
@@ -475,7 +475,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.ListMeOrganizations(ctx); err == nil {
+			if _, err := c.ListOrganizations(ctx); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
@@ -792,7 +792,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{Since: 1734304527})
+			res, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{Since: 1734304527})
 			if err != nil {
 				t.Fatal(err)
 			} else if res == nil {
@@ -802,7 +802,7 @@ func TestClient_VCR(t *testing.T) {
 
 		{
 			apiErr := &api.Error{}
-			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				Before: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 				Since:  1734305120,
 			}); err == nil {
@@ -815,7 +815,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			res, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				EndDate:        time.Date(2024, time.December, 16, 18, 52, 53, 0, time.Local),
 				IncludeSharing: true,
 				Meta:           true,
@@ -829,7 +829,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			res, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				EndDate:   time.Date(2024, time.December, 16, 18, 55, 20, 0, time.Local),
 				Meta:      true,
 				StartDate: time.Date(2024, time.December, 16, 15, 55, 20, 0, time.Local),
@@ -842,7 +842,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+			res, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 				EndDate:        time.Date(2024, time.December, 16, 18, 58, 15, 0, time.Local),
 				IncludeSharing: true,
 				StartDate:      time.Date(2024, time.December, 16, 15, 58, 15, 0, time.Local),
@@ -867,7 +867,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			res, err := c.ListMeOrganizations(ctx)
+			res, err := c.ListOrganizations(ctx)
 			if err != nil {
 				t.Fatal(err)
 			} else if res == nil {

@@ -2795,18 +2795,8 @@
         },
         "/me/organizations": {
             "get": {
-                "description": "Get all organizations a given user is part of.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "me"
-                ],
-                "summary": "Organizations that a user is part of",
-                "operationId": "get-organizations",
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
                         "schema": {
                             "type": "array",
                             "items": {

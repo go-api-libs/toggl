@@ -158,7 +158,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	timeEntries, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+	timeEntries, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 		Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 		EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 		IncludeSharing: true,
@@ -207,7 +207,7 @@ func main() {
 
 ```
 
-### Example 7: 
+### Example 7: List my organizations
 
 ```go
 package main
@@ -226,12 +226,12 @@ func main() {
 	}
 
 	ctx := context.Background()
-	listMeOrganizationsOkJSONResponse, err := c.ListMeOrganizations(ctx)
+	organizations, err := c.ListOrganizations(ctx)
 	if err != nil {
 		panic(err)
 	}
 
-	// Use listMeOrganizationsOkJSONResponse array
+	// Use organizations array
 }
 
 ```
