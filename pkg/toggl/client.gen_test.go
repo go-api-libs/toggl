@@ -85,10 +85,12 @@ func TestClient_Error(t *testing.T) {
 		}
 
 		if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-			Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-			EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-			Since:     1734304527,
-			StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+			Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+			EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+			IncludeSharing: true,
+			Meta:           true,
+			Since:          1734304527,
+			StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 		}); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
@@ -293,10 +295,12 @@ func TestClient_Error(t *testing.T) {
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				Since:     1734304527,
-				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				IncludeSharing: true,
+				Meta:           true,
+				Since:          1734304527,
+				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
@@ -310,10 +314,12 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				Since:     1734304527,
-				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				IncludeSharing: true,
+				Meta:           true,
+				Since:          1734304527,
+				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
@@ -328,10 +334,12 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				Since:     1734304527,
-				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				IncludeSharing: true,
+				Meta:           true,
+				Since:          1734304527,
+				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
@@ -345,10 +353,12 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				Since:     1734304527,
-				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				IncludeSharing: true,
+				Meta:           true,
+				Since:          1734304527,
+				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
@@ -363,10 +373,12 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-				Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				Since:     1734304527,
-				StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				IncludeSharing: true,
+				Meta:           true,
+				Since:          1734304527,
+				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
@@ -703,6 +715,20 @@ func TestClient_VCR(t *testing.T) {
 				t.Fatalf("want: %T, got: %T", apiErr, err)
 			} else if !apiErr.IsCustom {
 				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
+			}
+		}
+
+		{
+			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+				EndDate:        time.Date(2024, time.December, 16, 18, 52, 53, 0, time.Local),
+				IncludeSharing: true,
+				Meta:           true,
+				StartDate:      time.Date(2024, time.December, 16, 15, 52, 53, 0, time.Local),
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
 			}
 		}
 	})

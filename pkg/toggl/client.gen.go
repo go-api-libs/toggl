@@ -313,7 +313,7 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 	u := baseURL.JoinPath("/me/time_entries")
 
 	if params != nil {
-		q := make(url.Values, 4)
+		q := make(url.Values, 6)
 
 		if params.Since != 0 {
 			q["since"] = []string{strconv.Itoa(params.Since)}
@@ -329,6 +329,14 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 
 		if !params.EndDate.IsZero() {
 			q["end_date"] = []string{params.EndDate.Format(time.RFC3339)}
+		}
+
+		if params.IncludeSharing {
+			q["include_sharing"] = []string{"true"}
+		}
+
+		if params.Meta {
+			q["meta"] = []string{"true"}
 		}
 
 		u.RawQuery = q.Encode()

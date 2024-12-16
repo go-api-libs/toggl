@@ -25,7 +25,9 @@ type GetTimeEntriesParams struct {
 	// Get entries with start time from the given time. To be used with end_date.
 	StartDate time.Time
 	// Get entries with start time until the given time. To be used with start_date.
-	EndDate time.Time
+	EndDate        time.Time
+	IncludeSharing bool
+	Meta           bool
 }
 
 // UserWithRelated defines a model
@@ -123,6 +125,13 @@ type TimeEntry struct {
 	UID             int           `json:"uid,omitzero"`
 	Wid             int           `json:"wid,omitzero"`
 	Pid             int           `json:"pid,omitzero"`
+	ClientName      *string       `json:"client_name,omitempty"`
+	ProjectName     *string       `json:"project_name,omitempty"`
+	ProjectColor    *string       `json:"project_color,omitempty"`
+	ProjectActive   *bool         `json:"project_active,omitempty"`
+	ProjectBillable *bool         `json:"project_billable,omitempty"`
+	UserName        *string       `json:"user_name,omitempty"`
+	UserAvatarURL   *url.URL      `json:"user_avatar_url,omitempty"`
 }
 
 // Options defines a model

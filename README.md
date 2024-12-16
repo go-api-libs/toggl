@@ -2,7 +2,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/go-api-libs/toggl.svg)](https://pkg.go.dev/github.com/go-api-libs/toggl/pkg/toggl)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-blue)](/api/openapi.json)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-api-libs/toggl)](https://goreportcard.com/report/github.com/go-api-libs/toggl)
-![Code Coverage](https://img.shields.io/badge/coverage-59%25-yellow)
+![Code Coverage](https://img.shields.io/badge/coverage-60%25-yellowgreen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 The Toggl API allows developers to interact with Toggl's time tracking service programmatically. It provides endpoints for managing time entries, projects, clients, tags, and user information. With this API, you can automate time tracking, generate detailed reports, and integrate Toggl with other tools and services.
@@ -159,10 +159,12 @@ func main() {
 
 	ctx := context.Background()
 	timeEntries, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-		Before:    time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-		EndDate:   time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-		Since:     1734304527,
-		StartDate: time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+		Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+		EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+		IncludeSharing: true,
+		Meta:           true,
+		Since:          1734304527,
+		StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
 	})
 	if err != nil {
 		panic(err)

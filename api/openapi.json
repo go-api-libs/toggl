@@ -116,6 +116,12 @@
         },
         {
           "$ref": "#/components/parameters/end_date"
+        },
+        {
+          "$ref": "#/components/parameters/include_sharing"
+        },
+        {
+          "$ref": "#/components/parameters/meta"
         }
       ],
       "get": {
@@ -647,6 +653,35 @@
           "pid": {
             "type": "integer",
             "example": 155392684
+          },
+          "client_name": {
+            "type": "string",
+            "example": "AGL"
+          },
+          "project_name": {
+            "type": "string",
+            "example": "AGL Social Media"
+          },
+          "project_color": {
+            "type": "string",
+            "example": "#d92b2b"
+          },
+          "project_active": {
+            "type": "boolean",
+            "example": true
+          },
+          "project_billable": {
+            "type": "boolean",
+            "example": false
+          },
+          "user_name": {
+            "type": "string",
+            "example": "Marco"
+          },
+          "user_avatar_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://secure.gravatar.com/avatar/af0a4ad100669ddbc678eb40ba90459d?d=404&s=200"
           }
         },
         "required": [
@@ -2389,6 +2424,24 @@
           "example": "2024-12-16T03:25:20+01:00"
         },
         "example": "2024-12-16T03:25:20+01:00"
+      },
+      "include_sharing": {
+        "name": "include_sharing",
+        "in": "query",
+        "schema": {
+          "type": "boolean",
+          "example": true
+        },
+        "example": true
+      },
+      "meta": {
+        "name": "meta",
+        "in": "query",
+        "schema": {
+          "type": "boolean",
+          "example": true
+        },
+        "example": true
       }
     },
     "requestBodies": {

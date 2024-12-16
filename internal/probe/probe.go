@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -34,13 +33,14 @@ func probe() error {
 		return err
 	}
 
-	return nil
-
 	ts := time.Now().Add(-4 * time.Hour)
 
 	q := url.Values{
-		"since":  []string{strconv.Itoa(int(ts.Unix()))},
-		"before": []string{time.Now().Add(-time.Hour).Format(time.RFC3339)},
+		// "since":  []string{strconv.Itoa(int(ts.Unix()))},
+		"start_date":      []string{ts.Format(time.RFC3339)},
+		"end_date":        []string{time.Now().Add(-time.Hour).Format(time.RFC3339)},
+		"meta":            []string{"true"},
+		"include_sharing": []string{"true"},
 	}
 
 	req, err := http.NewRequest(http.MethodGet, serverURL+"/me/time_entries?"+q.Encode(), nil)
