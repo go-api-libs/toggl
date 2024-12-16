@@ -307,8 +307,8 @@ const (
 	TagActionDelete TagAction = "delete"
 )
 
-// Organization defines a model
-type Organization struct {
+// SimpleOrganization defines a model
+type SimpleOrganization struct {
 	ID            int     `json:"id,omitzero"`
 	Name          string  `json:"name,omitzero"`
 	Permissions   *string `json:"permissions,omitempty"`

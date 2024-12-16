@@ -2272,7 +2272,7 @@
           "delete"
         ]
       },
-      "Organization": {
+      "SimpleOrganization": {
         "type": "object",
         "properties": {
           "id": {
@@ -2673,7 +2673,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/Organization"
+              "$ref": "#/components/schemas/SimpleOrganization"
             },
             "example": {
               "id": 9011051,

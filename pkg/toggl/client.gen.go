@@ -396,8 +396,8 @@ func ListTimeEntries[R any](ctx context.Context, c *Client, params *ListTimeEntr
 // Creates a new organization with a single workspace and assigns current user as the organization owner
 //
 //	POST /organizations
-func (c *Client) CreateOrganization(ctx context.Context, reqBody NewOrganization) (*Organization, error) {
-	return CreateOrganization[Organization](ctx, c, reqBody)
+func (c *Client) CreateOrganization(ctx context.Context, reqBody NewOrganization) (*SimpleOrganization, error) {
+	return CreateOrganization[SimpleOrganization](ctx, c, reqBody)
 }
 
 // Creates a new organization with a single workspace and assigns current user as the organization owner
