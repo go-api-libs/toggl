@@ -56,14 +56,14 @@ func probe() error {
 
 	return nil
 
-	if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-		StartDate: "2024-12-16",
-		EndDate:   "2024-12-17",
-	}); err != nil {
-		return err
-	}
+	// if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+	// 	StartDate: "2024-12-16",
+	// 	EndDate:   "2024-12-17",
+	// }); err != nil {
+	// 	return err
+	// }
 
-	return nil
+	// return nil
 
 	if _, err := c.CreateTimeEntry(ctx, me.DefaultWorkspaceID, toggl.NewTimeEntry{
 		WorkspaceID: me.DefaultWorkspaceID,
