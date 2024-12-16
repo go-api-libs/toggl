@@ -249,15 +249,15 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 // Stops a workspace time entry.
 //
 //	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
-func (c *Client) PatchWorkspaces2230580TimeEntries3730303299Stop(ctx context.Context, workspaceID int, timeEntryID int) (*PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, error) {
-	return PatchWorkspaces2230580TimeEntries3730303299Stop[PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse](ctx, c, workspaceID, timeEntryID)
+func (c *Client) StopTimeEntry(ctx context.Context, workspaceID int, timeEntryID int) (*PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse, error) {
+	return StopTimeEntry[PatchWorkspaces2230580TimeEntries3730303299StopOkJSONResponse](ctx, c, workspaceID, timeEntryID)
 }
 
 // Stops a workspace time entry.
 // You can define a custom result to unmarshal the response into.
 //
 //	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
-func PatchWorkspaces2230580TimeEntries3730303299Stop[R any](ctx context.Context, c *Client, workspaceID int, timeEntryID int) (*R, error) {
+func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeEntryID int) (*R, error) {
 	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries", strconv.Itoa(timeEntryID), "stop")
 	req := (&http.Request{
 		Header: http.Header{

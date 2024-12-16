@@ -75,7 +75,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx, 2230580, 3730303299); err == nil {
+		if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -238,11 +238,11 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
-		t.Run("PatchWorkspaces2230580TimeEntries3730303299Stop", func(t *testing.T) {
+		t.Run("StopTimeEntry", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if _, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx, 2230580, 3730303299); err == nil {
+			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
@@ -254,7 +254,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx, 2230580, 3730303299); err == nil {
+			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
@@ -267,7 +267,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx, 2230580, 3730303299); err == nil {
+			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
@@ -567,7 +567,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			res, err := c.PatchWorkspaces2230580TimeEntries3730303299Stop(ctx, 2230580, 3730303299)
+			res, err := c.StopTimeEntry(ctx, 2230580, 3730303299)
 			if err != nil {
 				t.Fatal(err)
 			} else if res == nil {

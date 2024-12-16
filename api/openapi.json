@@ -94,7 +94,7 @@
         ],
         "summary": "Stop an existing time entry",
         "description": "Stops a workspace time entry.",
-        "operationId": "PatchWorkspaces2230580TimeEntries3730303299Stop",
+        "operationId": "StopTimeEntry",
         "responses": {
           "200": {
             "$ref": "#/components/responses/PatchWorkspaces2230580TimeEntries3730303299StopOkResponse"
