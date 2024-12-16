@@ -498,7 +498,7 @@ func TestClient_VCR(t *testing.T) {
 			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				CreatedWith: "github.com/go-api-libs/toggl",
 				Description: "Hello Toggl",
-				Duration:    -1 * time.Second,
+				Duration:    -time.Second,
 				Start:       time.Date(2024, time.December, 16, 2, 31, 14, 86355000, time.Local),
 				WorkspaceID: 2230580,
 			})
