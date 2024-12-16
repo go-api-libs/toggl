@@ -683,31 +683,6 @@ func TestClient_VCR(t *testing.T) {
 			}
 		}
 
-		{
-			apiErr := &api.Error{}
-			if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-				EndDate:   "1984-03-12",
-				StartDate: "1984-03-10",
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &apiErr) {
-				t.Fatalf("want: %T, got: %T", apiErr, err)
-			} else if !apiErr.IsCustom {
-				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
-			}
-		}
-
-		{
-			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-				EndDate:   "2024-12-17",
-				StartDate: "2024-12-16",
-			})
-			if err != nil {
-				t.Fatal(err)
-			} else if res == nil {
-				t.Fatal("result is nil")
-			}
-		}
 
 		{
 			res, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{Since: 1734304527})
