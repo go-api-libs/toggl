@@ -649,3 +649,62 @@ interactions:
         status: 200 OK
         code: 200
         duration: 237.606708ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+        url: https://api.track.toggl.com/api/v9/me/time_entries?before=2024-12-16T03%3A25%3A20%2B01%3A00&since=1734305120
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 56
+        uncompressed: false
+        body: '"''since'' and ''before'' can not be present simultaneously"'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "56"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Mon, 16 Dec 2024 03:25:21 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-wlr98
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - d691e57b6ac1428705af8f8c70f04f2f
+            X-Toggl-Request-Id:
+                - b6232eaa-43df-4b69-b03a-0fbc20f76b00
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 400 Bad Request
+        code: 400
+        duration: 215.151458ms
