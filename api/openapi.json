@@ -2419,5 +2419,9 @@
     {
       "BasicAuth": []
     }
-  ]
+  ],
+  "externalDocs": {
+    "description": "API documentation",
+    "url": "https://engineering.toggl.com/docs/"
+  }
 }

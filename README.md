@@ -176,6 +176,7 @@ func main() {
 ## Additional Information
 
 - [**Go Reference**](https://pkg.go.dev/github.com/go-api-libs/toggl/pkg/toggl): The Go reference documentation for the client package.
+- [**Official Documentation**](https://engineering.toggl.com/docs/): The official API documentation.
 - [**OpenAPI Specification**](./api/openapi.json): The OpenAPI 3.1.0 specification.
 - [**Go Report Card**](https://goreportcard.com/report/github.com/go-api-libs/toggl): Check the code quality report.
 
