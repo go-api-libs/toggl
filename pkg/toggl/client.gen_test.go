@@ -97,7 +97,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+		if _, err := c.CreateOrganization(ctx, toggl.NewOrganization{
 			Name:          "Your Organization",
 			WorkspaceName: "Your Workspace",
 		}); err == nil {
@@ -395,11 +395,11 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
-		t.Run("PostOrganizations", func(t *testing.T) {
+		t.Run("CreateOrganization", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if _, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+			if _, err := c.CreateOrganization(ctx, toggl.NewOrganization{
 				Name:          "Your Organization",
 				WorkspaceName: "Your Workspace",
 			}); err == nil {
@@ -414,7 +414,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+			if _, err := c.CreateOrganization(ctx, toggl.NewOrganization{
 				Name:          "Your Organization",
 				WorkspaceName: "Your Workspace",
 			}); err == nil {
@@ -430,7 +430,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+			if _, err := c.CreateOrganization(ctx, toggl.NewOrganization{
 				Name:          "Your Organization",
 				WorkspaceName: "Your Workspace",
 			}); err == nil {
@@ -813,7 +813,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			res, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+			res, err := c.CreateOrganization(ctx, toggl.NewOrganization{
 				Name:          "Your Organization",
 				WorkspaceName: "Your Workspace",
 			})

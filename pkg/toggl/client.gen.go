@@ -393,18 +393,18 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 	}
 }
 
-// PostOrganizations defines an operation.
+// Creates a new organization with a single workspace and assigns current user as the organization owner
 //
 //	POST /organizations
-func (c *Client) PostOrganizations(ctx context.Context, reqBody PostOrganizationsJSONRequestBody) (*PostOrganizationsOkJSONResponse, error) {
-	return PostOrganizations[PostOrganizationsOkJSONResponse](ctx, c, reqBody)
+func (c *Client) CreateOrganization(ctx context.Context, reqBody NewOrganization) (*PostOrganizationsOkJSONResponse, error) {
+	return CreateOrganization[PostOrganizationsOkJSONResponse](ctx, c, reqBody)
 }
 
-// PostOrganizations defines an operation.
+// Creates a new organization with a single workspace and assigns current user as the organization owner
 // You can define a custom request body to marshal and a custom result to unmarshal the response into.
 //
 //	POST /organizations
-func PostOrganizations[R any, B any](ctx context.Context, c *Client, reqBody B) (*R, error) {
+func CreateOrganization[R any, B any](ctx context.Context, c *Client, reqBody B) (*R, error) {
 	u := baseURL.JoinPath("/organizations")
 	req := (&http.Request{
 		Header: http.Header{

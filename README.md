@@ -175,7 +175,7 @@ func main() {
 
 ```
 
-### Example 6: 
+### Example 6: Create a new organization
 
 ```go
 package main
@@ -194,7 +194,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	postOrganizationsOkJSONResponse, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+	postOrganizationsOkJSONResponse, err := c.CreateOrganization(ctx, toggl.NewOrganization{
 		Name:          "Your Organization",
 		WorkspaceName: "Your Workspace",
 	})

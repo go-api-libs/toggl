@@ -4120,29 +4120,8 @@
                         "OAuth2": []
                     }
                 ],
-                "description": "Creates a new organization with a single workspace and assigns current user as the organization owner",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "organizations"
-                ],
-                "summary": "Creates a new organization",
-                "operationId": "post-organization",
-                "parameters": [
-                    {
-                        "description": "Input data for organization.",
-                        "name": "post_organizations_request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.PostPayload"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
-                        "description": "Organization and workspace IDs",
                         "schema": {
                             "$ref": "#/definitions/organization.PostOrganizationReply"
                         }
@@ -22388,19 +22367,6 @@
                     "type": "string"
                 },
                 "toggl_product_name": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.PostPayload": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "description": "Name of the organization",
-                    "type": "string"
-                },
-                "workspace_name": {
-                    "description": "Name of the workspace",
                     "type": "string"
                 }
             }

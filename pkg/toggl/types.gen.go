@@ -315,8 +315,10 @@ type PostOrganizationsOkJSONResponse struct {
 	WorkspaceName string `json:"workspace_name,omitzero"`
 }
 
-// PostOrganizationsJSONRequestBody defines a model
-type PostOrganizationsJSONRequestBody struct {
-	Name          string `json:"name,omitzero"`
+// NewOrganization defines a model
+type NewOrganization struct {
+	// Name of the organization
+	Name string `json:"name,omitzero"`
+	// Name of the workspace
 	WorkspaceName string `json:"workspace_name,omitzero"`
 }

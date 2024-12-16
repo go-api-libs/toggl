@@ -18,7 +18,7 @@ func probe() error {
 	ctx := context.Background()
 	tkn := os.Getenv("TOGGL_TOKEN")
 
-	c, err := toggl.NewClientWithAPIToken(os.Getenv("TOGGL_TOKEN"))
+	c, err := toggl.NewClientWithAPIToken(tkn)
 	if err != nil {
 		return err
 	}

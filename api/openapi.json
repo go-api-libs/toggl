@@ -143,13 +143,19 @@
     },
     "/organizations": {
       "post": {
-        "operationId": "PostOrganizations",
+        "tags": [
+          "organizations"
+        ],
+        "summary": "Create a new organization",
+        "description": "Creates a new organization with a single workspace and assigns current user as the organization owner",
+        "operationId": "CreateOrganization",
         "requestBody": {
-          "$ref": "#/components/requestBodies/PostOrganizationsRequestBody"
+          "$ref": "#/components/requestBodies/Organization"
         },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/PostOrganizationsOkResponse"
+            "$ref": "#/components/responses/PostOrganizationsOkResponse",
+            "description": "Organization and workspace IDs"
           }
         }
       }
@@ -2285,14 +2291,16 @@
           "workspace_name": "Your Workspace"
         }
       },
-      "PostOrganizationsJSONRequestBody": {
+      "NewOrganization": {
         "type": "object",
         "properties": {
           "name": {
+            "description": "Name of the organization",
             "type": "string",
             "example": "Your Organization"
           },
           "workspace_name": {
+            "description": "Name of the workspace",
             "type": "string",
             "example": "Your Workspace"
           }
@@ -2545,12 +2553,13 @@
           }
         }
       },
-      "PostOrganizationsRequestBody": {
+      "Organization": {
+        "description": "Input data for organization.",
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/PostOrganizationsJSONRequestBody"
+              "$ref": "#/components/schemas/NewOrganization"
             },
             "example": {
               "name": "Your Organization",
