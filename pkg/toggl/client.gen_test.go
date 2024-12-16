@@ -96,6 +96,15 @@ func TestClient_Error(t *testing.T) {
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
+
+		if _, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+			Name:          "Your Organization",
+			WorkspaceName: "Your Workspace",
+		}); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
 	})
 
 	t.Run("Unmarshal", func(t *testing.T) {
@@ -379,6 +388,51 @@ func TestClient_Error(t *testing.T) {
 				Meta:           true,
 				Since:          1734304527,
 				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
+
+		t.Run("PostOrganizations", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if _, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+				Name:          "Your Organization",
+				WorkspaceName: "Your Workspace",
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+				Name:          "Your Organization",
+				WorkspaceName: "Your Workspace",
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+				Name:          "Your Organization",
+				WorkspaceName: "Your Workspace",
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
@@ -750,6 +804,18 @@ func TestClient_VCR(t *testing.T) {
 				EndDate:        time.Date(2024, time.December, 16, 18, 58, 15, 0, time.Local),
 				IncludeSharing: true,
 				StartDate:      time.Date(2024, time.December, 16, 15, 58, 15, 0, time.Local),
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.PostOrganizations(ctx, toggl.PostOrganizationsJSONRequestBody{
+				Name:          "Your Organization",
+				WorkspaceName: "Your Workspace",
 			})
 			if err != nil {
 				t.Fatal(err)

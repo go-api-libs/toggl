@@ -773,3 +773,66 @@ interactions:
         status: 200 OK
         code: 200
         duration: 217.465583ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 62
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"name":"Your Organization","workspace_name":"Your Workspace"}'
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+        url: https://api.track.toggl.com/api/v9/organizations
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 98
+        uncompressed: false
+        body: '{"id":9011051,"name":"Your Organization","workspace_id":9009928,"workspace_name":"Your Workspace"}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "98"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Mon, 16 Dec 2024 19:09:07 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-zxq96
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - 3818f563aaf5959f0292eb91c03e5c52
+            X-Service-Level:
+                - GREEN
+            X-Toggl-Request-Id:
+                - 9f076dc1-6c8c-4d62-b6d3-935ee518fbb7
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 200 OK
+        code: 200
+        duration: 282.305875ms

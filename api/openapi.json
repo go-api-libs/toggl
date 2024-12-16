@@ -140,6 +140,19 @@
           }
         }
       }
+    },
+    "/organizations": {
+      "post": {
+        "operationId": "PostOrganizations",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/PostOrganizationsRequestBody"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/PostOrganizationsOkResponse"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2238,6 +2251,60 @@
           "add",
           "delete"
         ]
+      },
+      "PostOrganizationsOkJSONResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 9011051
+          },
+          "name": {
+            "type": "string",
+            "example": "Your Organization"
+          },
+          "workspace_id": {
+            "type": "integer",
+            "example": 9009928
+          },
+          "workspace_name": {
+            "type": "string",
+            "example": "Your Workspace"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "workspace_id",
+          "workspace_name"
+        ],
+        "example": {
+          "id": 9011051,
+          "name": "Your Organization",
+          "workspace_id": 9009928,
+          "workspace_name": "Your Workspace"
+        }
+      },
+      "PostOrganizationsJSONRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Your Organization"
+          },
+          "workspace_name": {
+            "type": "string",
+            "example": "Your Workspace"
+          }
+        },
+        "required": [
+          "name",
+          "workspace_name"
+        ],
+        "example": {
+          "name": "Your Organization",
+          "workspace_name": "Your Workspace"
+        }
       }
     },
     "responses": {
@@ -2349,6 +2416,22 @@
             ]
           }
         }
+      },
+      "PostOrganizationsOkResponse": {
+        "description": "TODO",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostOrganizationsOkJSONResponse"
+            },
+            "example": {
+              "id": 9011051,
+              "name": "Your Organization",
+              "workspace_id": 9009928,
+              "workspace_name": "Your Workspace"
+            }
+          }
+        }
       }
     },
     "parameters": {
@@ -2458,6 +2541,20 @@
               "created_with": "github.com/go-api-libs/toggl",
               "start": "2024-12-15T21:17:59.593648+01:00",
               "workspace_id": 2230580
+            }
+          }
+        }
+      },
+      "PostOrganizationsRequestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PostOrganizationsJSONRequestBody"
+            },
+            "example": {
+              "name": "Your Organization",
+              "workspace_name": "Your Workspace"
             }
           }
         }

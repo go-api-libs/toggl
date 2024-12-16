@@ -392,3 +392,62 @@ func GetTimeEntries[R any](ctx context.Context, c *Client, params *GetTimeEntrie
 		return out, api.NewErrUnknownStatusCode(rsp)
 	}
 }
+
+// PostOrganizations defines an operation.
+//
+//	POST /organizations
+func (c *Client) PostOrganizations(ctx context.Context, reqBody PostOrganizationsJSONRequestBody) (*PostOrganizationsOkJSONResponse, error) {
+	return PostOrganizations[PostOrganizationsOkJSONResponse](ctx, c, reqBody)
+}
+
+// PostOrganizations defines an operation.
+// You can define a custom request body to marshal and a custom result to unmarshal the response into.
+//
+//	POST /organizations
+func PostOrganizations[R any, B any](ctx context.Context, c *Client, reqBody B) (*R, error) {
+	u := baseURL.JoinPath("/organizations")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"Content-Type":  []string{"application/json"},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodPost,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	var pw *io.PipeWriter
+	req.Body, pw = io.Pipe()
+	defer req.Body.Close()
+	go func() {
+		pw.CloseWithError(json.MarshalWrite(pw, reqBody, jsonOpts))
+	}()
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// TODO
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return nil, api.NewErrUnknownStatusCode(rsp)
+	}
+}

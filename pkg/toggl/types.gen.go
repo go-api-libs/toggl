@@ -306,3 +306,17 @@ const (
 	TagActionAdd    TagAction = "add"
 	TagActionDelete TagAction = "delete"
 )
+
+// PostOrganizationsOkJSONResponse defines a model
+type PostOrganizationsOkJSONResponse struct {
+	ID            int    `json:"id,omitzero"`
+	Name          string `json:"name,omitzero"`
+	WorkspaceID   int    `json:"workspace_id,omitzero"`
+	WorkspaceName string `json:"workspace_name,omitzero"`
+}
+
+// PostOrganizationsJSONRequestBody defines a model
+type PostOrganizationsJSONRequestBody struct {
+	Name          string `json:"name,omitzero"`
+	WorkspaceName string `json:"workspace_name,omitzero"`
+}
