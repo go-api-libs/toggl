@@ -16828,31 +16828,7 @@
         },
         "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
             "patch": {
-              
-                "operationId": "patch-workspace-stop-time-entry-handler",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Numeric ID of the workspace",
-                        "name": "workspace_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "TimeEntry ID.",
-                        "name": "time_entry_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
-                    "200": {
-                        "description": "The stopped workspace TimeEntry.",
-                        "schema": {
-                            "$ref": "#/definitions/models.TimeEntry"
-                        }
-                    },
                     "400": {
                         "description": "Invalid or missing time_entry_id",
                         "schema": {

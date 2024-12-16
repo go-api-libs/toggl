@@ -97,7 +97,8 @@
         "operationId": "StopTimeEntry",
         "responses": {
           "200": {
-            "$ref": "#/components/responses/TimeEntryResponse"
+            "$ref": "#/components/responses/TimeEntryResponse",
+            "description": "The stopped workspace TimeEntry."
           }
         }
       }
