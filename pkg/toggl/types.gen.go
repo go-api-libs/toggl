@@ -323,3 +323,38 @@ type NewOrganization struct {
 	// Name of the workspace
 	WorkspaceName string `json:"workspace_name,omitzero"`
 }
+
+// ListMeOrganizationsOkJSONResponse defines a model
+type ListMeOrganizationsOkJSONResponse []ListMeOrganizationsOkJSONResponseItems
+
+// ListMeOrganizationsOkJSONResponseItems defines a model
+type ListMeOrganizationsOkJSONResponseItems struct {
+	ID                      int                                             `json:"id,omitzero"`
+	Name                    string                                          `json:"name,omitzero"`
+	PricingPlanID           int                                             `json:"pricing_plan_id,omitzero"`
+	CreatedAt               time.Time                                       `json:"created_at,omitzero"`
+	At                      time.Time                                       `json:"at,omitzero"`
+	ServerDeletedAt         struct{}                                        `json:"server_deleted_at"`
+	IsMultiWorkspaceEnabled bool                                            `json:"is_multi_workspace_enabled,omitzero"`
+	SuspendedAt             struct{}                                        `json:"suspended_at"`
+	UserCount               int                                             `json:"user_count,omitzero"`
+	TrialInfo               ListMeOrganizationsOkJSONResponseItemsTrialInfo `json:"trial_info"`
+	IsUnified               bool                                            `json:"is_unified,omitzero"`
+	MaxWorkspaces           int                                             `json:"max_workspaces,omitzero"`
+	Permissions             struct{}                                        `json:"permissions"`
+	Admin                   bool                                            `json:"admin,omitzero"`
+	Owner                   bool                                            `json:"owner,omitzero"`
+	PricingPlanName         string                                          `json:"pricing_plan_name,omitzero"`
+	PricingPlanEnterprise   bool                                            `json:"pricing_plan_enterprise,omitzero"`
+}
+
+// ListMeOrganizationsOkJSONResponseItemsTrialInfo defines a model
+type ListMeOrganizationsOkJSONResponseItemsTrialInfo struct {
+	Trial             bool     `json:"trial,omitzero"`
+	TrialAvailable    bool     `json:"trial_available,omitzero"`
+	TrialEndDate      struct{} `json:"trial_end_date"`
+	NextPaymentDate   struct{} `json:"next_payment_date"`
+	LastPricingPlanID struct{} `json:"last_pricing_plan_id"`
+	CanHaveTrial      bool     `json:"can_have_trial,omitzero"`
+	TrialPlanID       struct{} `json:"trial_plan_id"`
+}

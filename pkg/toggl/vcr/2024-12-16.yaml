@@ -836,3 +836,66 @@ interactions:
         status: 200 OK
         code: 200
         duration: 282.305875ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+        url: https://api.track.toggl.com/api/v9/me/organizations
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 1101
+        uncompressed: false
+        body: '[{"id":2108099,"name":"Atlantean Renaissance","pricing_plan_id":0,"created_at":"2020-07-01T07:42:35.365613Z","at":"2020-07-01T07:42:35.365613Z","server_deleted_at":null,"is_multi_workspace_enabled":false,"suspended_at":null,"user_count":1,"trial_info":{"trial":false,"trial_available":true,"trial_end_date":null,"next_payment_date":null,"last_pricing_plan_id":null,"can_have_trial":true,"trial_plan_id":null},"is_unified":false,"max_workspaces":20,"permissions":null,"admin":true,"owner":true,"pricing_plan_name":"Free","pricing_plan_enterprise":false},{"id":9011051,"name":"Your Organization","pricing_plan_id":0,"created_at":"2024-12-16T19:09:07.041832Z","at":"2024-12-16T19:09:07.041832Z","server_deleted_at":null,"is_multi_workspace_enabled":false,"suspended_at":null,"user_count":1,"trial_info":{"trial":false,"trial_available":true,"trial_end_date":null,"next_payment_date":null,"last_pricing_plan_id":null,"can_have_trial":true,"trial_plan_id":null},"is_unified":false,"max_workspaces":20,"permissions":null,"admin":true,"owner":true,"pricing_plan_name":"Free","pricing_plan_enterprise":false}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "1101"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Mon, 16 Dec 2024 19:38:12 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-l4vmk
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - a4e028fb07b0fcda5533d8ccae8473d7
+            X-Service-Level:
+                - GREEN
+            X-Toggl-Request-Id:
+                - 620ef3a8-0d88-45c6-8f7f-1b45145df4f7
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 200 OK
+        code: 200
+        duration: 251.41ms

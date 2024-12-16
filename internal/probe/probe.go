@@ -24,9 +24,11 @@ func probe() error {
 	}
 	_ = c
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		serverURL+"/organizations",
-		strings.NewReader(`{"name":"Your Organization","workspace_name":"Your Workspace"}`))
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
+		serverURL+"/me/organizations",
+		nil,
+		// strings.NewReader(`{"name":"Your Organization","workspace_name":"Your Workspace"}`),
+	)
 	if err != nil {
 		return err
 	}
@@ -36,19 +38,6 @@ func probe() error {
 	if _, err := http.DefaultClient.Do(req); err != nil {
 		return err
 	}
-
-	return nil
-
-	// if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
-	// 	StartDate: "2024-12-16",
-	// 	EndDate:   "2024-12-17",
-	// }); err != nil {
-	// 	return err
-	// }
-
-	// return nil
-
-	// strings.NewReader(fmt.Sprintf(`{"workspace_id":%d}`, me.DefaultWorkspaceID))
 
 	return nil
 }
@@ -78,6 +67,14 @@ func runAll(ctx context.Context, c *toggl.Client) error {
 		CreatedWith: "github.com/go-api-libs/toggl",
 		Description: "Hello Toggl",
 		Duration:    toggl.DurationRunning,
+	}); err != nil {
+		return err
+	}
+
+	now := time.Now()
+	if _, err := c.GetTimeEntries(ctx, &toggl.GetTimeEntriesParams{
+		StartDate: now,
+		EndDate:   now,
 	}); err != nil {
 		return err
 	}

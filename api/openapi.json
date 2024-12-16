@@ -158,6 +158,16 @@
           }
         }
       }
+    },
+    "/me/organizations": {
+      "get": {
+        "operationId": "ListMeOrganizations",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ListMeOrganizationsOkResponse"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2315,6 +2325,232 @@
           "name": "Your Organization",
           "workspace_name": "Your Workspace"
         }
+      },
+      "ListMeOrganizationsOkJSONResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ListMeOrganizationsOkJSONResponseItems"
+        },
+        "example": [
+          {
+            "id": 2108099,
+            "name": "Atlantean Renaissance",
+            "pricing_plan_id": 0,
+            "created_at": "2020-07-01T07:42:35.365613Z",
+            "at": "2020-07-01T07:42:35.365613Z",
+            "server_deleted_at": null,
+            "is_multi_workspace_enabled": false,
+            "suspended_at": null,
+            "user_count": 1,
+            "trial_info": {
+              "trial": false,
+              "trial_available": true,
+              "trial_end_date": null,
+              "next_payment_date": null,
+              "last_pricing_plan_id": null,
+              "can_have_trial": true,
+              "trial_plan_id": null
+            },
+            "is_unified": false,
+            "max_workspaces": 20,
+            "permissions": null,
+            "admin": true,
+            "owner": true,
+            "pricing_plan_name": "Free",
+            "pricing_plan_enterprise": false
+          },
+          {
+            "id": 9011051,
+            "name": "Your Organization",
+            "pricing_plan_id": 0,
+            "created_at": "2024-12-16T19:09:07.041832Z",
+            "at": "2024-12-16T19:09:07.041832Z",
+            "server_deleted_at": null,
+            "is_multi_workspace_enabled": false,
+            "suspended_at": null,
+            "user_count": 1,
+            "trial_info": {
+              "trial": false,
+              "trial_available": true,
+              "trial_end_date": null,
+              "next_payment_date": null,
+              "last_pricing_plan_id": null,
+              "can_have_trial": true,
+              "trial_plan_id": null
+            },
+            "is_unified": false,
+            "max_workspaces": 20,
+            "permissions": null,
+            "admin": true,
+            "owner": true,
+            "pricing_plan_name": "Free",
+            "pricing_plan_enterprise": false
+          }
+        ]
+      },
+      "ListMeOrganizationsOkJSONResponseItems": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2108099
+          },
+          "name": {
+            "type": "string",
+            "example": "Atlantean Renaissance"
+          },
+          "pricing_plan_id": {
+            "type": "integer",
+            "example": 0
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-07-01T07:42:35.365613Z"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-07-01T07:42:35.365613Z"
+          },
+          "server_deleted_at": {
+            "type": "object"
+          },
+          "is_multi_workspace_enabled": {
+            "type": "boolean",
+            "example": false
+          },
+          "suspended_at": {
+            "type": "object"
+          },
+          "user_count": {
+            "type": "integer",
+            "example": 1
+          },
+          "trial_info": {
+            "$ref": "#/components/schemas/ListMeOrganizationsOkJSONResponseItemsTrialInfo"
+          },
+          "is_unified": {
+            "type": "boolean",
+            "example": false
+          },
+          "max_workspaces": {
+            "type": "integer",
+            "example": 20
+          },
+          "permissions": {
+            "type": "object"
+          },
+          "admin": {
+            "type": "boolean",
+            "example": true
+          },
+          "owner": {
+            "type": "boolean",
+            "example": true
+          },
+          "pricing_plan_name": {
+            "type": "string",
+            "example": "Free"
+          },
+          "pricing_plan_enterprise": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "pricing_plan_id",
+          "created_at",
+          "at",
+          "server_deleted_at",
+          "is_multi_workspace_enabled",
+          "suspended_at",
+          "user_count",
+          "trial_info",
+          "is_unified",
+          "max_workspaces",
+          "permissions",
+          "admin",
+          "owner",
+          "pricing_plan_name",
+          "pricing_plan_enterprise"
+        ],
+        "example": {
+          "id": 2108099,
+          "name": "Atlantean Renaissance",
+          "pricing_plan_id": 0,
+          "created_at": "2020-07-01T07:42:35.365613Z",
+          "at": "2020-07-01T07:42:35.365613Z",
+          "server_deleted_at": null,
+          "is_multi_workspace_enabled": false,
+          "suspended_at": null,
+          "user_count": 1,
+          "trial_info": {
+            "trial": false,
+            "trial_available": true,
+            "trial_end_date": null,
+            "next_payment_date": null,
+            "last_pricing_plan_id": null,
+            "can_have_trial": true,
+            "trial_plan_id": null
+          },
+          "is_unified": false,
+          "max_workspaces": 20,
+          "permissions": null,
+          "admin": true,
+          "owner": true,
+          "pricing_plan_name": "Free",
+          "pricing_plan_enterprise": false
+        }
+      },
+      "ListMeOrganizationsOkJSONResponseItemsTrialInfo": {
+        "type": "object",
+        "properties": {
+          "trial": {
+            "type": "boolean",
+            "example": false
+          },
+          "trial_available": {
+            "type": "boolean",
+            "example": true
+          },
+          "trial_end_date": {
+            "type": "object"
+          },
+          "next_payment_date": {
+            "type": "object"
+          },
+          "last_pricing_plan_id": {
+            "type": "object"
+          },
+          "can_have_trial": {
+            "type": "boolean",
+            "example": true
+          },
+          "trial_plan_id": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "trial",
+          "trial_available",
+          "trial_end_date",
+          "next_payment_date",
+          "last_pricing_plan_id",
+          "can_have_trial",
+          "trial_plan_id"
+        ],
+        "example": {
+          "trial": false,
+          "trial_available": true,
+          "trial_end_date": null,
+          "next_payment_date": null,
+          "last_pricing_plan_id": null,
+          "can_have_trial": true,
+          "trial_plan_id": null
+        }
       }
     },
     "responses": {
@@ -2440,6 +2676,72 @@
               "workspace_id": 9009928,
               "workspace_name": "Your Workspace"
             }
+          }
+        }
+      },
+      "ListMeOrganizationsOkResponse": {
+        "description": "TODO",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ListMeOrganizationsOkJSONResponse"
+            },
+            "example": [
+              {
+                "id": 2108099,
+                "name": "Atlantean Renaissance",
+                "pricing_plan_id": 0,
+                "created_at": "2020-07-01T07:42:35.365613Z",
+                "at": "2020-07-01T07:42:35.365613Z",
+                "server_deleted_at": null,
+                "is_multi_workspace_enabled": false,
+                "suspended_at": null,
+                "user_count": 1,
+                "trial_info": {
+                  "trial": false,
+                  "trial_available": true,
+                  "trial_end_date": null,
+                  "next_payment_date": null,
+                  "last_pricing_plan_id": null,
+                  "can_have_trial": true,
+                  "trial_plan_id": null
+                },
+                "is_unified": false,
+                "max_workspaces": 20,
+                "permissions": null,
+                "admin": true,
+                "owner": true,
+                "pricing_plan_name": "Free",
+                "pricing_plan_enterprise": false
+              },
+              {
+                "id": 9011051,
+                "name": "Your Organization",
+                "pricing_plan_id": 0,
+                "created_at": "2024-12-16T19:09:07.041832Z",
+                "at": "2024-12-16T19:09:07.041832Z",
+                "server_deleted_at": null,
+                "is_multi_workspace_enabled": false,
+                "suspended_at": null,
+                "user_count": 1,
+                "trial_info": {
+                  "trial": false,
+                  "trial_available": true,
+                  "trial_end_date": null,
+                  "next_payment_date": null,
+                  "last_pricing_plan_id": null,
+                  "can_have_trial": true,
+                  "trial_plan_id": null
+                },
+                "is_unified": false,
+                "max_workspaces": 20,
+                "permissions": null,
+                "admin": true,
+                "owner": true,
+                "pricing_plan_name": "Free",
+                "pricing_plan_enterprise": false
+              }
+            ]
           }
         }
       }
