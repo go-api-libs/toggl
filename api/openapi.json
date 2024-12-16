@@ -2542,15 +2542,18 @@
           },
           "trial_end_date": {
             "description": "When the trial ends",
-            "type": "string"
+            "type": "string",
+            "x-nullable": true
           },
           "next_payment_date": {
             "description": "When the trial payment is due",
-            "type": "string"
+            "type": "string",
+            "x-nullable": true
           },
           "last_pricing_plan_id": {
             "description": "What was the previous plan before the trial",
-            "type": "integer"
+            "type": "integer",
+            "x-nullable": true
           },
           "can_have_trial": {
             "description": "True, if neither the organization nor the owner has never had a trial before",
@@ -2558,7 +2561,8 @@
             "example": true
           },
           "trial_plan_id": {
-            "type": "object"
+            "type": "object",
+            "x-nullable": true
           }
         },
         "required": [

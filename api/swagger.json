@@ -23596,23 +23596,6 @@
                 }
             }
         },
-        "models.TrialInfo": {
-            "type": "object",
-            "properties": {
-                "last_pricing_plan_id": {
-                    "x-nullable": true
-                },
-                "next_payment_date": {
-                    "x-nullable": true
-                },
-                "trial_end_date": {
-                    "x-nullable": true
-                },
-                "trial_plan_id": {
-                    "x-nullable": true
-                }
-            }
-        },
         "models.UnifiedSubscriptionInvoice": {
             "type": "object",
             "properties": {
