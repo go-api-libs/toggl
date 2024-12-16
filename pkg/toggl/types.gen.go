@@ -207,14 +207,15 @@ type Workspaces []Workspace
 
 // Workspace defines a model
 type Workspace struct {
-	ID                          int       `json:"id,omitzero"`
-	OrganizationID              int       `json:"organization_id,omitzero"`
-	Name                        string    `json:"name,omitzero"`
-	Premium                     bool      `json:"premium,omitzero"`
-	BusinessWs                  bool      `json:"business_ws,omitzero"`
-	Admin                       bool      `json:"admin,omitzero"`
-	Role                        string    `json:"role,omitzero"`
-	SuspendedAt                 struct{}  `json:"suspended_at"`
+	ID             int    `json:"id,omitzero"`
+	OrganizationID int    `json:"organization_id,omitzero"`
+	Name           string `json:"name,omitzero"`
+	Premium        bool   `json:"premium,omitzero"`
+	BusinessWs     bool   `json:"business_ws,omitzero"`
+	Admin          bool   `json:"admin,omitzero"`
+	Role           string `json:"role,omitzero"`
+	// Whether the organization is currently suspended
+	SuspendedAt                 string    `json:"suspended_at,omitzero"`
 	ServerDeletedAt             struct{}  `json:"server_deleted_at"`
 	DefaultHourlyRate           struct{}  `json:"default_hourly_rate"`
 	RateLastUpdated             struct{}  `json:"rate_last_updated"`
@@ -329,32 +330,52 @@ type Organizations []Organization
 
 // Organization defines a model
 type Organization struct {
-	ID                      int                   `json:"id,omitzero"`
-	Name                    string                `json:"name,omitzero"`
-	PricingPlanID           int                   `json:"pricing_plan_id,omitzero"`
-	CreatedAt               time.Time             `json:"created_at,omitzero"`
-	At                      time.Time             `json:"at,omitzero"`
-	ServerDeletedAt         struct{}              `json:"server_deleted_at"`
-	IsMultiWorkspaceEnabled bool                  `json:"is_multi_workspace_enabled,omitzero"`
-	SuspendedAt             struct{}              `json:"suspended_at"`
-	UserCount               int                   `json:"user_count,omitzero"`
-	TrialInfo               OrganizationTrialInfo `json:"trial_info"`
-	IsUnified               bool                  `json:"is_unified,omitzero"`
-	MaxWorkspaces           int                   `json:"max_workspaces,omitzero"`
-	Permissions             struct{}              `json:"permissions"`
-	Admin                   bool                  `json:"admin,omitzero"`
-	Owner                   bool                  `json:"owner,omitzero"`
-	PricingPlanName         string                `json:"pricing_plan_name,omitzero"`
-	PricingPlanEnterprise   bool                  `json:"pricing_plan_enterprise,omitzero"`
+	// Organization ID
+	ID int `json:"id,omitzero"`
+	// Organization Name
+	Name string `json:"name,omitzero"`
+	// Organization plan ID
+	PricingPlanID int `json:"pricing_plan_id,omitzero"`
+	// Organization's creation date
+	CreatedAt time.Time `json:"created_at,omitzero"`
+	// Organization's last modification date
+	At              time.Time `json:"at,omitzero"`
+	ServerDeletedAt struct{}  `json:"server_deleted_at"`
+	// Is true when the organization option is_multi_workspace_enabled is set
+	IsMultiWorkspaceEnabled bool     `json:"is_multi_workspace_enabled,omitzero"`
+	SuspendedAt             struct{} `json:"suspended_at"`
+	// Number of organization users
+	UserCount int       `json:"user_count,omitzero"`
+	TrialInfo TrialInfo `json:"trial_info"`
+	IsUnified bool      `json:"is_unified,omitzero"`
+	// Maximum number of workspaces allowed for the organization
+	MaxWorkspaces int    `json:"max_workspaces,omitzero"`
+	Permissions   string `json:"permissions,omitzero"`
+	// Whether the requester is an admin of the organization
+	Admin bool `json:"admin,omitzero"`
+	// Whether the requester is a the owner of the organization
+	Owner bool `json:"owner,omitzero"`
+	// The subscription plan name the org is currently on. Free or any plan name coming from payment provider
+	PricingPlanName string `json:"pricing_plan_name,omitzero"`
+	// The subscription plan is an enterprise plan
+	PricingPlanEnterprise bool `json:"pricing_plan_enterprise,omitzero"`
+	// How far back free workspaces in this org can access data.
+	MaxDataRetentionDays *int `json:"max_data_retention_days,omitempty"`
 }
 
-// OrganizationTrialInfo defines a model
-type OrganizationTrialInfo struct {
-	Trial             bool     `json:"trial,omitzero"`
-	TrialAvailable    bool     `json:"trial_available,omitzero"`
-	TrialEndDate      struct{} `json:"trial_end_date"`
-	NextPaymentDate   struct{} `json:"next_payment_date"`
-	LastPricingPlanID struct{} `json:"last_pricing_plan_id"`
-	CanHaveTrial      bool     `json:"can_have_trial,omitzero"`
-	TrialPlanID       struct{} `json:"trial_plan_id"`
+// TrialInfo defines a model
+type TrialInfo struct {
+	// Whether the organization's subscription is currently on trial
+	Trial bool `json:"trial,omitzero"`
+	// When a trial is available for this organization
+	TrialAvailable bool `json:"trial_available,omitzero"`
+	// When the trial ends
+	TrialEndDate string `json:"trial_end_date,omitzero"`
+	// When the trial payment is due
+	NextPaymentDate string `json:"next_payment_date,omitzero"`
+	// What was the previous plan before the trial
+	LastPricingPlanID int `json:"last_pricing_plan_id,omitzero"`
+	// True, if neither the organization nor the owner has never had a trial before
+	CanHaveTrial bool     `json:"can_have_trial,omitzero"`
+	TrialPlanID  struct{} `json:"trial_plan_id"`
 }

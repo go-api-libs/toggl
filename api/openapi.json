@@ -1964,7 +1964,8 @@
             "example": "admin"
           },
           "suspended_at": {
-            "type": "object"
+            "description": "Whether the organization is currently suspended",
+            "type": "string"
           },
           "server_deleted_at": {
             "type": "object"
@@ -2397,23 +2398,28 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Organization ID",
             "type": "integer",
             "example": 2108099
           },
           "name": {
+            "description": "Organization Name",
             "type": "string",
             "example": "Your Organization"
           },
           "pricing_plan_id": {
+            "description": "Organization plan ID",
             "type": "integer",
             "example": 0
           },
           "created_at": {
+            "description": "Organization's creation date",
             "type": "string",
             "format": "date-time",
             "example": "2020-07-01T07:42:35.365613Z"
           },
           "at": {
+            "description": "Organization's last modification date",
             "type": "string",
             "format": "date-time",
             "example": "2020-07-01T07:42:35.365613Z"
@@ -2422,6 +2428,7 @@
             "type": "object"
           },
           "is_multi_workspace_enabled": {
+            "description": "Is true when the organization option is_multi_workspace_enabled is set",
             "type": "boolean",
             "example": false
           },
@@ -2429,38 +2436,48 @@
             "type": "object"
           },
           "user_count": {
+            "description": "Number of organization users",
             "type": "integer",
             "example": 1
           },
           "trial_info": {
-            "$ref": "#/components/schemas/OrganizationTrialInfo"
+            "$ref": "#/components/schemas/TrialInfo"
           },
           "is_unified": {
             "type": "boolean",
             "example": false
           },
           "max_workspaces": {
+            "description": "Maximum number of workspaces allowed for the organization",
             "type": "integer",
             "example": 20
           },
           "permissions": {
-            "type": "object"
+            "type": "string"
           },
           "admin": {
+            "description": "Whether the requester is an admin of the organization",
             "type": "boolean",
             "example": true
           },
           "owner": {
+            "description": "Whether the requester is a the owner of the organization",
             "type": "boolean",
             "example": true
           },
           "pricing_plan_name": {
+            "description": "The subscription plan name the org is currently on. Free or any plan name coming from payment provider",
             "type": "string",
             "example": "Free"
           },
           "pricing_plan_enterprise": {
+            "description": "The subscription plan is an enterprise plan",
             "type": "boolean",
             "example": false
+          },
+          "max_data_retention_days": {
+            "description": "How far back free workspaces in this org can access data.",
+            "type": "integer"
           }
         },
         "required": [
@@ -2510,27 +2527,33 @@
           "pricing_plan_enterprise": false
         }
       },
-      "OrganizationTrialInfo": {
+      "TrialInfo": {
         "type": "object",
         "properties": {
           "trial": {
+            "description": "Whether the organization's subscription is currently on trial",
             "type": "boolean",
             "example": false
           },
           "trial_available": {
+            "description": "When a trial is available for this organization",
             "type": "boolean",
             "example": true
           },
           "trial_end_date": {
-            "type": "object"
+            "description": "When the trial ends",
+            "type": "string"
           },
           "next_payment_date": {
-            "type": "object"
+            "description": "When the trial payment is due",
+            "type": "string"
           },
           "last_pricing_plan_id": {
-            "type": "object"
+            "description": "What was the previous plan before the trial",
+            "type": "integer"
           },
           "can_have_trial": {
+            "description": "True, if neither the organization nor the owner has never had a trial before",
             "type": "boolean",
             "example": true
           },
