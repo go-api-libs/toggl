@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -37,7 +38,12 @@ func probe() error {
 
 	ts := time.Now().Add(-4 * time.Hour)
 
-	req, err := http.NewRequest(http.MethodGet, serverURL+"/me/time_entries?since="+strconv.Itoa(int(ts.Unix())), nil)
+	q := url.Values{
+		"since":  []string{strconv.Itoa(int(ts.Unix()))},
+		"before": []string{time.Now().Add(-time.Hour).Format(time.RFC3339)},
+	}
+
+	req, err := http.NewRequest(http.MethodGet, serverURL+"/me/time_entries?"+q.Encode(), nil)
 	if err != nil {
 		return err
 	}
