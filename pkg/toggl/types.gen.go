@@ -19,9 +19,13 @@ type GetMeParams struct {
 
 type GetTimeEntriesParams struct {
 	// Get entries modified since this date using UNIX timestamp, including deleted ones.
-	Since     int
+	Since int
+	// Get entries with start time before the given date.
+	Before time.Time
+	// Get entries with start time from the given time. To be used with end_date.
 	StartDate string
-	EndDate   string
+	// Get entries with start time until the given time. To be used with start_date.
+	EndDate string
 }
 
 // UserWithRelated defines a model
