@@ -102,6 +102,24 @@
           }
         }
       }
+    },
+    "/me/time_entries": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/start_date"
+        },
+        {
+          "$ref": "#/components/parameters/end_date"
+        }
+      ],
+      "get": {
+        "operationId": "ListMeTimeEntries",
+        "responses": {
+          "400": {
+            "$ref": "#/components/responses/ListMeTimeEntriesBadRequestResponse"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3455,6 +3473,9 @@
       "UnauthorizedResponse": {
         "description": "User is unauthorized to use the API"
       },
+      "BadRequestResponse": {
+        "$ref": "#/components/responses/ListMeTimeEntriesBadRequestResponse"
+      },
       "UserResponse": {
         "description": "Returns the user.",
         "content": {
@@ -3518,7 +3539,7 @@
           }
         }
       },
-      "BadRequestResponse": {
+      "ListMeTimeEntriesBadRequestResponse": {
         "description": "Returned when the user made a bad request",
         "content": {
           "application/json": {
@@ -3560,6 +3581,24 @@
           "type": "integer",
           "example": 3730303299
         }
+      },
+      "start_date": {
+        "name": "start_date",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "example": "1984-03-10"
+        },
+        "example": "1984-03-10"
+      },
+      "end_date": {
+        "name": "end_date",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "example": "1984-03-12"
+        },
+        "example": "1984-03-12"
       }
     },
     "requestBodies": {

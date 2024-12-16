@@ -296,3 +296,61 @@ func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeE
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
+
+// ListMeTimeEntries defines an operation.
+//
+//	GET /me/time_entries
+func (c *Client) ListMeTimeEntries(ctx context.Context, params *ListMeTimeEntriesParams) error {
+	u := baseURL.JoinPath("/me/time_entries")
+
+	if params != nil {
+		q := make(url.Values, 2)
+
+		if params.StartDate != "" {
+			q["start_date"] = []string{params.StartDate}
+		}
+
+		if params.EndDate != "" {
+			q["end_date"] = []string{params.EndDate}
+		}
+
+		u.RawQuery = q.Encode()
+	}
+
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodGet,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusBadRequest:
+		// Returned when the user made a bad request
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out APIErrorString
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return api.WrapDecodingError(rsp, err)
+			}
+
+			return api.NewErrCustom(rsp, &out)
+		default:
+			return api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return api.NewErrUnknownStatusCode(rsp)
+	}
+}

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -37,7 +36,7 @@ func probe() error {
 
 	const timeEntryID = 3730303299
 
-	req, err := http.NewRequest(http.MethodPatch, serverURL+fmt.Sprintf("/workspaces/%d/time_entries/%d/stop", me.DefaultWorkspaceID, timeEntryID), nil)
+	req, err := http.NewRequest(http.MethodGet, serverURL+"/me/time_entries?start_date=1984-03-10&end_date=1984-03-12", nil)
 	if err != nil {
 		return err
 	}

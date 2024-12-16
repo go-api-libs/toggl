@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"maps"
 	"net/http"
+	"net/url"
+	"slices"
 	"strings"
 	"time"
 
@@ -55,12 +58,19 @@ func record() (*recorder.Recorder, error) {
 }
 
 func matcher(r *http.Request, i cassette.Request) bool {
-	if !cassette.DefaultMatcher(r, i) {
-		return false
+	u, err := url.Parse(i.URL)
+	if err != nil {
+		panic(err)
 	}
 
-	// compare also the request payload
-	return getBody(r) == i.Body
+	return r.Method == i.Method &&
+		r.URL.Scheme == u.Scheme &&
+		r.URL.Opaque == u.Opaque &&
+		r.URL.Host == r.Host &&
+		r.URL.Path == u.Path &&
+		r.URL.Fragment == u.Fragment &&
+		maps.EqualFunc(r.URL.Query(), u.Query(), slices.Equal) &&
+		getBody(r) == i.Body
 }
 
 func getBody(r *http.Request) string {

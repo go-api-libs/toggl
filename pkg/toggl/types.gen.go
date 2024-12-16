@@ -17,6 +17,11 @@ type GetMeParams struct {
 	WithRelatedData bool
 }
 
+type ListMeTimeEntriesParams struct {
+	StartDate string
+	EndDate   string
+}
+
 // UserWithRelated defines a model
 type UserWithRelated struct {
 	ID                 int         `json:"id,omitzero"`
