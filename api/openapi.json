@@ -2365,6 +2365,7 @@
       "since": {
         "name": "since",
         "in": "query",
+        "description": "Get entries modified since this date using UNIX timestamp, including deleted ones.",
         "schema": {
           "type": "integer",
           "example": 1734304527

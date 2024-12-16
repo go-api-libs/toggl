@@ -18,6 +18,7 @@ type GetMeParams struct {
 }
 
 type GetTimeEntriesParams struct {
+	// Get entries modified since this date using UNIX timestamp, including deleted ones.
 	Since     int
 	StartDate string
 	EndDate   string

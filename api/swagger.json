@@ -3484,12 +3484,6 @@
             "get": {
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Get entries modified since this date using UNIX timestamp, including deleted ones.",
-                        "name": "since",
-                        "in": "formData"
-                    },
-                    {
                         "type": "string",
                         "description": "Get entries with start time, before given date (YYYY-MM-DD) or with time in RFC3339 format.",
                         "name": "before",
