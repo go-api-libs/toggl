@@ -2334,7 +2334,7 @@
       "Organizations": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/OrganizationDetails"
+          "$ref": "#/components/schemas/Organization"
         },
         "example": [
           {
@@ -2393,7 +2393,7 @@
           }
         ]
       },
-      "OrganizationDetails": {
+      "Organization": {
         "type": "object",
         "properties": {
           "id": {
@@ -2433,7 +2433,7 @@
             "example": 1
           },
           "trial_info": {
-            "$ref": "#/components/schemas/OrganizationDetailsTrialInfo"
+            "$ref": "#/components/schemas/OrganizationTrialInfo"
           },
           "is_unified": {
             "type": "boolean",
@@ -2510,7 +2510,7 @@
           "pricing_plan_enterprise": false
         }
       },
-      "OrganizationDetailsTrialInfo": {
+      "OrganizationTrialInfo": {
         "type": "object",
         "properties": {
           "trial": {

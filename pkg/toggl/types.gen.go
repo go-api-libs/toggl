@@ -325,31 +325,31 @@ type NewOrganization struct {
 }
 
 // Organizations defines a model
-type Organizations []OrganizationDetails
+type Organizations []Organization
 
-// OrganizationDetails defines a model
-type OrganizationDetails struct {
-	ID                      int                          `json:"id,omitzero"`
-	Name                    string                       `json:"name,omitzero"`
-	PricingPlanID           int                          `json:"pricing_plan_id,omitzero"`
-	CreatedAt               time.Time                    `json:"created_at,omitzero"`
-	At                      time.Time                    `json:"at,omitzero"`
-	ServerDeletedAt         struct{}                     `json:"server_deleted_at"`
-	IsMultiWorkspaceEnabled bool                         `json:"is_multi_workspace_enabled,omitzero"`
-	SuspendedAt             struct{}                     `json:"suspended_at"`
-	UserCount               int                          `json:"user_count,omitzero"`
-	TrialInfo               OrganizationDetailsTrialInfo `json:"trial_info"`
-	IsUnified               bool                         `json:"is_unified,omitzero"`
-	MaxWorkspaces           int                          `json:"max_workspaces,omitzero"`
-	Permissions             struct{}                     `json:"permissions"`
-	Admin                   bool                         `json:"admin,omitzero"`
-	Owner                   bool                         `json:"owner,omitzero"`
-	PricingPlanName         string                       `json:"pricing_plan_name,omitzero"`
-	PricingPlanEnterprise   bool                         `json:"pricing_plan_enterprise,omitzero"`
+// Organization defines a model
+type Organization struct {
+	ID                      int                   `json:"id,omitzero"`
+	Name                    string                `json:"name,omitzero"`
+	PricingPlanID           int                   `json:"pricing_plan_id,omitzero"`
+	CreatedAt               time.Time             `json:"created_at,omitzero"`
+	At                      time.Time             `json:"at,omitzero"`
+	ServerDeletedAt         struct{}              `json:"server_deleted_at"`
+	IsMultiWorkspaceEnabled bool                  `json:"is_multi_workspace_enabled,omitzero"`
+	SuspendedAt             struct{}              `json:"suspended_at"`
+	UserCount               int                   `json:"user_count,omitzero"`
+	TrialInfo               OrganizationTrialInfo `json:"trial_info"`
+	IsUnified               bool                  `json:"is_unified,omitzero"`
+	MaxWorkspaces           int                   `json:"max_workspaces,omitzero"`
+	Permissions             struct{}              `json:"permissions"`
+	Admin                   bool                  `json:"admin,omitzero"`
+	Owner                   bool                  `json:"owner,omitzero"`
+	PricingPlanName         string                `json:"pricing_plan_name,omitzero"`
+	PricingPlanEnterprise   bool                  `json:"pricing_plan_enterprise,omitzero"`
 }
 
-// OrganizationDetailsTrialInfo defines a model
-type OrganizationDetailsTrialInfo struct {
+// OrganizationTrialInfo defines a model
+type OrganizationTrialInfo struct {
 	Trial             bool     `json:"trial,omitzero"`
 	TrialAvailable    bool     `json:"trial_available,omitzero"`
 	TrialEndDate      struct{} `json:"trial_end_date"`
