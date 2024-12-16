@@ -16828,19 +16828,7 @@
         },
         "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
             "patch": {
-                "security": [
-                    {
-                        "BasicAuth": []
-                    }
-                ],
-                "description": "Stops a workspace time entry.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "time_entries"
-                ],
-                "summary": "Stop TimeEntry",
+              
                 "operationId": "patch-workspace-stop-time-entry-handler",
                 "parameters": [
                     {

@@ -79,14 +79,21 @@
         }
       }
     },
-    "/workspaces/{workspace_id}/time_entries/3730303299/stop": {
+    "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
       "parameters": [
         {
           "$ref": "#/components/parameters/workspace_id"
+        },
+        {
+          "$ref": "#/components/parameters/time_entry_id"
         }
       ],
       "patch": {
+        "tags": [
+          "time_entries"
+        ],
         "summary": "Stop an existing time entry",
+        "description": "Stops a workspace time entry.",
         "operationId": "PatchWorkspaces2230580TimeEntries3730303299Stop",
         "responses": {
           "200": {
@@ -3685,6 +3692,16 @@
         "schema": {
           "type": "integer",
           "example": 2230580
+        }
+      },
+      "time_entry_id": {
+        "name": "time_entry_id",
+        "in": "path",
+        "description": "TimeEntry ID.",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 3730303299
         }
       }
     },
