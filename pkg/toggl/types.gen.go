@@ -309,11 +309,25 @@ const (
 
 // SimpleOrganization defines a model
 type SimpleOrganization struct {
-	ID            int     `json:"id,omitzero"`
-	Name          string  `json:"name,omitzero"`
-	Permissions   *string `json:"permissions,omitempty"`
-	WorkspaceID   int     `json:"workspace_id,omitzero"`
-	WorkspaceName string  `json:"workspace_name,omitzero"`
+	ID                      int                          `json:"id,omitzero"`
+	Name                    string                       `json:"name,omitzero"`
+	Permissions             *string                      `json:"permissions,omitempty"`
+	WorkspaceID             int                          `json:"workspace_id,omitzero"`
+	WorkspaceName           string                       `json:"workspace_name,omitzero"`
+	PricingPlanID           *int                         `json:"pricing_plan_id,omitempty"`
+	CreatedAt               *time.Time                   `json:"created_at,omitempty"`
+	At                      *time.Time                   `json:"at,omitempty"`
+	ServerDeletedAt         *struct{}                    `json:"server_deleted_at,omitempty"`
+	IsMultiWorkspaceEnabled *bool                        `json:"is_multi_workspace_enabled,omitempty"`
+	SuspendedAt             *struct{}                    `json:"suspended_at,omitempty"`
+	UserCount               *int                         `json:"user_count,omitempty"`
+	TrialInfo               *SimpleOrganizationTrialInfo `json:"trial_info,omitempty"`
+	IsUnified               *bool                        `json:"is_unified,omitempty"`
+	MaxWorkspaces           *int                         `json:"max_workspaces,omitempty"`
+	Admin                   *bool                        `json:"admin,omitempty"`
+	Owner                   *bool                        `json:"owner,omitempty"`
+	PricingPlanName         *string                      `json:"pricing_plan_name,omitempty"`
+	PricingPlanEnterprise   *bool                        `json:"pricing_plan_enterprise,omitempty"`
 }
 
 // NewOrganization defines a model
@@ -380,29 +394,8 @@ type TrialInfo struct {
 	TrialPlanID  struct{} `json:"trial_plan_id"`
 }
 
-// GetOrganizations9011051OkJSONResponse defines a model
-type GetOrganizations9011051OkJSONResponse struct {
-	ID                      int                                            `json:"id,omitzero"`
-	Name                    string                                         `json:"name,omitzero"`
-	PricingPlanID           int                                            `json:"pricing_plan_id,omitzero"`
-	CreatedAt               time.Time                                      `json:"created_at,omitzero"`
-	At                      time.Time                                      `json:"at,omitzero"`
-	ServerDeletedAt         struct{}                                       `json:"server_deleted_at"`
-	IsMultiWorkspaceEnabled bool                                           `json:"is_multi_workspace_enabled,omitzero"`
-	SuspendedAt             struct{}                                       `json:"suspended_at"`
-	UserCount               int                                            `json:"user_count,omitzero"`
-	TrialInfo               GetOrganizations9011051OkJSONResponseTrialInfo `json:"trial_info"`
-	IsUnified               bool                                           `json:"is_unified,omitzero"`
-	MaxWorkspaces           int                                            `json:"max_workspaces,omitzero"`
-	Permissions             struct{}                                       `json:"permissions"`
-	Admin                   bool                                           `json:"admin,omitzero"`
-	Owner                   bool                                           `json:"owner,omitzero"`
-	PricingPlanName         string                                         `json:"pricing_plan_name,omitzero"`
-	PricingPlanEnterprise   bool                                           `json:"pricing_plan_enterprise,omitzero"`
-}
-
-// GetOrganizations9011051OkJSONResponseTrialInfo defines a model
-type GetOrganizations9011051OkJSONResponseTrialInfo struct {
+// SimpleOrganizationTrialInfo defines a model
+type SimpleOrganizationTrialInfo struct {
 	Trial             bool     `json:"trial,omitzero"`
 	TrialAvailable    bool     `json:"trial_available,omitzero"`
 	TrialEndDate      struct{} `json:"trial_end_date"`

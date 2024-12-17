@@ -255,12 +255,12 @@ func main() {
 	}
 
 	ctx := context.Background()
-	getOrganizations9011051OkJSONResponse, err := c.GetOrganizations9011051(ctx, 9011051)
+	simpleOrganization, err := c.GetOrganization(ctx, 9011051)
 	if err != nil {
 		panic(err)
 	}
 
-	// Use getOrganizations9011051OkJSONResponse object
+	// Use simpleOrganization object
 }
 
 ```

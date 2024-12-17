@@ -112,7 +112,7 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.GetOrganizations9011051(ctx, 9011051); err == nil {
+		if _, err := c.GetOrganization(ctx, 9011051); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -488,11 +488,11 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
-		t.Run("GetOrganizations9011051", func(t *testing.T) {
+		t.Run("GetOrganization", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if _, err := c.GetOrganizations9011051(ctx, 9011051); err == nil {
+			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
@@ -504,7 +504,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.GetOrganizations9011051(ctx, 9011051); err == nil {
+			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
@@ -517,7 +517,7 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.GetOrganizations9011051(ctx, 9011051); err == nil {
+			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
@@ -931,7 +931,7 @@ func TestClient_VCR(t *testing.T) {
 		}
 
 		{
-			res, err := c.GetOrganizations9011051(ctx, 9011051)
+			res, err := c.GetOrganization(ctx, 9011051)
 			if err != nil {
 				t.Fatal(err)
 			} else if res == nil {
