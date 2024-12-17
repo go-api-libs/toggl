@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -13,6 +12,7 @@ import (
 )
 
 const serverURL = "https://api.track.toggl.com/api/v9"
+const testOrgID = 9011051
 
 // probe calls the API server to check what we can do
 func probe() error {
@@ -24,11 +24,11 @@ func probe() error {
 		return err
 	}
 	_ = c
-
-	const testOrgID = 9011051
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
-		serverURL+"/organizations/"+strconv.Itoa(testOrgID),
-		nil,
+	return nil
+	// Creating a new workspace is easy as follow:
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
+		serverURL+"/signup",
+		strings.NewReader(`{"created_with": "script", "email": "test-user@test.com", "password": "S3cr3t12345.", "tos_accepted": true, "country_id": 102, "workspace": { "initial_pricing_plan": 0 }, "timezone": "Etc/UTC"}`),
 	)
 	if err != nil {
 		return err
@@ -90,15 +90,21 @@ func runAll(ctx context.Context, c *toggl.Client) error {
 	}
 
 	// Create a new organization
-	if _, err := c.CreateOrganization(ctx, toggl.NewOrganization{
+	org, err := c.CreateOrganization(ctx, toggl.NewOrganization{
 		Name:          "My Example Organization",
 		WorkspaceName: "My Default Workspace",
-	}); err != nil {
+	})
+	if err != nil {
 		return err
 	}
 
 	// List my organizations
 	if _, err := c.ListOrganizations(ctx); err != nil {
+		return err
+	}
+
+	// Get organization data
+	if _, err = c.GetOrganization(ctx, org.ID); err != nil {
 		return err
 	}
 

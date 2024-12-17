@@ -4213,22 +4213,7 @@
                         "OAuth2": []
                     }
                 ],
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Numeric ID of the organization",
-                        "name": "organization_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/models.MeOrganization"
-                        }
-                    },
                     "404": {
                         "description": "\u003cp\u003ePossible error messages:\u003c/p\u003e\u003cul\u003e\u003cli\u003eInvalid organization ID\u003c/li\u003e\u003cli\u003eUser not part of organization\u003c/li\u003e\u003c/ul\u003e"
                     }

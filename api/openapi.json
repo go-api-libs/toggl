@@ -2935,6 +2935,7 @@
       "organization_id": {
         "name": "organization_id",
         "in": "path",
+        "description": "Numeric ID of the organization",
         "required": true,
         "schema": {
           "type": "integer",
