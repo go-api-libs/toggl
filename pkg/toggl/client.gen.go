@@ -506,15 +506,15 @@ func ListOrganizations[R any](ctx context.Context, c *Client) (R, error) {
 // Returns organization name and current pricing plan
 //
 //	GET /organizations/{organization_id}
-func (c *Client) GetOrganizations9011051(ctx context.Context, organizationID int) (*GetOrganizations9011051OkJSONResponse, error) {
-	return GetOrganizations9011051[GetOrganizations9011051OkJSONResponse](ctx, c, organizationID)
+func (c *Client) GetOrganization(ctx context.Context, organizationID int) (*Organization, error) {
+	return GetOrganization[Organization](ctx, c, organizationID)
 }
 
 // Returns organization name and current pricing plan
 // You can define a custom result to unmarshal the response into.
 //
 //	GET /organizations/{organization_id}
-func GetOrganizations9011051[R any](ctx context.Context, c *Client, organizationID int) (*R, error) {
+func GetOrganization[R any](ctx context.Context, c *Client, organizationID int) (*R, error) {
 	u := baseURL.JoinPath("organizations", strconv.Itoa(organizationID))
 	req := (&http.Request{
 		Header: http.Header{
