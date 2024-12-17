@@ -4213,15 +4213,6 @@
                         "OAuth2": []
                     }
                 ],
-                "description": "Returns organization name and current pricing plan",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "organizations"
-                ],
-                "summary": "Organization data",
-                "operationId": "get-organization",
                 "parameters": [
                     {
                         "type": "integer",

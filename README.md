@@ -236,7 +236,7 @@ func main() {
 
 ```
 
-### Example 8: 
+### Example 8: Get organization data
 
 ```go
 package main
@@ -255,7 +255,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	getOrganizations9011051OkJSONResponse, err := c.GetOrganizations9011051(ctx)
+	getOrganizations9011051OkJSONResponse, err := c.GetOrganizations9011051(ctx, 9011051)
 	if err != nil {
 		panic(err)
 	}

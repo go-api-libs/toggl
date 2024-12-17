@@ -177,8 +177,18 @@
         }
       }
     },
-    "/organizations/9011051": {
+    "/organizations/{organization_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/organization_id"
+        }
+      ],
       "get": {
+        "tags": [
+          "organizations"
+        ],
+        "summary": "Get organization data",
+        "description": "Returns organization name and current pricing plan",
         "operationId": "GetOrganizations9011051",
         "responses": {
           "200": {
@@ -3084,6 +3094,16 @@
           "example": true
         },
         "example": true
+      },
+      "organization_id": {
+        "name": "organization_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 9011051
+        },
+        "example": 9011051
       }
     },
     "requestBodies": {
