@@ -157,7 +157,7 @@
         },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/OrganizationResponse"
+            "$ref": "#/components/responses/SimpleOrganizationResponse"
           }
         }
       }
@@ -2881,7 +2881,7 @@
           }
         }
       },
-      "OrganizationResponse": {
+      "SimpleOrganizationResponse": {
         "description": "Organization and workspace IDs",
         "content": {
           "application/json": {
