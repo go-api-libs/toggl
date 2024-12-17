@@ -236,6 +236,35 @@ func main() {
 
 ```
 
+### Example 8: 
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	getOrganizations9011051OkJSONResponse, err := c.GetOrganizations9011051(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use getOrganizations9011051OkJSONResponse object
+}
+
+```
+
 ## Additional Information
 
 - [**Go Reference**](https://pkg.go.dev/github.com/go-api-libs/toggl/pkg/toggl): The Go reference documentation for the client package.

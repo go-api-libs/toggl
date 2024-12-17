@@ -64,3 +64,66 @@ interactions:
         status: 200 OK
         code: 200
         duration: 289.484125ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.track.toggl.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Authorization:
+                - Basic ********************************************************
+        url: https://api.track.toggl.com/api/v9/organizations/9011051
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 543
+        uncompressed: false
+        body: '{"id":9011051,"name":"Your Organization","pricing_plan_id":0,"created_at":"2024-12-16T19:09:07.041832Z","at":"2024-12-16T19:09:07.041832Z","server_deleted_at":null,"is_multi_workspace_enabled":false,"suspended_at":null,"user_count":1,"trial_info":{"trial":false,"trial_available":true,"trial_end_date":null,"next_payment_date":null,"last_pricing_plan_id":null,"can_have_trial":true,"trial_plan_id":null},"is_unified":false,"max_workspaces":20,"permissions":null,"admin":true,"owner":true,"pricing_plan_name":"","pricing_plan_enterprise":false}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+            Cache-Control:
+                - no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0
+            Content-Length:
+                - "543"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Tue, 17 Dec 2024 00:01:54 GMT
+            Instance:
+                - track-public-api-proxy-66895d4956-zxq96
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Server:
+                - nginx
+            Strict-Transport-Security:
+                - max-age=15552000; includeSubDomains
+            Via:
+                - 1.1 google
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Request-Id:
+                - 568ab5bc012ac7317a1af029d9b4379b
+            X-Service-Level:
+                - GREEN
+            X-Toggl-Request-Id:
+                - 81184c1f-0672-4496-8b26-2d6973de6ebc
+            X-We-Are-Hiring:
+                - https://toggl.com/jobs/
+        status: 200 OK
+        code: 200
+        duration: 217.511625ms

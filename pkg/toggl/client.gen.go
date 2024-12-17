@@ -502,3 +502,54 @@ func ListOrganizations[R any](ctx context.Context, c *Client) (R, error) {
 		return out, api.NewErrUnknownStatusCode(rsp)
 	}
 }
+
+// GetOrganizations9011051 defines an operation.
+//
+//	GET /organizations/9011051
+func (c *Client) GetOrganizations9011051(ctx context.Context) (*GetOrganizations9011051OkJSONResponse, error) {
+	return GetOrganizations9011051[GetOrganizations9011051OkJSONResponse](ctx, c)
+}
+
+// GetOrganizations9011051 defines an operation.
+// You can define a custom result to unmarshal the response into.
+//
+//	GET /organizations/9011051
+func GetOrganizations9011051[R any](ctx context.Context, c *Client) (*R, error) {
+	u := baseURL.JoinPath("/organizations/9011051")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodGet,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// TODO
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return nil, api.NewErrUnknownStatusCode(rsp)
+	}
+}

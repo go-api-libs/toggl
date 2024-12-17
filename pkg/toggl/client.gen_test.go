@@ -111,6 +111,12 @@ func TestClient_Error(t *testing.T) {
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
+
+		if _, err := c.GetOrganizations9011051(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
 	})
 
 	t.Run("Unmarshal", func(t *testing.T) {
@@ -476,6 +482,42 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.ListOrganizations(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
+
+		t.Run("GetOrganizations9011051", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if _, err := c.GetOrganizations9011051(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.GetOrganizations9011051(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.GetOrganizations9011051(ctx); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
@@ -879,11 +921,22 @@ func TestClient_VCR(t *testing.T) {
 	t.Run("2024-12-17", func(t *testing.T) {
 		replay(t, "../../pkg/toggl/vcr/2024-12-17")
 
-		res, err := c.ListOrganizations(ctx)
-		if err != nil {
-			t.Fatal(err)
-		} else if res == nil {
-			t.Fatal("result is nil")
+		{
+			res, err := c.ListOrganizations(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.GetOrganizations9011051(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
 		}
 	})
 }

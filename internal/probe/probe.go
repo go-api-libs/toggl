@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -24,10 +25,10 @@ func probe() error {
 	}
 	_ = c
 
+	const testOrgID = 9011051
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
-		serverURL+"/me/organizations",
+		serverURL+"/organizations/"+strconv.Itoa(testOrgID),
 		nil,
-		// strings.NewReader(`{"name":"Your Organization","workspace_name":"Your Workspace"}`),
 	)
 	if err != nil {
 		return err
@@ -51,16 +52,13 @@ func maskSecrets(i *cassette.Interaction) error {
 }
 
 func runAll(ctx context.Context, c *toggl.Client) error {
-
+	// Return Current User
 	me, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
 	if err != nil {
 		return err
 	}
 
-	if _, err := c.GetCurrentTimeEntry(ctx); err != nil {
-		return err
-	}
-
+	// Create a time entry
 	if _, err := c.CreateTimeEntry(ctx, me.DefaultWorkspaceID, toggl.NewTimeEntry{
 		WorkspaceID: me.DefaultWorkspaceID,
 		Start:       time.Now().Add(-10 * time.Minute),
@@ -71,11 +69,36 @@ func runAll(ctx context.Context, c *toggl.Client) error {
 		return err
 	}
 
+	// Get current time entry
+	cur, err := c.GetCurrentTimeEntry(ctx)
+	if err != nil {
+		return err
+	}
+
+	// Stop an existing time entry
+	if _, err := c.StopTimeEntry(ctx, me.DefaultWorkspaceID, cur.ID); err != nil {
+		return err
+	}
+
+	// List time entries
 	now := time.Now()
 	if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
 		StartDate: now,
 		EndDate:   now,
 	}); err != nil {
+		return err
+	}
+
+	// Create a new organization
+	if _, err := c.CreateOrganization(ctx, toggl.NewOrganization{
+		Name:          "My Example Organization",
+		WorkspaceName: "My Default Workspace",
+	}); err != nil {
+		return err
+	}
+
+	// List my organizations
+	if _, err := c.ListOrganizations(ctx); err != nil {
 		return err
 	}
 
