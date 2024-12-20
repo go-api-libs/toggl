@@ -1983,38 +1983,6 @@
                 }
             }
         },
-        "/me/close_account": {
-            "post": {
-                "security": [
-                    {
-                        "BasicAuth": []
-                    }
-                ],
-                "description": "Close Account",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "me"
-                ],
-                "summary": "CloseAccount",
-                "operationId": "post-close-account",
-                "responses": {
-                    "200": {
-                        "description": "Successful operation.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/me/disable_product_emails/{disable_code}": {
             "post": {
                 "description": "Disable product emails.",
