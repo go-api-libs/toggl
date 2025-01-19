@@ -379,3 +379,19 @@ type TrialInfo struct {
 	CanHaveTrial bool     `json:"can_have_trial,omitzero"`
 	TrialPlanID  struct{} `json:"trial_plan_id"`
 }
+
+// PostOrganizations9011051WorkspacesJSONRequestBody defines a model
+type PostOrganizations9011051WorkspacesJSONRequestBody struct {
+	Admins                      []int  `json:"admins,omitempty"`
+	DefaultCurrency             string `json:"default_currency,omitzero"`
+	DefaultHourlyRate           int    `json:"default_hourly_rate,omitzero"`
+	InitialPricingPlan          int    `json:"initial_pricing_plan,omitzero"`
+	Name                        string `json:"name,omitzero"`
+	OnlyAdminsMayCreateProjects bool   `json:"only_admins_may_create_projects,omitzero"`
+	OnlyAdminsSeeBillableRates  bool   `json:"only_admins_see_billable_rates,omitzero"`
+	OnlyAdminsSeeTeamDashboard  bool   `json:"only_admins_see_team_dashboard,omitzero"`
+	OrganizationID              int    `json:"organizationID,omitzero"`
+	ProjectsBillableByDefault   bool   `json:"projects_billable_by_default,omitzero"`
+	Rounding                    int    `json:"rounding,omitzero"`
+	RoundingMinutes             int    `json:"rounding_minutes,omitzero"`
+}

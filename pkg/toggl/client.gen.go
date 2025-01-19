@@ -33,12 +33,12 @@ var (
 
 	jsonOpts = json.JoinOptions(
 		json.RejectUnknownMembers(true),
-		json.WithMarshalers(json.NewMarshalers(
-			json.MarshalFuncV2(jsonutil.URLMarshal),
-			json.MarshalFuncV2(jsonutil.DurationMarshalIntSeconds))),
-		json.WithUnmarshalers(json.NewUnmarshalers(
-			json.UnmarshalFuncV2(jsonutil.URLUnmarshal),
-			json.UnmarshalFuncV2(jsonutil.DurationUnmarshalIntSeconds))))
+		json.WithMarshalers(json.JoinMarshalers(
+			json.MarshalToFunc(jsonutil.URLMarshal),
+			json.MarshalToFunc(jsonutil.DurationMarshalIntSeconds))),
+		json.WithUnmarshalers(json.JoinUnmarshalers(
+			json.UnmarshalFromFunc(jsonutil.URLUnmarshal),
+			json.UnmarshalFromFunc(jsonutil.DurationUnmarshalIntSeconds))))
 )
 
 // Client conforms to the OpenAPI3 specification for this service.
