@@ -23,8 +23,10 @@ func probe() error {
 	if err != nil {
 		return err
 	}
+
 	_ = c
 	return nil
+
 	// Creating a new workspace is easy as follow:
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
 		serverURL+"/signup",

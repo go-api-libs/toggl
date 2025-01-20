@@ -38,12 +38,7 @@
           "401": {
             "$ref": "#/components/responses/UnauthorizedResponse"
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     },
     "/workspaces/{workspace_id}/time_entries": {
@@ -69,12 +64,7 @@
           "400": {
             "$ref": "#/components/responses/BadRequestResponse"
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     },
     "/me/time_entries/current": {
@@ -89,12 +79,7 @@
           "200": {
             "$ref": "#/components/responses/TimeEntryResponse"
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     },
     "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
@@ -118,12 +103,7 @@
             "$ref": "#/components/responses/TimeEntryResponse",
             "description": "The stopped workspace TimeEntry."
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     },
     "/me/time_entries": {
@@ -161,12 +141,7 @@
           "400": {
             "$ref": "#/components/responses/BadRequestResponse"
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     },
     "/organizations": {
@@ -184,12 +159,7 @@
           "200": {
             "$ref": "#/components/responses/SimpleOrganizationResponse"
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     },
     "/me/organizations": {
@@ -204,12 +174,7 @@
           "200": {
             "$ref": "#/components/responses/OrganizationsResponse"
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     },
     "/organizations/{organization_id}": {
@@ -228,27 +193,6 @@
         "responses": {
           "200": {
             "$ref": "#/components/responses/OrganizationResponse"
-          }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
-      }
-    },
-    "/organizations/9011051/workspaces": {
-      "post": {
-        "operationId": "PostOrganizations9011051Workspaces",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/PostOrganizations9011051WorkspacesRequestBody"
-        },
-        "responses": {
-          "403": {
-            "$ref": "#/components/responses/PostOrganizations9011051WorkspacesForbiddenResponse"
-          },
-          "200": {
-            "$ref": "#/components/responses/PostOrganizations9011051WorkspacesOkResponse"
           }
         }
       }
@@ -645,95 +589,6 @@
             "pricing_plan_enterprise": false
           }
         ]
-      },
-      "PostOrganizations9011051WorkspacesJSONRequestBody": {
-        "type": "object",
-        "properties": {
-          "admins": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "example": 0
-            },
-            "example": [
-              0
-            ]
-          },
-          "default_currency": {
-            "type": "string",
-            "example": "string"
-          },
-          "default_hourly_rate": {
-            "type": "integer",
-            "example": 0
-          },
-          "initial_pricing_plan": {
-            "type": "integer",
-            "example": 0
-          },
-          "name": {
-            "type": "string",
-            "example": "string"
-          },
-          "only_admins_may_create_projects": {
-            "type": "boolean",
-            "example": true
-          },
-          "only_admins_see_billable_rates": {
-            "type": "boolean",
-            "example": true
-          },
-          "only_admins_see_team_dashboard": {
-            "type": "boolean",
-            "example": true
-          },
-          "organizationID": {
-            "type": "integer",
-            "example": 0
-          },
-          "projects_billable_by_default": {
-            "type": "boolean",
-            "example": true
-          },
-          "rounding": {
-            "type": "integer",
-            "example": 0
-          },
-          "rounding_minutes": {
-            "type": "integer",
-            "example": 0
-          }
-        },
-        "required": [
-          "admins",
-          "default_currency",
-          "default_hourly_rate",
-          "initial_pricing_plan",
-          "name",
-          "only_admins_may_create_projects",
-          "only_admins_see_billable_rates",
-          "only_admins_see_team_dashboard",
-          "organizationID",
-          "projects_billable_by_default",
-          "rounding",
-          "rounding_minutes"
-        ],
-        "example": {
-          "admins": [
-            0
-          ],
-          "default_currency": "string",
-          "default_hourly_rate": 0,
-          "initial_pricing_plan": 0,
-          "name": "string",
-          "only_admins_may_create_projects": true,
-          "only_admins_see_billable_rates": true,
-          "only_admins_see_team_dashboard": true,
-          "organizationID": 0,
-          "projects_billable_by_default": true,
-          "rounding": 0,
-          "rounding_minutes": 0
-        }
       },
       "Project": {
         "type": "object",
@@ -2868,20 +2723,6 @@
           }
         }
       },
-      "PostOrganizations9011051WorkspacesForbiddenResponse": {
-        "description": "TODO",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/APIErrorString"
-            },
-            "example": "User does not have access to this resource"
-          }
-        }
-      },
-      "PostOrganizations9011051WorkspacesOkResponse": {
-        "description": "TODO"
-      },
       "SimpleOrganizationResponse": {
         "description": "Organization and workspace IDs",
         "content": {
@@ -3115,32 +2956,6 @@
             "example": {
               "name": "Your Organization",
               "workspace_name": "Your Workspace"
-            }
-          }
-        }
-      },
-      "PostOrganizations9011051WorkspacesRequestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/PostOrganizations9011051WorkspacesJSONRequestBody"
-            },
-            "example": {
-              "admins": [
-                0
-              ],
-              "default_currency": "string",
-              "default_hourly_rate": 0,
-              "initial_pricing_plan": 0,
-              "name": "string",
-              "only_admins_may_create_projects": true,
-              "only_admins_see_billable_rates": true,
-              "only_admins_see_team_dashboard": true,
-              "organizationID": 0,
-              "projects_billable_by_default": true,
-              "rounding": 0,
-              "rounding_minutes": 0
             }
           }
         }

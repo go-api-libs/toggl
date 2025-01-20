@@ -118,20 +118,6 @@ func TestClient_Error(t *testing.T) {
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
-
-		if err := c.PostOrganizations9011051Workspaces(ctx, toggl.PostOrganizations9011051WorkspacesJSONRequestBody{
-			Admins:                      []int{},
-			DefaultCurrency:             "string",
-			Name:                        "string",
-			OnlyAdminsMayCreateProjects: true,
-			OnlyAdminsSeeBillableRates:  true,
-			OnlyAdminsSeeTeamDashboard:  true,
-			ProjectsBillableByDefault:   true,
-		}); err == nil {
-			t.Fatal("expected error")
-		} else if !errors.Is(err, testErr) {
-			t.Fatalf("want: %v, got: %v", testErr, err)
-		}
 	})
 
 	t.Run("Unmarshal", func(t *testing.T) {
@@ -533,66 +519,6 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &errDecode) {
-				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
-		})
-
-		t.Run("PostOrganizations9011051Workspaces", func(t *testing.T) {
-			// unknown status code
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
-
-			if err := c.PostOrganizations9011051Workspaces(ctx, toggl.PostOrganizations9011051WorkspacesJSONRequestBody{
-				Admins:                      []int{},
-				DefaultCurrency:             "string",
-				Name:                        "string",
-				OnlyAdminsMayCreateProjects: true,
-				OnlyAdminsSeeBillableRates:  true,
-				OnlyAdminsSeeTeamDashboard:  true,
-				ProjectsBillableByDefault:   true,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
-			}
-
-			// unknown content type for 403 Forbidden
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Header:     http.Header{"Content-Type": []string{"foo"}},
-				StatusCode: http.StatusForbidden,
-			}}
-
-			if err := c.PostOrganizations9011051Workspaces(ctx, toggl.PostOrganizations9011051WorkspacesJSONRequestBody{
-				Admins:                      []int{},
-				DefaultCurrency:             "string",
-				Name:                        "string",
-				OnlyAdminsMayCreateProjects: true,
-				OnlyAdminsSeeBillableRates:  true,
-				OnlyAdminsSeeTeamDashboard:  true,
-				ProjectsBillableByDefault:   true,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownContentType) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
-			}
-
-			// decoding error for known content type "application/json"
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-				StatusCode: http.StatusForbidden,
-			}}
-
-			if err := c.PostOrganizations9011051Workspaces(ctx, toggl.PostOrganizations9011051WorkspacesJSONRequestBody{
-				Admins:                      []int{},
-				DefaultCurrency:             "string",
-				Name:                        "string",
-				OnlyAdminsMayCreateProjects: true,
-				OnlyAdminsSeeBillableRates:  true,
-				OnlyAdminsSeeTeamDashboard:  true,
-				ProjectsBillableByDefault:   true,
-			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
