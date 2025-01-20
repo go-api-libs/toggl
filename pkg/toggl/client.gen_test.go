@@ -63,7 +63,23 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.ListOrganizations(ctx); err == nil {
+		if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+			CreatedWith: "github.com/go-api-libs/toggl",
+			Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
+			WorkspaceID: 2230580,
+		}); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
+
+		if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
+
+		if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -82,16 +98,22 @@ func TestClient_Error(t *testing.T) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
+		if _, err := c.CreateOrganization(ctx, toggl.NewOrganization{
+			Name:          "Your Organization",
+			WorkspaceName: "Your Workspace",
+		}); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
 		}
 
-		if _, err := c.CreateOrganization(ctx, toggl.NewOrganization{
-			Name:          "Your Organization",
-			WorkspaceName: "Your Workspace",
-		}); err == nil {
+		if _, err := c.ListOrganizations(ctx); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
+
+		if _, err := c.GetOrganization(ctx, 9011051); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -106,28 +128,6 @@ func TestClient_Error(t *testing.T) {
 			OnlyAdminsSeeTeamDashboard:  true,
 			ProjectsBillableByDefault:   true,
 		}); err == nil {
-			t.Fatal("expected error")
-		} else if !errors.Is(err, testErr) {
-			t.Fatalf("want: %v, got: %v", testErr, err)
-		}
-
-		if _, err := c.GetOrganization(ctx, 9011051); err == nil {
-			t.Fatal("expected error")
-		} else if !errors.Is(err, testErr) {
-			t.Fatalf("want: %v, got: %v", testErr, err)
-		}
-
-		if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-			CreatedWith: "github.com/go-api-libs/toggl",
-			Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
-			WorkspaceID: 2230580,
-		}); err == nil {
-			t.Fatal("expected error")
-		} else if !errors.Is(err, testErr) {
-			t.Fatalf("want: %v, got: %v", testErr, err)
-		}
-
-		if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -173,11 +173,15 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
-		t.Run("ListOrganizations", func(t *testing.T) {
+		t.Run("CreateTimeEntry", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
-			if _, err := c.ListOrganizations(ctx); err == nil {
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
@@ -189,7 +193,11 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.ListOrganizations(ctx); err == nil {
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
+				WorkspaceID: 2230580,
+			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
 				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
@@ -202,7 +210,116 @@ func TestClient_Error(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}}
 
-			if _, err := c.ListOrganizations(ctx); err == nil {
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
+				WorkspaceID: 2230580,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+
+			// unknown content type for 400 Bad Request
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusBadRequest,
+			}}
+
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
+				WorkspaceID: 2230580,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusBadRequest,
+			}}
+
+			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
+				WorkspaceID: 2230580,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
+
+		t.Run("GetCurrentTimeEntry", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
+
+		t.Run("StopTimeEntry", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
@@ -305,42 +422,6 @@ func TestClient_Error(t *testing.T) {
 			}
 		})
 
-		t.Run("GetCurrentTimeEntry", func(t *testing.T) {
-			// unknown status code
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
-
-			if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
-			}
-
-			// unknown content type for 200 OK
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Header:     http.Header{"Content-Type": []string{"foo"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownContentType) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
-			}
-
-			// decoding error for known content type "application/json"
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.GetCurrentTimeEntry(ctx); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &errDecode) {
-				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
-		})
-
 		t.Run("CreateOrganization", func(t *testing.T) {
 			// unknown status code
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
@@ -380,6 +461,78 @@ func TestClient_Error(t *testing.T) {
 				Name:          "Your Organization",
 				WorkspaceName: "Your Workspace",
 			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
+
+		t.Run("ListOrganizations", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if _, err := c.ListOrganizations(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.ListOrganizations(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.ListOrganizations(ctx); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
+
+		t.Run("GetOrganization", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+
+			// unknown content type for 200 OK
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusOK,
+			}}
+
+			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
@@ -440,159 +593,6 @@ func TestClient_Error(t *testing.T) {
 				OnlyAdminsSeeTeamDashboard:  true,
 				ProjectsBillableByDefault:   true,
 			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &errDecode) {
-				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
-		})
-
-		t.Run("GetOrganization", func(t *testing.T) {
-			// unknown status code
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
-
-			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
-			}
-
-			// unknown content type for 200 OK
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Header:     http.Header{"Content-Type": []string{"foo"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownContentType) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
-			}
-
-			// decoding error for known content type "application/json"
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.GetOrganization(ctx, 9011051); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &errDecode) {
-				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
-		})
-
-		t.Run("CreateTimeEntry", func(t *testing.T) {
-			// unknown status code
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
-			}
-
-			// unknown content type for 200 OK
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Header:     http.Header{"Content-Type": []string{"foo"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownContentType) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
-			}
-
-			// decoding error for known content type "application/json"
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &errDecode) {
-				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
-
-			// unknown content type for 400 Bad Request
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Header:     http.Header{"Content-Type": []string{"foo"}},
-				StatusCode: http.StatusBadRequest,
-			}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownContentType) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
-			}
-
-			// decoding error for known content type "application/json"
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-				StatusCode: http.StatusBadRequest,
-			}}
-
-			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
-				WorkspaceID: 2230580,
-			}); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.As(err, &errDecode) {
-				t.Fatalf("want: %v, got: %v", errDecode, err)
-			}
-		})
-
-		t.Run("StopTimeEntry", func(t *testing.T) {
-			// unknown status code
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
-
-			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
-			}
-
-			// unknown content type for 200 OK
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Header:     http.Header{"Content-Type": []string{"foo"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
-				t.Fatal("expected error")
-			} else if !errors.Is(err, api.ErrUnknownContentType) {
-				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
-			}
-
-			// decoding error for known content type "application/json"
-			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
-				Body:       io.NopCloser(strings.NewReader("{")),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-				StatusCode: http.StatusOK,
-			}}
-
-			if _, err := c.StopTimeEntry(ctx, 2230580, 3730303299); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)

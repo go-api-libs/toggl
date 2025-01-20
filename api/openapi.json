@@ -46,17 +46,77 @@
         ]
       }
     },
-    "/me/organizations": {
-      "get": {
+    "/workspaces/{workspace_id}/time_entries": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/workspace_id"
+        }
+      ],
+      "post": {
         "tags": [
-          "me"
+          "time_entries"
         ],
-        "summary": "List my organizations",
-        "description": "Get all organizations a given user is part of.",
-        "operationId": "ListOrganizations",
+        "summary": "Create a time entry",
+        "description": "Creates a new workspace TimeEntry.",
+        "operationId": "CreateTimeEntry",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/TimeEntry"
+        },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/OrganizationsResponse"
+            "$ref": "#/components/responses/TimeEntryResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      }
+    },
+    "/me/time_entries/current": {
+      "get": {
+        "tags": [
+          "time_entries"
+        ],
+        "summary": "Get current time entry",
+        "description": "Load running time entry for the current user.",
+        "operationId": "GetCurrentTimeEntry",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/TimeEntryResponse"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      }
+    },
+    "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/workspace_id"
+        },
+        {
+          "$ref": "#/components/parameters/time_entry_id"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "time_entries"
+        ],
+        "summary": "Stop an existing time entry",
+        "description": "Stops a workspace time entry.",
+        "operationId": "StopTimeEntry",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/TimeEntryResponse",
+            "description": "The stopped workspace TimeEntry."
           }
         },
         "security": [
@@ -109,26 +169,6 @@
         ]
       }
     },
-    "/me/time_entries/current": {
-      "get": {
-        "tags": [
-          "time_entries"
-        ],
-        "summary": "Get current time entry",
-        "description": "Load running time entry for the current user.",
-        "operationId": "GetCurrentTimeEntry",
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/TimeEntryResponse"
-          }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
-      }
-    },
     "/organizations": {
       "post": {
         "tags": [
@@ -152,20 +192,24 @@
         ]
       }
     },
-    "/organizations/9011051/workspaces": {
-      "post": {
-        "operationId": "PostOrganizations9011051Workspaces",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/PostOrganizations9011051WorkspacesRequestBody"
-        },
+    "/me/organizations": {
+      "get": {
+        "tags": [
+          "me"
+        ],
+        "summary": "List my organizations",
+        "description": "Get all organizations a given user is part of.",
+        "operationId": "ListOrganizations",
         "responses": {
-          "403": {
-            "$ref": "#/components/responses/PostOrganizations9011051WorkspacesForbiddenResponse"
-          },
           "200": {
-            "$ref": "#/components/responses/PostOrganizations9011051WorkspacesOkResponse"
+            "$ref": "#/components/responses/OrganizationsResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/organizations/{organization_id}": {
@@ -193,64 +237,20 @@
         ]
       }
     },
-    "/workspaces/{workspace_id}/time_entries": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/workspace_id"
-        }
-      ],
+    "/organizations/9011051/workspaces": {
       "post": {
-        "tags": [
-          "time_entries"
-        ],
-        "summary": "Create a time entry",
-        "description": "Creates a new workspace TimeEntry.",
-        "operationId": "CreateTimeEntry",
+        "operationId": "PostOrganizations9011051Workspaces",
         "requestBody": {
-          "$ref": "#/components/requestBodies/TimeEntry"
+          "$ref": "#/components/requestBodies/PostOrganizations9011051WorkspacesRequestBody"
         },
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/TimeEntryResponse"
+          "403": {
+            "$ref": "#/components/responses/PostOrganizations9011051WorkspacesForbiddenResponse"
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequestResponse"
-          }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
-      }
-    },
-    "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/workspace_id"
-        },
-        {
-          "$ref": "#/components/parameters/time_entry_id"
-        }
-      ],
-      "patch": {
-        "tags": [
-          "time_entries"
-        ],
-        "summary": "Stop an existing time entry",
-        "description": "Stops a workspace time entry.",
-        "operationId": "StopTimeEntry",
-        "responses": {
           "200": {
-            "$ref": "#/components/responses/TimeEntryResponse",
-            "description": "The stopped workspace TimeEntry."
+            "$ref": "#/components/responses/PostOrganizations9011051WorkspacesOkResponse"
           }
-        },
-        "security": [
-          {
-            "BasicAuth": []
-          }
-        ]
+        }
       }
     }
   },

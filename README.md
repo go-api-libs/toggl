@@ -47,7 +47,7 @@ func main() {
 
 ```
 
-### Example 2: List my organizations
+### Example 2: Create a time entry
 
 ```go
 package main
@@ -66,17 +66,79 @@ func main() {
 	}
 
 	ctx := context.Background()
-	organizations, err := c.ListOrganizations(ctx)
+	timeEntry, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+		CreatedWith: "github.com/go-api-libs/toggl",
+		Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
+		WorkspaceID: 2230580,
+	})
 	if err != nil {
 		panic(err)
 	}
 
-	// Use organizations slice
+	// Use timeEntry object
 }
 
 ```
 
-### Example 3: List time entries
+### Example 3: Get current time entry
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	timeEntry, err := c.GetCurrentTimeEntry(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use timeEntry object
+}
+
+```
+
+### Example 4: Stop an existing time entry
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	timeEntry, err := c.StopTimeEntry(ctx, 2230580, 3730303299)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use timeEntry object
+}
+
+```
+
+### Example 5: List time entries
 
 ```go
 package main
@@ -112,36 +174,7 @@ func main() {
 
 ```
 
-### Example 4: Get current time entry
-
-```go
-package main
-
-import (
-	"context"
-	"os"
-
-	"github.com/go-api-libs/toggl/pkg/toggl"
-)
-
-func main() {
-	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
-	if err != nil {
-		panic(err)
-	}
-
-	ctx := context.Background()
-	timeEntry, err := c.GetCurrentTimeEntry(ctx)
-	if err != nil {
-		panic(err)
-	}
-
-	// Use timeEntry object
-}
-
-```
-
-### Example 5: Create a new organization
+### Example 6: Create a new organization
 
 ```go
 package main
@@ -173,7 +206,65 @@ func main() {
 
 ```
 
-### Example 6: 
+### Example 7: List my organizations
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	organizations, err := c.ListOrganizations(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use organizations slice
+}
+
+```
+
+### Example 8: Get organization data
+
+```go
+package main
+
+import (
+	"context"
+	"os"
+
+	"github.com/go-api-libs/toggl/pkg/toggl"
+)
+
+func main() {
+	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	organization, err := c.GetOrganization(ctx, 9011051)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use organization object
+}
+
+```
+
+### Example 9: 
 
 ```go
 package main
@@ -204,97 +295,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-}
-
-```
-
-### Example 7: Get organization data
-
-```go
-package main
-
-import (
-	"context"
-	"os"
-
-	"github.com/go-api-libs/toggl/pkg/toggl"
-)
-
-func main() {
-	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
-	if err != nil {
-		panic(err)
-	}
-
-	ctx := context.Background()
-	organization, err := c.GetOrganization(ctx, 9011051)
-	if err != nil {
-		panic(err)
-	}
-
-	// Use organization object
-}
-
-```
-
-### Example 8: Create a time entry
-
-```go
-package main
-
-import (
-	"context"
-	"os"
-
-	"github.com/go-api-libs/toggl/pkg/toggl"
-)
-
-func main() {
-	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
-	if err != nil {
-		panic(err)
-	}
-
-	ctx := context.Background()
-	timeEntry, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
-		CreatedWith: "github.com/go-api-libs/toggl",
-		Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
-		WorkspaceID: 2230580,
-	})
-	if err != nil {
-		panic(err)
-	}
-
-	// Use timeEntry object
-}
-
-```
-
-### Example 9: Stop an existing time entry
-
-```go
-package main
-
-import (
-	"context"
-	"os"
-
-	"github.com/go-api-libs/toggl/pkg/toggl"
-)
-
-func main() {
-	c, err := toggl.NewClient("myUsername", os.Getenv("TOGGL_PASSWORD"))
-	if err != nil {
-		panic(err)
-	}
-
-	ctx := context.Background()
-	timeEntry, err := c.StopTimeEntry(ctx, 2230580, 3730303299)
-	if err != nil {
-		panic(err)
-	}
-
-	// Use timeEntry object
 }
 
 ```
