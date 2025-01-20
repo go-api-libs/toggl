@@ -553,3 +553,65 @@ func GetOrganization[R any](ctx context.Context, c *Client, organizationID int) 
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
+
+// PostOrganizations9011051Workspaces defines an operation.
+//
+//	POST /organizations/9011051/workspaces
+func (c *Client) PostOrganizations9011051Workspaces(ctx context.Context, reqBody PostOrganizations9011051WorkspacesJSONRequestBody) error {
+	return PostOrganizations9011051Workspaces(ctx, c, reqBody)
+}
+
+// PostOrganizations9011051Workspaces defines an operation.
+// You can define a custom request body to marshal.
+//
+//	POST /organizations/9011051/workspaces
+func PostOrganizations9011051Workspaces[B any](ctx context.Context, c *Client, reqBody B) error {
+	u := baseURL.JoinPath("/organizations/9011051/workspaces")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"Content-Type":  []string{"application/json"},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodPost,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	var pw *io.PipeWriter
+	req.Body, pw = io.Pipe()
+	defer req.Body.Close()
+	go func() {
+		pw.CloseWithError(json.MarshalWrite(pw, reqBody, jsonOpts))
+	}()
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusForbidden:
+		// TODO
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var errOut APIErrorString
+			if err := json.UnmarshalRead(rsp.Body, &errOut, jsonOpts); err != nil {
+				return api.WrapDecodingError(rsp, err)
+			}
+
+			return api.NewErrCustom(rsp, &errOut)
+		default:
+			return api.NewErrUnknownContentType(rsp)
+		}
+	case http.StatusOK:
+		// TODO
+		return api.NewErrStatusCode(rsp)
+	default:
+		return api.NewErrUnknownStatusCode(rsp)
+	}
+}

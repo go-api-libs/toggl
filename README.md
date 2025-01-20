@@ -3,7 +3,7 @@
 [![Official Documentation](https://img.shields.io/badge/docs-API-blue)](https://engineering.toggl.com/docs/)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-blue)](/api/openapi.json)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-api-libs/toggl)](https://goreportcard.com/report/github.com/go-api-libs/toggl)
-![Code Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
+![Code Coverage](https://img.shields.io/badge/coverage-67%25-yellowgreen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 The Toggl API allows developers to interact with Toggl's time tracking service programmatically. It provides endpoints for managing time entries, projects, clients, tags, and user information. With this API, you can automate time tracking, generate detailed reports, and integrate Toggl with other tools and services.
@@ -55,7 +55,6 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 
 	"github.com/go-api-libs/toggl/pkg/toggl"
 )
@@ -69,7 +68,7 @@ func main() {
 	ctx := context.Background()
 	timeEntry, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 		CreatedWith: "github.com/go-api-libs/toggl",
-		Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Location("")),
+		Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
 		WorkspaceID: 2230580,
 	})
 	if err != nil {
@@ -147,7 +146,6 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 
 	"github.com/go-api-libs/toggl/pkg/toggl"
 )
@@ -160,12 +158,12 @@ func main() {
 
 	ctx := context.Background()
 	timeEntries, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
-		Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Location("")),
-		EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Location("")),
+		Before:         mustParseTime("2024-12-16T03:25:20+01:00"),
+		EndDate:        mustParseTime("2024-12-16T03:25:20+01:00"),
 		IncludeSharing: true,
 		Meta:           true,
 		Since:          1734304527,
-		StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Location("")),
+		StartDate:      mustParseTime("2024-12-16T03:25:20+01:00"),
 	})
 	if err != nil {
 		panic(err)

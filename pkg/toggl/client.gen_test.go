@@ -12,6 +12,7 @@ import (
 	"maps"
 	"net/http"
 	"net/url"
+	"path"
 	"slices"
 	"strings"
 	"testing"
@@ -64,7 +65,7 @@ func TestClient_Error(t *testing.T) {
 
 		if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 			CreatedWith: "github.com/go-api-libs/toggl",
-			Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+			Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
 			WorkspaceID: 2230580,
 		}); err == nil {
 			t.Fatal("expected error")
@@ -85,12 +86,12 @@ func TestClient_Error(t *testing.T) {
 		}
 
 		if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
-			Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-			EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+			Before:         mustParseTime("2024-12-16T03:25:20+01:00"),
+			EndDate:        mustParseTime("2024-12-16T03:25:20+01:00"),
 			IncludeSharing: true,
 			Meta:           true,
 			Since:          1734304527,
-			StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+			StartDate:      mustParseTime("2024-12-16T03:25:20+01:00"),
 		}); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
@@ -113,6 +114,20 @@ func TestClient_Error(t *testing.T) {
 		}
 
 		if _, err := c.GetOrganization(ctx, 9011051); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, testErr) {
+			t.Fatalf("want: %v, got: %v", testErr, err)
+		}
+
+		if err := c.PostOrganizations9011051Workspaces(ctx, toggl.PostOrganizations9011051WorkspacesJSONRequestBody{
+			Admins:                      []int{},
+			DefaultCurrency:             "string",
+			Name:                        "string",
+			OnlyAdminsMayCreateProjects: true,
+			OnlyAdminsSeeBillableRates:  true,
+			OnlyAdminsSeeTeamDashboard:  true,
+			ProjectsBillableByDefault:   true,
+		}); err == nil {
 			t.Fatal("expected error")
 		} else if !errors.Is(err, testErr) {
 			t.Fatalf("want: %v, got: %v", testErr, err)
@@ -164,7 +179,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -180,7 +195,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -197,7 +212,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -213,7 +228,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -230,7 +245,7 @@ func TestClient_Error(t *testing.T) {
 
 			if _, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
 				CreatedWith: "github.com/go-api-libs/toggl",
-				Start:       time.Date(2024, time.December, 15, 21, 17, 59, 593648000, time.Local),
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
 				WorkspaceID: 2230580,
 			}); err == nil {
 				t.Fatal("expected error")
@@ -316,12 +331,12 @@ func TestClient_Error(t *testing.T) {
 			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
 
 			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
-				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         mustParseTime("2024-12-16T03:25:20+01:00"),
+				EndDate:        mustParseTime("2024-12-16T03:25:20+01:00"),
 				IncludeSharing: true,
 				Meta:           true,
 				Since:          1734304527,
-				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				StartDate:      mustParseTime("2024-12-16T03:25:20+01:00"),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
@@ -335,12 +350,12 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
-				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         mustParseTime("2024-12-16T03:25:20+01:00"),
+				EndDate:        mustParseTime("2024-12-16T03:25:20+01:00"),
 				IncludeSharing: true,
 				Meta:           true,
 				Since:          1734304527,
-				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				StartDate:      mustParseTime("2024-12-16T03:25:20+01:00"),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
@@ -355,12 +370,12 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
-				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         mustParseTime("2024-12-16T03:25:20+01:00"),
+				EndDate:        mustParseTime("2024-12-16T03:25:20+01:00"),
 				IncludeSharing: true,
 				Meta:           true,
 				Since:          1734304527,
-				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				StartDate:      mustParseTime("2024-12-16T03:25:20+01:00"),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
@@ -374,12 +389,12 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
-				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         mustParseTime("2024-12-16T03:25:20+01:00"),
+				EndDate:        mustParseTime("2024-12-16T03:25:20+01:00"),
 				IncludeSharing: true,
 				Meta:           true,
 				Since:          1734304527,
-				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				StartDate:      mustParseTime("2024-12-16T03:25:20+01:00"),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.Is(err, api.ErrUnknownContentType) {
@@ -394,12 +409,12 @@ func TestClient_Error(t *testing.T) {
 			}}
 
 			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
-				Before:         time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
-				EndDate:        time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				Before:         mustParseTime("2024-12-16T03:25:20+01:00"),
+				EndDate:        mustParseTime("2024-12-16T03:25:20+01:00"),
 				IncludeSharing: true,
 				Meta:           true,
 				Since:          1734304527,
-				StartDate:      time.Date(2024, time.December, 16, 3, 25, 20, 0, time.Local),
+				StartDate:      mustParseTime("2024-12-16T03:25:20+01:00"),
 			}); err == nil {
 				t.Fatal("expected error")
 			} else if !errors.As(err, &errDecode) {
@@ -523,7 +538,76 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("want: %v, got: %v", errDecode, err)
 			}
 		})
+
+		t.Run("PostOrganizations9011051Workspaces", func(t *testing.T) {
+			// unknown status code
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{StatusCode: http.StatusTeapot}}
+
+			if err := c.PostOrganizations9011051Workspaces(ctx, toggl.PostOrganizations9011051WorkspacesJSONRequestBody{
+				Admins:                      []int{},
+				DefaultCurrency:             "string",
+				Name:                        "string",
+				OnlyAdminsMayCreateProjects: true,
+				OnlyAdminsSeeBillableRates:  true,
+				OnlyAdminsSeeTeamDashboard:  true,
+				ProjectsBillableByDefault:   true,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownStatusCode) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownStatusCode, err)
+			}
+
+			// unknown content type for 403 Forbidden
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Header:     http.Header{"Content-Type": []string{"foo"}},
+				StatusCode: http.StatusForbidden,
+			}}
+
+			if err := c.PostOrganizations9011051Workspaces(ctx, toggl.PostOrganizations9011051WorkspacesJSONRequestBody{
+				Admins:                      []int{},
+				DefaultCurrency:             "string",
+				Name:                        "string",
+				OnlyAdminsMayCreateProjects: true,
+				OnlyAdminsSeeBillableRates:  true,
+				OnlyAdminsSeeTeamDashboard:  true,
+				ProjectsBillableByDefault:   true,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+
+			// decoding error for known content type "application/json"
+			http.DefaultClient.Transport = &testRoundTripper{rsp: &http.Response{
+				Body:       io.NopCloser(strings.NewReader("{")),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				StatusCode: http.StatusForbidden,
+			}}
+
+			if err := c.PostOrganizations9011051Workspaces(ctx, toggl.PostOrganizations9011051WorkspacesJSONRequestBody{
+				Admins:                      []int{},
+				DefaultCurrency:             "string",
+				Name:                        "string",
+				OnlyAdminsMayCreateProjects: true,
+				OnlyAdminsSeeBillableRates:  true,
+				OnlyAdminsSeeTeamDashboard:  true,
+				ProjectsBillableByDefault:   true,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &errDecode) {
+				t.Fatalf("want: %v, got: %v", errDecode, err)
+			}
+		})
 	})
+}
+
+func mustParseTime(value string) time.Time {
+	t, err := time.Parse(time.RFC3339Nano, value)
+	if err != nil {
+		panic(err)
+	}
+
+	return t
 }
 
 func replay(t *testing.T, cassette string) {
@@ -556,7 +640,7 @@ func matcher(r *http.Request, i cassette.Request) bool {
 		r.URL.Scheme == u.Scheme &&
 		r.URL.Opaque == u.Opaque &&
 		r.URL.Host == u.Host &&
-		r.URL.Path == u.Path &&
+		path.Clean("/"+r.URL.Path) == path.Clean("/"+u.Path) &&
 		r.URL.Fragment == u.Fragment &&
 		maps.EqualFunc(r.URL.Query(), u.Query(), slices.Equal) &&
 		getBody(r) == i.Body
@@ -592,4 +676,351 @@ func getBody(r *http.Request) string {
 	return string(b)
 }
 
+func TestClient_VCR(t *testing.T) {
+	ctx := context.Background()
 
+	c, err := toggl.NewClient("myUsername", "myPassword")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("2024-12-09", func(t *testing.T) {
+		replay(t, "vcr/2024-12-09")
+
+		if _, err := c.GetMe(ctx, nil); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, api.ErrStatusCode) {
+			t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
+		}
+	})
+
+	t.Run("2024-12-10", func(t *testing.T) {
+		replay(t, "vcr/2024-12-10")
+
+		if _, err := c.GetMe(ctx, nil); err == nil {
+			t.Fatal("expected error")
+		} else if !errors.Is(err, api.ErrStatusCode) {
+			t.Fatalf("want: %v, got: %v", api.ErrStatusCode, err)
+		}
+	})
+
+	t.Run("2024-12-11", func(t *testing.T) {
+		replay(t, "vcr/2024-12-11")
+
+		res, err := c.GetMe(ctx, nil)
+		if err != nil {
+			t.Fatal(err)
+		} else if res == nil {
+			t.Fatal("result is nil")
+		}
+	})
+
+	t.Run("2024-12-12", func(t *testing.T) {
+		replay(t, "vcr/2024-12-12")
+
+		{
+			res, err := c.GetMe(ctx, nil)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+	})
+
+	t.Run("2024-12-13", func(t *testing.T) {
+		replay(t, "vcr/2024-12-13")
+
+		{
+			res, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.GetCurrentTimeEntry(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+	})
+
+	t.Run("2024-12-14", func(t *testing.T) {
+		replay(t, "vcr/2024-12-14")
+
+		{
+			res, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.GetCurrentTimeEntry(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+	})
+
+	t.Run("2024-12-15", func(t *testing.T) {
+		replay(t, "vcr/2024-12-15")
+
+		{
+			res, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.GetCurrentTimeEntry(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       mustParseTime("2024-12-15T21:17:59.593648+01:00"),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Start:       mustParseTime("2024-12-15T21:19:39.215084+01:00"),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+	})
+
+	t.Run("2024-12-16", func(t *testing.T) {
+		replay(t, "vcr/2024-12-16")
+
+		{
+			res, err := c.GetMe(ctx, &toggl.GetMeParams{WithRelatedData: true})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.GetCurrentTimeEntry(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Duration:    time.Hour,
+				Start:       mustParseTime("2024-12-16T03:18:20.257412+01:00"),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Description: "Hello Toggl",
+				Start:       mustParseTime("2024-12-16T02:29:40.335227+01:00"),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Description: "Hello Toggl",
+				Duration:    -time.Second,
+				Start:       mustParseTime("2024-12-16T02:31:14.086355+01:00"),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.CreateTimeEntry(ctx, 2230580, toggl.NewTimeEntry{
+				CreatedWith: "github.com/go-api-libs/toggl",
+				Description: "Hello Toggl",
+				Duration:    -time.Second,
+				Start:       mustParseTime("2024-12-16T02:55:24.837112+01:00"),
+				WorkspaceID: 2230580,
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.StopTimeEntry(ctx, 2230580, 3730303299)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{Since: 1734304527})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			apiErr := &api.Error{}
+			if _, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
+				Before: mustParseTime("2024-12-16T03:25:20+01:00"),
+				Since:  1734305120,
+			}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.As(err, &apiErr) {
+				t.Fatalf("want: %T, got: %T", apiErr, err)
+			} else if !apiErr.IsCustom {
+				t.Fatalf("want custom, got: %t", apiErr.IsCustom)
+			}
+		}
+
+		{
+			res, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
+				EndDate:        mustParseTime("2024-12-16T18:52:53+01:00"),
+				IncludeSharing: true,
+				Meta:           true,
+				StartDate:      mustParseTime("2024-12-16T15:52:53+01:00"),
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
+				EndDate:   mustParseTime("2024-12-16T18:55:20+01:00"),
+				Meta:      true,
+				StartDate: mustParseTime("2024-12-16T15:55:20+01:00"),
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.ListTimeEntries(ctx, &toggl.ListTimeEntriesParams{
+				EndDate:        mustParseTime("2024-12-16T18:58:15+01:00"),
+				IncludeSharing: true,
+				StartDate:      mustParseTime("2024-12-16T15:58:15+01:00"),
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.CreateOrganization(ctx, toggl.NewOrganization{
+				Name:          "Your Organization",
+				WorkspaceName: "Your Workspace",
+			})
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.ListOrganizations(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+	})
+
+	t.Run("2024-12-17", func(t *testing.T) {
+		replay(t, "vcr/2024-12-17")
+
+		{
+			res, err := c.ListOrganizations(ctx)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+
+		{
+			res, err := c.GetOrganization(ctx, 9011051)
+			if err != nil {
+				t.Fatal(err)
+			} else if res == nil {
+				t.Fatal("result is nil")
+			}
+		}
+	})
+}

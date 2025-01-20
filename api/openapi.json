@@ -38,7 +38,12 @@
           "401": {
             "$ref": "#/components/responses/UnauthorizedResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/workspaces/{workspace_id}/time_entries": {
@@ -64,7 +69,12 @@
           "400": {
             "$ref": "#/components/responses/BadRequestResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/me/time_entries/current": {
@@ -79,7 +89,12 @@
           "200": {
             "$ref": "#/components/responses/TimeEntryResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
@@ -103,7 +118,12 @@
             "$ref": "#/components/responses/TimeEntryResponse",
             "description": "The stopped workspace TimeEntry."
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/me/time_entries": {
@@ -141,7 +161,12 @@
           "400": {
             "$ref": "#/components/responses/BadRequestResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/organizations": {
@@ -159,7 +184,12 @@
           "200": {
             "$ref": "#/components/responses/SimpleOrganizationResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/me/organizations": {
@@ -174,7 +204,12 @@
           "200": {
             "$ref": "#/components/responses/OrganizationsResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/organizations/{organization_id}": {
@@ -194,7 +229,12 @@
           "200": {
             "$ref": "#/components/responses/OrganizationResponse"
           }
-        }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
       }
     },
     "/organizations/9011051/workspaces": {
