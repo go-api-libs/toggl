@@ -124,91 +124,19 @@ func GetMe[R any](ctx context.Context, c *Client, params *GetMeParams) (*R, erro
 	}
 }
 
-// Creates a new workspace TimeEntry.
+// Get all organizations a given user is part of.
 //
-//	POST /workspaces/{workspace_id}/time_entries
-func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody NewTimeEntry) (*TimeEntry, error) {
-	return CreateTimeEntry[TimeEntry](ctx, c, workspaceID, reqBody)
+//	GET /me/organizations
+func (c *Client) ListOrganizations(ctx context.Context) (Organizations, error) {
+	return ListOrganizations[Organizations](ctx, c)
 }
 
-// Creates a new workspace TimeEntry.
-// You can define a custom request body to marshal and a custom result to unmarshal the response into.
-//
-//	POST /workspaces/{workspace_id}/time_entries
-func CreateTimeEntry[R any, B any](ctx context.Context, c *Client, workspaceID int, reqBody B) (*R, error) {
-	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
-	req := (&http.Request{
-		Header: http.Header{
-			"Authorization": []string{c.authHeader},
-			"Content-Type":  []string{"application/json"},
-			"User-Agent":    []string{userAgent},
-		},
-		Host:       u.Host,
-		Method:     http.MethodPost,
-		Proto:      "HTTP/1.1",
-		ProtoMajor: 1,
-		ProtoMinor: 1,
-		URL:        u,
-	}).WithContext(ctx)
-
-	var pw *io.PipeWriter
-	req.Body, pw = io.Pipe()
-	defer req.Body.Close()
-	go func() {
-		pw.CloseWithError(json.MarshalWrite(pw, reqBody, jsonOpts))
-	}()
-
-	rsp, err := c.cli.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer rsp.Body.Close()
-
-	switch rsp.StatusCode {
-	case http.StatusOK:
-		// Returns a time entry
-		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
-		case "application/json":
-			var out R
-			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
-				return nil, api.WrapDecodingError(rsp, err)
-			}
-
-			return &out, nil
-		default:
-			return nil, api.NewErrUnknownContentType(rsp)
-		}
-	case http.StatusBadRequest:
-		// Returned when the user made a bad request
-		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
-		case "application/json":
-			var errOut APIErrorString
-			if err := json.UnmarshalRead(rsp.Body, &errOut, jsonOpts); err != nil {
-				return nil, api.WrapDecodingError(rsp, err)
-			}
-
-			return nil, api.NewErrCustom(rsp, &errOut)
-		default:
-			return nil, api.NewErrUnknownContentType(rsp)
-		}
-	default:
-		return nil, api.NewErrUnknownStatusCode(rsp)
-	}
-}
-
-// Load running time entry for the current user.
-//
-//	GET /me/time_entries/current
-func (c *Client) GetCurrentTimeEntry(ctx context.Context) (*TimeEntry, error) {
-	return GetCurrentTimeEntry[TimeEntry](ctx, c)
-}
-
-// Load running time entry for the current user.
+// Get all organizations a given user is part of.
 // You can define a custom result to unmarshal the response into.
 //
-//	GET /me/time_entries/current
-func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
-	u := baseURL.JoinPath("/me/time_entries/current")
+//	GET /me/organizations
+func ListOrganizations[R any](ctx context.Context, c *Client) (R, error) {
+	u := baseURL.JoinPath("/me/organizations")
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.authHeader},
@@ -222,79 +150,28 @@ func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
 		URL:        u,
 	}).WithContext(ctx)
 
+	var out R
 	rsp, err := c.cli.Do(req)
 	if err != nil {
-		return nil, err
+		return out, err
 	}
 	defer rsp.Body.Close()
 
 	switch rsp.StatusCode {
 	case http.StatusOK:
-		// Returns a time entry
+		// Returns an array of organisations
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
 			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
-				return nil, api.WrapDecodingError(rsp, err)
+				return out, api.WrapDecodingError(rsp, err)
 			}
 
-			return &out, nil
+			return out, nil
 		default:
-			return nil, api.NewErrUnknownContentType(rsp)
+			return out, api.NewErrUnknownContentType(rsp)
 		}
 	default:
-		return nil, api.NewErrUnknownStatusCode(rsp)
-	}
-}
-
-// Stops a workspace time entry.
-//
-//	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
-func (c *Client) StopTimeEntry(ctx context.Context, workspaceID int, timeEntryID int) (*TimeEntry, error) {
-	return StopTimeEntry[TimeEntry](ctx, c, workspaceID, timeEntryID)
-}
-
-// Stops a workspace time entry.
-// You can define a custom result to unmarshal the response into.
-//
-//	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
-func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeEntryID int) (*R, error) {
-	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries", strconv.Itoa(timeEntryID), "stop")
-	req := (&http.Request{
-		Header: http.Header{
-			"Authorization": []string{c.authHeader},
-			"User-Agent":    []string{userAgent},
-		},
-		Host:       u.Host,
-		Method:     http.MethodPatch,
-		Proto:      "HTTP/1.1",
-		ProtoMajor: 1,
-		ProtoMinor: 1,
-		URL:        u,
-	}).WithContext(ctx)
-
-	rsp, err := c.cli.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer rsp.Body.Close()
-
-	switch rsp.StatusCode {
-	case http.StatusOK:
-		// Returns a time entry
-		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
-		case "application/json":
-			var out R
-			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
-				return nil, api.WrapDecodingError(rsp, err)
-			}
-
-			return &out, nil
-		default:
-			return nil, api.NewErrUnknownContentType(rsp)
-		}
-	default:
-		return nil, api.NewErrUnknownStatusCode(rsp)
+		return out, api.NewErrUnknownStatusCode(rsp)
 	}
 }
 
@@ -393,6 +270,57 @@ func ListTimeEntries[R any](ctx context.Context, c *Client, params *ListTimeEntr
 	}
 }
 
+// Load running time entry for the current user.
+//
+//	GET /me/time_entries/current
+func (c *Client) GetCurrentTimeEntry(ctx context.Context) (*TimeEntry, error) {
+	return GetCurrentTimeEntry[TimeEntry](ctx, c)
+}
+
+// Load running time entry for the current user.
+// You can define a custom result to unmarshal the response into.
+//
+//	GET /me/time_entries/current
+func GetCurrentTimeEntry[R any](ctx context.Context, c *Client) (*R, error) {
+	u := baseURL.JoinPath("/me/time_entries/current")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodGet,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// Returns a time entry
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return nil, api.NewErrUnknownStatusCode(rsp)
+	}
+}
+
 // Creates a new organization with a single workspace and assigns current user as the organization owner
 //
 //	POST /organizations
@@ -436,108 +364,6 @@ func CreateOrganization[R any, B any](ctx context.Context, c *Client, reqBody B)
 	switch rsp.StatusCode {
 	case http.StatusOK:
 		// Organization and workspace IDs
-		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
-		case "application/json":
-			var out R
-			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
-				return nil, api.WrapDecodingError(rsp, err)
-			}
-
-			return &out, nil
-		default:
-			return nil, api.NewErrUnknownContentType(rsp)
-		}
-	default:
-		return nil, api.NewErrUnknownStatusCode(rsp)
-	}
-}
-
-// Get all organizations a given user is part of.
-//
-//	GET /me/organizations
-func (c *Client) ListOrganizations(ctx context.Context) (Organizations, error) {
-	return ListOrganizations[Organizations](ctx, c)
-}
-
-// Get all organizations a given user is part of.
-// You can define a custom result to unmarshal the response into.
-//
-//	GET /me/organizations
-func ListOrganizations[R any](ctx context.Context, c *Client) (R, error) {
-	u := baseURL.JoinPath("/me/organizations")
-	req := (&http.Request{
-		Header: http.Header{
-			"Authorization": []string{c.authHeader},
-			"User-Agent":    []string{userAgent},
-		},
-		Host:       u.Host,
-		Method:     http.MethodGet,
-		Proto:      "HTTP/1.1",
-		ProtoMajor: 1,
-		ProtoMinor: 1,
-		URL:        u,
-	}).WithContext(ctx)
-
-	var out R
-	rsp, err := c.cli.Do(req)
-	if err != nil {
-		return out, err
-	}
-	defer rsp.Body.Close()
-
-	switch rsp.StatusCode {
-	case http.StatusOK:
-		// Returns an array of organisations
-		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
-		case "application/json":
-			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
-				return out, api.WrapDecodingError(rsp, err)
-			}
-
-			return out, nil
-		default:
-			return out, api.NewErrUnknownContentType(rsp)
-		}
-	default:
-		return out, api.NewErrUnknownStatusCode(rsp)
-	}
-}
-
-// Returns organization name and current pricing plan
-//
-//	GET /organizations/{organization_id}
-func (c *Client) GetOrganization(ctx context.Context, organizationID int) (*Organization, error) {
-	return GetOrganization[Organization](ctx, c, organizationID)
-}
-
-// Returns organization name and current pricing plan
-// You can define a custom result to unmarshal the response into.
-//
-//	GET /organizations/{organization_id}
-func GetOrganization[R any](ctx context.Context, c *Client, organizationID int) (*R, error) {
-	u := baseURL.JoinPath("organizations", strconv.Itoa(organizationID))
-	req := (&http.Request{
-		Header: http.Header{
-			"Authorization": []string{c.authHeader},
-			"User-Agent":    []string{userAgent},
-		},
-		Host:       u.Host,
-		Method:     http.MethodGet,
-		Proto:      "HTTP/1.1",
-		ProtoMajor: 1,
-		ProtoMinor: 1,
-		URL:        u,
-	}).WithContext(ctx)
-
-	rsp, err := c.cli.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer rsp.Body.Close()
-
-	switch rsp.StatusCode {
-	case http.StatusOK:
-		// TODO
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
 			var out R
@@ -613,5 +439,179 @@ func PostOrganizations9011051Workspaces[B any](ctx context.Context, c *Client, r
 		return api.NewErrStatusCode(rsp)
 	default:
 		return api.NewErrUnknownStatusCode(rsp)
+	}
+}
+
+// Returns organization name and current pricing plan
+//
+//	GET /organizations/{organization_id}
+func (c *Client) GetOrganization(ctx context.Context, organizationID int) (*Organization, error) {
+	return GetOrganization[Organization](ctx, c, organizationID)
+}
+
+// Returns organization name and current pricing plan
+// You can define a custom result to unmarshal the response into.
+//
+//	GET /organizations/{organization_id}
+func GetOrganization[R any](ctx context.Context, c *Client, organizationID int) (*R, error) {
+	u := baseURL.JoinPath("organizations", strconv.Itoa(organizationID))
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodGet,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// TODO
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return nil, api.NewErrUnknownStatusCode(rsp)
+	}
+}
+
+// Creates a new workspace TimeEntry.
+//
+//	POST /workspaces/{workspace_id}/time_entries
+func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, reqBody NewTimeEntry) (*TimeEntry, error) {
+	return CreateTimeEntry[TimeEntry](ctx, c, workspaceID, reqBody)
+}
+
+// Creates a new workspace TimeEntry.
+// You can define a custom request body to marshal and a custom result to unmarshal the response into.
+//
+//	POST /workspaces/{workspace_id}/time_entries
+func CreateTimeEntry[R any, B any](ctx context.Context, c *Client, workspaceID int, reqBody B) (*R, error) {
+	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"Content-Type":  []string{"application/json"},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodPost,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	var pw *io.PipeWriter
+	req.Body, pw = io.Pipe()
+	defer req.Body.Close()
+	go func() {
+		pw.CloseWithError(json.MarshalWrite(pw, reqBody, jsonOpts))
+	}()
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// Returns a time entry
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	case http.StatusBadRequest:
+		// Returned when the user made a bad request
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var errOut APIErrorString
+			if err := json.UnmarshalRead(rsp.Body, &errOut, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return nil, api.NewErrCustom(rsp, &errOut)
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return nil, api.NewErrUnknownStatusCode(rsp)
+	}
+}
+
+// Stops a workspace time entry.
+//
+//	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
+func (c *Client) StopTimeEntry(ctx context.Context, workspaceID int, timeEntryID int) (*TimeEntry, error) {
+	return StopTimeEntry[TimeEntry](ctx, c, workspaceID, timeEntryID)
+}
+
+// Stops a workspace time entry.
+// You can define a custom result to unmarshal the response into.
+//
+//	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
+func StopTimeEntry[R any](ctx context.Context, c *Client, workspaceID int, timeEntryID int) (*R, error) {
+	u := baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries", strconv.Itoa(timeEntryID), "stop")
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.authHeader},
+			"User-Agent":    []string{userAgent},
+		},
+		Host:       u.Host,
+		Method:     http.MethodPatch,
+		Proto:      "HTTP/1.1",
+		ProtoMajor: 1,
+		ProtoMinor: 1,
+		URL:        u,
+	}).WithContext(ctx)
+
+	rsp, err := c.cli.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// Returns a time entry
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return &out, nil
+		default:
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
+	default:
+		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
