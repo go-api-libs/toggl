@@ -264,31 +264,31 @@ type TimeEntries []TimeEntry
 
 // TimeEntry defines a model
 type TimeEntry struct {
-	ID              int       `json:"id"`
-	WorkspaceID     int       `json:"workspace_id"`
-	ProjectID       int       `json:"project_id"`
-	TaskID          struct{}  `json:"task_id"`
-	Billable        bool      `json:"billable"`
-	Start           time.Time `json:"start,omitzero"`
-	Stop            time.Time `json:"stop,omitzero"`
-	Duration        int       `json:"duration"`
-	Description     string    `json:"description,omitzero"`
-	Tags            []string  `json:"tags"`
-	TagIds          []string  `json:"tag_ids"`
-	Duronly         bool      `json:"duronly"`
-	At              time.Time `json:"at,omitzero"`
-	ServerDeletedAt time.Time `json:"server_deleted_at,omitzero"`
-	UserID          int       `json:"user_id"`
-	UID             int       `json:"uid"`
-	Wid             int       `json:"wid"`
-	Pid             int       `json:"pid"`
-	ClientName      string    `json:"client_name,omitzero"`
-	ProjectName     string    `json:"project_name,omitzero"`
-	ProjectColor    string    `json:"project_color,omitzero"`
-	ProjectActive   bool      `json:"project_active,omitempty"`
-	ProjectBillable bool      `json:"project_billable,omitempty"`
-	UserName        string    `json:"user_name,omitzero"`
-	UserAvatarURL   *url.URL  `json:"user_avatar_url,omitempty"`
+	ID              int           `json:"id"`
+	WorkspaceID     int           `json:"workspace_id"`
+	ProjectID       int           `json:"project_id"`
+	TaskID          struct{}      `json:"task_id"`
+	Billable        bool          `json:"billable"`
+	Start           time.Time     `json:"start,omitzero"`
+	Stop            time.Time     `json:"stop,omitzero"`
+	Duration        time.Duration `json:"duration"`
+	Description     string        `json:"description,omitzero"`
+	Tags            []string      `json:"tags"`
+	TagIds          []string      `json:"tag_ids"`
+	Duronly         bool          `json:"duronly"`
+	At              time.Time     `json:"at,omitzero"`
+	ServerDeletedAt time.Time     `json:"server_deleted_at,omitzero"`
+	UserID          int           `json:"user_id"`
+	UID             int           `json:"uid"`
+	Wid             int           `json:"wid"`
+	Pid             int           `json:"pid"`
+	ClientName      string        `json:"client_name,omitzero"`
+	ProjectName     string        `json:"project_name,omitzero"`
+	ProjectColor    string        `json:"project_color,omitzero"`
+	ProjectActive   bool          `json:"project_active,omitempty"`
+	ProjectBillable bool          `json:"project_billable,omitempty"`
+	UserName        string        `json:"user_name,omitzero"`
+	UserAvatarURL   *url.URL      `json:"user_avatar_url,omitempty"`
 }
 
 // TrialInfo defines a model
