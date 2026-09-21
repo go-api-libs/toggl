@@ -245,12 +245,14 @@ func processAuth(doc *openapi.Document, op *openapi.Operation, v string) error {
 		schemeName = "bearerAuth"
 	case strings.HasPrefix(v, "Basic "):
 		scheme = openapi.SecuritySchemeBasic
-		schemeName = "basicAuth"
+		schemeName = "BasicAuth"
 
-		// Validate it is actually base64
+		// Validate it is either masked or actually base64
 		encoded := strings.TrimPrefix(v, "Basic ")
-		if _, err := base64.StdEncoding.DecodeString(encoded); err != nil {
-			return fmt.Errorf("invalid basic auth: %w", err)
+		if encoded != strings.Repeat("*", len(encoded)) {
+			if _, err := base64.StdEncoding.DecodeString(encoded); err != nil {
+				return fmt.Errorf("invalid basic auth: %w", err)
+			}
 		}
 	default:
 		return nil
