@@ -2,6 +2,7 @@ package enrich
 
 import (
 	"encoding/base64"
+	"encoding/json/jsontext"
 	"fmt"
 	"maps"
 	"mime"
@@ -161,11 +162,18 @@ func processQueryParams(doc *openapi.Document, pi *openapi.PathItem, op *openapi
 			}
 			explodeFalse = true
 		} else {
-			var err error
-
-			schema, err = scalarSchema(value)
-			if err != nil {
-				return fmt.Errorf("param %q: %w", name, err)
+			switch value {
+			case "true", "false":
+				schema = &openapi.Schema{
+					Type:    openapi.TypeBoolean,
+					Example: jsontext.Value(value),
+				}
+			default:
+				var err error
+				schema, err = scalarSchema(value)
+				if err != nil {
+					return fmt.Errorf("param %q: %w", name, err)
+				}
 			}
 		}
 
@@ -175,8 +183,7 @@ func processQueryParams(doc *openapi.Document, pi *openapi.PathItem, op *openapi
 			Schema: &openapi.SchemaRef{Value: schema},
 		}
 		if explodeFalse {
-			f := false
-			incoming.Explode = &f
+			incoming.Explode = new(false)
 		}
 
 		if existing := findParam(pi.Parameters, op.Parameters, name, openapi.ParameterLocationQuery); existing != nil {
@@ -390,6 +397,11 @@ func scalarSchema(value string) (*openapi.Schema, error) {
 	if _, err := strconv.Atoi(value); err == nil {
 		return &openapi.Schema{Type: openapi.TypeInteger}, nil
 	}
+
+	// switch value {
+	// case `true`, `false`:
+	// 	return &openapi.Schema{Type: openapi.TypeBoolean}, nil
+	// }
 
 	return newSchemaFromJSON(fmt.Appendf(nil, "%q", value))
 }
