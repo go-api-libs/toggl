@@ -211,7 +211,10 @@ type Project struct {
 	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
 	IntegrationExtType string `json:"integration_ext_type,omitzero"`
 	// The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity
-	IntegrationProvider string `json:"integration_provider,omitzero"`
+	IntegrationProvider      string    `json:"integration_provider,omitzero"`
+	WorkspaceDefaultCurrency *struct{} `json:"workspace_default_currency,omitempty"`
+	TotalCount               *int      `json:"total_count,omitempty"`
+	ClientName               string    `json:"client_name,omitzero"`
 }
 
 // Projects defines a model
@@ -261,31 +264,31 @@ type TimeEntries []TimeEntry
 
 // TimeEntry defines a model
 type TimeEntry struct {
-	ID              int           `json:"id"`
-	WorkspaceID     int           `json:"workspace_id"`
-	ProjectID       int           `json:"project_id"`
-	TaskID          struct{}      `json:"task_id"`
-	Billable        bool          `json:"billable"`
-	Start           time.Time     `json:"start,omitzero"`
-	Stop            time.Time     `json:"stop,omitzero"`
-	Duration        time.Duration `json:"duration"`
-	Description     string        `json:"description,omitzero"`
-	Tags            []string      `json:"tags"`
-	TagIds          []string      `json:"tag_ids"`
-	Duronly         bool          `json:"duronly"`
-	At              time.Time     `json:"at,omitzero"`
-	ServerDeletedAt time.Time     `json:"server_deleted_at,omitzero"`
-	UserID          int           `json:"user_id"`
-	UID             int           `json:"uid"`
-	Wid             int           `json:"wid"`
-	Pid             int           `json:"pid"`
-	ClientName      string        `json:"client_name,omitzero"`
-	ProjectName     string        `json:"project_name,omitzero"`
-	ProjectColor    string        `json:"project_color,omitzero"`
-	ProjectActive   bool          `json:"project_active,omitempty"`
-	ProjectBillable bool          `json:"project_billable,omitempty"`
-	UserName        string        `json:"user_name,omitzero"`
-	UserAvatarURL   *url.URL      `json:"user_avatar_url,omitempty"`
+	ID              int       `json:"id"`
+	WorkspaceID     int       `json:"workspace_id"`
+	ProjectID       int       `json:"project_id"`
+	TaskID          struct{}  `json:"task_id"`
+	Billable        bool      `json:"billable"`
+	Start           time.Time `json:"start,omitzero"`
+	Stop            time.Time `json:"stop,omitzero"`
+	Duration        int       `json:"duration"`
+	Description     string    `json:"description,omitzero"`
+	Tags            []string  `json:"tags"`
+	TagIds          []string  `json:"tag_ids"`
+	Duronly         bool      `json:"duronly"`
+	At              time.Time `json:"at,omitzero"`
+	ServerDeletedAt time.Time `json:"server_deleted_at,omitzero"`
+	UserID          int       `json:"user_id"`
+	UID             int       `json:"uid"`
+	Wid             int       `json:"wid"`
+	Pid             int       `json:"pid"`
+	ClientName      string    `json:"client_name,omitzero"`
+	ProjectName     string    `json:"project_name,omitzero"`
+	ProjectColor    string    `json:"project_color,omitzero"`
+	ProjectActive   bool      `json:"project_active,omitempty"`
+	ProjectBillable bool      `json:"project_billable,omitempty"`
+	UserName        string    `json:"user_name,omitzero"`
+	UserAvatarURL   *url.URL  `json:"user_avatar_url,omitempty"`
 }
 
 // TrialInfo defines a model
@@ -362,6 +365,7 @@ type WorkClient struct {
 	Notes               string `json:"notes,omitzero"`
 	// List of authorization permissions for this client.
 	Permissions string `json:"permissions,omitzero"`
+	TotalCount  *int   `json:"total_count,omitempty"`
 }
 
 // Workspace defines a model
@@ -399,6 +403,9 @@ type Workspace struct {
 	Subscription                struct{}  `json:"subscription"`
 	HideStartEndTimes           bool      `json:"hide_start_end_times"`
 	WorkingHoursInMinutes       struct{}  `json:"working_hours_in_minutes"`
+	DisableTimesheetView        bool      `json:"disable_timesheet_view,omitempty"`
+	DisableApprovals            bool      `json:"disable_approvals,omitempty"`
+	DisableExpenses             bool      `json:"disable_expenses,omitempty"`
 }
 
 // Workspaces defines a model
