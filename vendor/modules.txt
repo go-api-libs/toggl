@@ -1,17 +1,17 @@
 # cloud.google.com/go v0.123.0
 ## explicit; go 1.24.0
 cloud.google.com/go/civil
-# github.com/MarkRosemaker/jsonutil v0.0.0-20260820212410-12ba6685df41
+# github.com/MarkRosemaker/jsonutil v0.0.0-20260920172211-f6e22a1a8311
 ## explicit; go 1.27
 github.com/MarkRosemaker/jsonutil
-# github.com/go-api-libs/api v0.0.0-20241220213325-f2e74c88e4c9
-## explicit; go 1.23.2
+# github.com/go-api-libs/api v0.0.0-20260920172211-2e5733e71b56
+## explicit; go 1.27
 github.com/go-api-libs/api
-# github.com/go-api-libs/types v0.0.0-20241220214721-81dc6f654a15
-## explicit; go 1.23.2
+# github.com/go-api-libs/types v0.0.0-20260821232109-0cf45378823e
+## explicit; go 1.27
 github.com/go-api-libs/types
-# github.com/go-json-experiment/json v0.0.0-20250119165339-d96285104214
-## explicit; go 1.23
+# github.com/go-json-experiment/json v0.0.0-20260820222146-c27c302e5fc3
+## explicit; go 1.26
 github.com/go-json-experiment/json
 github.com/go-json-experiment/json/internal
 github.com/go-json-experiment/json/internal/jsonflags

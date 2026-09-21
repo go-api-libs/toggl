@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build !goexperiment.jsonv2 || !go1.25
+
 package json
 
 import (
@@ -27,10 +29,33 @@ type isZeroer interface {
 var isZeroerType = reflect.TypeFor[isZeroer]()
 
 type structFields struct {
-	flattened       []structField // listed in depth-first ordering
-	byActualName    map[string]*structField
-	byFoldedName    map[string][]*structField
-	inlinedFallback *structField
+	flattened        []structField // listed in depth-first ordering
+	byActualName     map[string]*structField
+	byFoldedName     map[string][]*structField
+	embeddedFallback *structField
+
+	errUnsupportedFormat *SemanticError
+}
+
+// reindex recomputes index to avoid bounds check during runtime.
+//
+// During the construction of each [structField] in [makeStructFields],
+// the index field is 0-indexed. However, before it returns,
+// the 0th field is stored in index0 and index stores the remainder.
+func (sf *structFields) reindex() {
+	reindex := func(f *structField) {
+		f.index0 = f.index[0]
+		f.index = f.index[1:]
+		if len(f.index) == 0 {
+			f.index = nil // avoid pinning the backing slice
+		}
+	}
+	for i := range sf.flattened {
+		reindex(&sf.flattened[i])
+	}
+	if sf.embeddedFallback != nil {
+		reindex(sf.embeddedFallback)
+	}
 }
 
 // lookupByFoldedName looks up name by a case-insensitive match
@@ -41,7 +66,8 @@ func (fs *structFields) lookupByFoldedName(name []byte) []*structField {
 
 type structField struct {
 	id      int   // unique numeric ID in breadth-first ordering
-	index   []int // index into a struct according to reflect.Type.FieldByIndex
+	index0  int   // 0th index into a struct according to [reflect.Type.FieldByIndex]
+	index   []int // 1st index and remainder according to [reflect.Type.FieldByIndex]
 	typ     reflect.Type
 	fncs    *arshaler
 	isZero  func(addressableValue) bool
@@ -51,30 +77,30 @@ type structField struct {
 
 var errNoExportedFields = errors.New("Go struct has no exported fields")
 
-func makeStructFields(root reflect.Type) (sf structFields, serr *SemanticError) {
+func makeStructFields(root reflect.Type) (fs structFields, serr *SemanticError) {
 	orErrorf := func(serr *SemanticError, t reflect.Type, f string, a ...any) *SemanticError {
 		return cmp.Or(serr, &SemanticError{GoType: t, Err: fmt.Errorf(f, a...)})
 	}
 
-	// Setup a queue for a breath-first search.
+	// Setup a queue for a breadth-first search.
 	var queueIndex int
 	type queueEntry struct {
 		typ           reflect.Type
 		index         []int
-		visitChildren bool // whether to recursively visit inlined field in this struct
+		visitChildren bool // whether to recursively visit embedded field in this struct
 	}
 	queue := []queueEntry{{root, nil, true}}
 	seen := map[reflect.Type]bool{root: true}
 
 	// Perform a breadth-first search over all reachable fields.
 	// This ensures that len(f.index) will be monotonically increasing.
-	var allFields, inlinedFallbacks []structField
+	var allFields, embeddedFallbacks []structField
 	for queueIndex < len(queue) {
 		qe := queue[queueIndex]
 		queueIndex++
 
 		t := qe.typ
-		inlinedFallbackIndex := -1         // index of last inlined fallback field in current struct
+		embeddedFallbackIndex := -1        // index of last embedded fallback field in current struct
 		namesIndex := make(map[string]int) // index of each field with a given JSON object name in current struct
 		var hasAnyJSONTag bool             // whether any Go struct field has a `json` tag
 		var hasAnyJSONField bool           // whether any JSON serializable fields exist in current struct
@@ -102,80 +128,73 @@ func makeStructFields(root reflect.Type) (sf structFields, serr *SemanticError) 
 				if indirectType(f.typ).Kind() != reflect.Struct {
 					serr = orErrorf(serr, t, "embedded Go struct field %s of non-struct type must be explicitly given a JSON name", sf.Name)
 				} else {
-					f.inline = true // implied by use of Go embedding without an explicit name
+					f.embed = true // implied by use of Go embedding without an explicit name
 				}
 			}
-			if f.inline || f.unknown {
-				// Handle an inlined field that serializes to/from
+
+			var handleEmbed, handleField func()
+			handleEmbed = func() {
+				// Handle an embedded field that serializes to/from
 				// zero or more JSON object members.
 
-				switch f.fieldOptions {
-				case fieldOptions{name: f.name, quotedName: f.quotedName, inline: true}:
-				case fieldOptions{name: f.name, quotedName: f.quotedName, unknown: true}:
-				case fieldOptions{name: f.name, quotedName: f.quotedName, inline: true, unknown: true}:
-					serr = orErrorf(serr, t, "Go struct field %s cannot have both `inline` and `unknown` specified", sf.Name)
-					f.inline = false // let `unknown` take precedence
-				default:
-					serr = orErrorf(serr, t, "Go struct field %s cannot have any options other than `inline` or `unknown` specified", sf.Name)
+				if f.fieldOptions != (fieldOptions{name: f.name, quotedName: f.quotedName, embed: true}) {
+					serr = orErrorf(serr, t, "Go struct field %s cannot have any options other than `embed` specified", sf.Name)
 					if f.hasName {
-						continue // invalid inlined field; treat as ignored
+						handleField()
+						return // invalid embedded field; treat as regular field
 					}
-					f.fieldOptions = fieldOptions{name: f.name, quotedName: f.quotedName, inline: f.inline, unknown: f.unknown}
-					if f.inline && f.unknown {
-						f.inline = false // let `unknown` take precedence
-					}
+					f.fieldOptions = fieldOptions{name: f.name, quotedName: f.quotedName, embed: f.embed}
 				}
 
 				// Reject any types with custom serialization otherwise
-				// it becomes impossible to know what sub-fields to inline.
+				// it becomes impossible to know what sub-fields to embed.
 				tf := indirectType(f.typ)
 				if implementsAny(tf, allMethodTypes...) && tf != jsontextValueType {
-					serr = orErrorf(serr, t, "inlined Go struct field %s of type %s must not implement marshal or unmarshal methods", sf.Name, tf)
+					serr = orErrorf(serr, t, "embedded Go struct field %s of type %s must not implement marshal or unmarshal methods", sf.Name, tf)
 				}
 
-				// Handle an inlined field that serializes to/from
+				// Handle an embedded field that serializes to/from
 				// a finite number of JSON object members backed by a Go struct.
 				if tf.Kind() == reflect.Struct {
-					if f.unknown {
-						serr = orErrorf(serr, t, "inlined Go struct field %s of type %s with `unknown` tag must be a Go map of string key or a jsontext.Value", sf.Name, tf)
-						continue // invalid inlined field; treat as ignored
-					}
 					if qe.visitChildren {
 						queue = append(queue, queueEntry{tf, f.index, !seen[tf]})
 					}
 					seen[tf] = true
-					continue
+					return
 				} else if !sf.IsExported() {
-					serr = orErrorf(serr, t, "inlined Go struct field %s is not exported", sf.Name)
-					continue // invalid inlined field; treat as ignored
+					serr = orErrorf(serr, t, "embedded Go struct field %s is not exported", sf.Name)
+					return // invalid embedded field; treat as ignored
 				}
 
-				// Handle an inlined field that serializes to/from any number of
+				// Handle an embedded field that serializes to/from any number of
 				// JSON object members back by a Go map or jsontext.Value.
 				switch {
 				case tf == jsontextValueType:
-					f.fncs = nil // specially handled in arshal_inlined.go
+					f.fncs = nil // specially handled in arshal_embedded.go
 				case tf.Kind() == reflect.Map && tf.Key().Kind() == reflect.String:
 					if implementsAny(tf.Key(), allMethodTypes...) {
-						serr = orErrorf(serr, t, "inlined map field %s of type %s must have a string key that does not implement marshal or unmarshal methods", sf.Name, tf)
-						continue // invalid inlined field; treat as ignored
+						serr = orErrorf(serr, t, "embedded map field %s of type %s must have a string key that does not implement marshal or unmarshal methods", sf.Name, tf)
+						handleField()
+						return // invalid embedded field; treat as regular field
 					}
 					f.fncs = lookupArshaler(tf.Elem())
 				default:
-					serr = orErrorf(serr, t, "inlined Go struct field %s of type %s must be a Go struct, Go map of string key, or jsontext.Value", sf.Name, tf)
-					continue // invalid inlined field; treat as ignored
+					serr = orErrorf(serr, t, "embedded Go struct field %s of type %s must be a Go struct, Go map of string key, or jsontext.Value", sf.Name, tf)
+					handleField()
+					return // invalid embedded field; treat as regular field
 				}
 
-				// Reject multiple inlined fallback fields within the same struct.
-				if inlinedFallbackIndex >= 0 {
-					serr = orErrorf(serr, t, "inlined Go struct fields %s and %s cannot both be a Go map or jsontext.Value", t.Field(inlinedFallbackIndex).Name, sf.Name)
-					// Still append f to inlinedFallbacks as there is still a
-					// check for a dominant inlined fallback before returning.
+				// Reject multiple embedded fallback fields within the same struct.
+				if embeddedFallbackIndex >= 0 {
+					serr = orErrorf(serr, t, "embedded Go struct fields %s and %s cannot both be a Go map or jsontext.Value", t.Field(embeddedFallbackIndex).Name, sf.Name)
+					// Still append f to embeddedFallbacks as there is still a
+					// check for a dominant embedded fallback before returning.
 				}
-				inlinedFallbackIndex = i
+				embeddedFallbackIndex = i
 
-				inlinedFallbacks = append(inlinedFallbacks, f)
-			} else {
+				embeddedFallbacks = append(embeddedFallbacks, f)
+			}
+			handleField = func() {
 				// Handle normal Go struct field that serializes to/from
 				// a single JSON object member.
 
@@ -186,14 +205,14 @@ func makeStructFields(root reflect.Type) (sf structFields, serr *SemanticError) 
 					tf := indirectType(f.typ)
 					if !(sf.Anonymous && tf.Kind() == reflect.Struct) {
 						serr = orErrorf(serr, t, "Go struct field %s is not exported", sf.Name)
-						continue
+						return
 					}
 					// Unfortunately, methods on the unexported field
 					// still cannot be called.
 					if implementsAny(tf, allMethodTypes...) ||
 						(f.omitzero && implementsAny(tf, isZeroerType)) {
 						serr = orErrorf(serr, t, "Go struct field %s is not exported for method calls", sf.Name)
-						continue
+						return
 					}
 				}
 
@@ -236,6 +255,15 @@ func makeStructFields(root reflect.Type) (sf structFields, serr *SemanticError) 
 				f.id = len(allFields)
 				f.fncs = lookupArshaler(sf.Type)
 				allFields = append(allFields, f)
+				if f.format != "" && fs.errUnsupportedFormat == nil {
+					fs.errUnsupportedFormat = &SemanticError{GoType: t, Err: fmt.Errorf("Go struct field %s has unsupported `format` tag option", sf.Name)}
+				}
+			}
+
+			if f.embed {
+				handleEmbed()
+			} else {
+				handleField()
 			}
 		}
 
@@ -297,10 +325,12 @@ func makeStructFields(root reflect.Type) (sf structFields, serr *SemanticError) 
 
 	// Compute the mapping of fields in the byActualName map.
 	// Pre-fold all names so that we can lookup folded names quickly.
-	fs := structFields{
+	fs = structFields{
 		flattened:    flattened,
 		byActualName: make(map[string]*structField, len(flattened)),
 		byFoldedName: make(map[string][]*structField, len(flattened)),
+
+		errUnsupportedFormat: fs.errUnsupportedFormat,
 	}
 	for i, f := range fs.flattened {
 		foldedName := string(foldName([]byte(f.name)))
@@ -309,7 +339,7 @@ func makeStructFields(root reflect.Type) (sf structFields, serr *SemanticError) 
 	}
 	for foldedName, fields := range fs.byFoldedName {
 		if len(fields) > 1 {
-			// The precedence order for conflicting nocase names
+			// The precedence order for conflicting case-insensitive names
 			// is by breadth-first order, rather than depth-first order.
 			slices.SortFunc(fields, func(x, y *structField) int {
 				return cmp.Compare(x.id, y.id)
@@ -317,9 +347,10 @@ func makeStructFields(root reflect.Type) (sf structFields, serr *SemanticError) 
 			fs.byFoldedName[foldedName] = fields
 		}
 	}
-	if n := len(inlinedFallbacks); n == 1 || (n > 1 && len(inlinedFallbacks[0].index) != len(inlinedFallbacks[1].index)) {
-		fs.inlinedFallback = &inlinedFallbacks[0] // dominant inlined fallback field
+	if n := len(embeddedFallbacks); n == 1 || (n > 1 && len(embeddedFallbacks[0].index) != len(embeddedFallbacks[1].index)) {
+		fs.embeddedFallback = &embeddedFallbacks[0] // dominant embedded fallback field
 	}
+	fs.reindex()
 	return fs, serr
 }
 
@@ -336,10 +367,10 @@ func indirectType(t reflect.Type) reflect.Type {
 // matchFoldedName matches a case-insensitive name depending on the options.
 // It assumes that foldName(f.name) == foldName(name).
 //
-// Case-insensitive matching is used if the `nocase` tag option is specified
+// Case-insensitive matching is used if the `case:ignore` tag option is specified
 // or the MatchCaseInsensitiveNames call option is specified
-// (and the `strictcase` tag option is not specified).
-// Functionally, the `nocase` and `strictcase` tag options take precedence.
+// (and the `case:strict` tag option is not specified).
+// Functionally, the `case:ignore` and `case:strict` tag options take precedence.
 //
 // The v1 definition of case-insensitivity operated under strings.EqualFold
 // and would strictly compare dashes and underscores,
@@ -347,7 +378,7 @@ func indirectType(t reflect.Type) reflect.Type {
 // Thus, if the MatchCaseSensitiveDelimiter call option is specified,
 // the match is further restricted to using strings.EqualFold.
 func (f *structField) matchFoldedName(name []byte, flags *jsonflags.Flags) bool {
-	if f.casing == nocase || (flags.Get(jsonflags.MatchCaseInsensitiveNames) && f.casing != strictcase) {
+	if f.casing == caseIgnore || (flags.Get(jsonflags.MatchCaseInsensitiveNames) && f.casing != caseStrict) {
 		if !flags.Get(jsonflags.MatchCaseSensitiveDelimiter) || strings.EqualFold(string(name), f.name) {
 			return true
 		}
@@ -356,21 +387,21 @@ func (f *structField) matchFoldedName(name []byte, flags *jsonflags.Flags) bool 
 }
 
 const (
-	nocase     = 1
-	strictcase = 2
+	caseIgnore = 1
+	caseStrict = 2
 )
 
 type fieldOptions struct {
-	name       string
-	quotedName string // quoted name per RFC 8785, section 3.2.2.2.
-	hasName    bool
-	casing     int8 // either 0, nocase, or strictcase
-	inline     bool
-	unknown    bool
-	omitzero   bool
-	omitempty  bool
-	string     bool
-	format     string
+	name           string
+	quotedName     string // quoted name per RFC 8785, section 3.2.2.2.
+	hasName        bool
+	nameNeedEscape bool
+	casing         int8 // either 0, caseIgnore, or caseStrict
+	embed          bool
+	omitzero       bool
+	omitempty      bool
+	string         bool
+	format         string
 }
 
 // parseFieldOptions parses the `json` tag in a Go struct field as
@@ -401,10 +432,7 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 		return fieldOptions{}, true, err
 	}
 
-	// Determine the JSON member name for this Go field. A user-specified name
-	// may be provided as either an identifier or a single-quoted string.
-	// The single-quoted string allows arbitrary characters in the name.
-	// See https://go.dev/issue/2718 and https://go.dev/issue/3546.
+	// Determine the JSON member name for this Go field.
 	out.name = sf.Name // always starts with an uppercase character
 	if len(tag) > 0 && !strings.HasPrefix(tag, ",") {
 		// For better compatibility with v1, accept almost any unescaped name.
@@ -418,7 +446,7 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 		// In either case, call consumeTagOption to handle it further.
 		var err2 error
 		if !strings.HasPrefix(tag[n:], ",") && len(name) != len(tag) {
-			name, n, err2 = consumeTagOption(tag)
+			name, n, err2 = consumeTagOption(tag, false)
 			if err2 != nil {
 				err = cmp.Or(err, fmt.Errorf("Go struct field %s has malformed `json` tag: %v", sf.Name, err2))
 			}
@@ -433,8 +461,9 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 		}
 		tag = tag[n:]
 	}
-	b, _ := jsonwire.AppendQuote(nil, out.name, &jsonflags.Flags{})
+	b, _ := jsonwire.AppendQuote(nil, []byte(out.name), &jsonflags.Flags{})
 	out.quotedName = string(b)
+	out.nameNeedEscape = jsonwire.NeedEscape([]byte(out.name))
 
 	// Handle any additional tag options (if any).
 	var wasFormat bool
@@ -452,7 +481,7 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 		}
 
 		// Consume and process the tag option.
-		opt, n, err2 := consumeTagOption(tag)
+		opt, n, err2 := consumeTagOption(tag, false)
 		if err2 != nil {
 			err = cmp.Or(err, fmt.Errorf("Go struct field %s has malformed `json` tag: %v", sf.Name, err2))
 		}
@@ -465,14 +494,32 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 			err = cmp.Or(err, fmt.Errorf("Go struct field %s has unnecessarily quoted appearance of `%s` tag option; specify `%s` instead", sf.Name, rawOpt, opt))
 		}
 		switch opt {
-		case "nocase":
-			out.casing |= nocase
-		case "strictcase":
-			out.casing |= strictcase
-		case "inline":
-			out.inline = true
-		case "unknown":
-			out.unknown = true
+		case "case":
+			if !strings.HasPrefix(tag, ":") {
+				err = cmp.Or(err, fmt.Errorf("Go struct field %s is missing value for `case` tag option; specify `case:ignore` or `case:strict` instead", sf.Name))
+				break
+			}
+			tag = tag[len(":"):]
+			opt, n, err2 := consumeTagOption(tag, false)
+			if err2 != nil {
+				err = cmp.Or(err, fmt.Errorf("Go struct field %s has malformed value for `case` tag option: %v", sf.Name, err2))
+				break
+			}
+			rawOpt := tag[:n]
+			tag = tag[n:]
+			if strings.HasPrefix(rawOpt, "'") {
+				err = cmp.Or(err, fmt.Errorf("Go struct field %s has unnecessarily quoted appearance of `case:%s` tag option; specify `case:%s` instead", sf.Name, rawOpt, opt))
+			}
+			switch opt {
+			case "ignore":
+				out.casing |= caseIgnore
+			case "strict":
+				out.casing |= caseStrict
+			default:
+				err = cmp.Or(err, fmt.Errorf("Go struct field %s has unknown `case:%s` tag value", sf.Name, rawOpt))
+			}
+		case "embed":
+			out.embed = true
 		case "omitzero":
 			out.omitzero = true
 		case "omitempty":
@@ -485,9 +532,12 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 				break
 			}
 			tag = tag[len(":"):]
-			opt, n, err2 := consumeTagOption(tag)
+			opt, n, err2 := consumeTagOption(tag, true)
 			if err2 != nil {
 				err = cmp.Or(err, fmt.Errorf("Go struct field %s has malformed value for `format` tag option: %v", sf.Name, err2))
+				break
+			} else if opt == "" {
+				err = cmp.Or(err, fmt.Errorf("Go struct field %s cannot have empty value for `format` tag option", sf.Name))
 				break
 			}
 			tag = tag[n:]
@@ -498,7 +548,7 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 			// This catches invalid mutants such as "omitEmpty" or "omit_empty".
 			normOpt := strings.ReplaceAll(strings.ToLower(opt), "_", "")
 			switch normOpt {
-			case "nocase", "strictcase", "inline", "unknown", "omitzero", "omitempty", "string", "format":
+			case "case", "embed", "omitzero", "omitempty", "string", "format":
 				err = cmp.Or(err, fmt.Errorf("Go struct field %s has invalid appearance of `%s` tag option; specify `%s` instead", sf.Name, opt, normOpt))
 			}
 
@@ -509,8 +559,8 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 
 		// Reject duplicates.
 		switch {
-		case out.casing == nocase|strictcase:
-			err = cmp.Or(err, fmt.Errorf("Go struct field %s cannot have both `nocase` and `strictcase` tag options", sf.Name))
+		case out.casing == caseIgnore|caseStrict:
+			err = cmp.Or(err, fmt.Errorf("Go struct field %s cannot have both `case:ignore` and `case:strict` tag options", sf.Name))
 		case seenOpts[opt]:
 			err = cmp.Or(err, fmt.Errorf("Go struct field %s has duplicate appearance of `%s` tag option", sf.Name, rawOpt))
 		}
@@ -523,7 +573,7 @@ func parseFieldOptions(sf reflect.StructField) (out fieldOptions, ignored bool, 
 // which is either a Go identifier or a single-quoted string.
 // If the next option is invalid, it returns all of in until the next comma,
 // and reports an error.
-func consumeTagOption(in string) (string, int, error) {
+func consumeTagOption(in string, allowQuoted bool) (string, int, error) {
 	// For legacy compatibility with v1, assume options are comma-separated.
 	i := strings.IndexByte(in, ',')
 	if i < 0 {
@@ -537,6 +587,10 @@ func consumeTagOption(in string) (string, int, error) {
 		return in[:n], n, nil
 	// Option as a single-quoted string.
 	case r == '\'':
+		if !allowQuoted {
+			return in[:i], i, fmt.Errorf("invalid character %q at start of option (expecting Unicode letter)", r)
+		}
+
 		// The grammar is nearly identical to a double-quoted Go string literal,
 		// but uses single quotes as the terminators. The reason for a custom
 		// grammar is because both backtick and double quotes cannot be used
@@ -578,6 +632,9 @@ func consumeTagOption(in string) (string, int, error) {
 	case len(in) == 0:
 		return in[:i], i, io.ErrUnexpectedEOF
 	default:
+		if !allowQuoted {
+			return in[:i], i, fmt.Errorf("invalid character %q at start of option (expecting Unicode letter)", r)
+		}
 		return in[:i], i, fmt.Errorf("invalid character %q at start of option (expecting Unicode letter or single quote)", r)
 	}
 }
