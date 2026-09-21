@@ -24,8 +24,13 @@ func init() {
 		return
 	}
 
-	os.Setenv(keyUserName, token)
-	os.Setenv(keyPassword, "api_token")
+	if err := os.Setenv(keyUserName, token); err != nil {
+		panic(err)
+	}
+
+	if err := os.Setenv(keyPassword, "api_token"); err != nil {
+		panic(err)
+	}
 }
 
 func (c *Client) ListTimeEntriesInRange(ctx context.Context, start, end time.Time) (*TimeEntries, error) {
