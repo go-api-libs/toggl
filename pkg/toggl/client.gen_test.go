@@ -879,4 +879,10 @@ func TestClient_Interactions(t *testing.T) {
 	if _, err := c.GetMe(ctx, &GetMeParams{}); err != nil {
 		t.Fatalf("GetMe: %v", err)
 	}
+
+	if _, err := c.GetMe(ctx, &GetMeParams{
+		WithRelatedData: true,
+	}); err != nil {
+		t.Fatalf("GetMe: %v", err)
+	}
 }
