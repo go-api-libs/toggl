@@ -11,11 +11,9 @@ tool (
 
 require (
 	github.com/MarkRosemaker/jsonutil v0.0.0-20260920172211-f6e22a1a8311
+	github.com/MarkRosemaker/openapi-enrich v0.0.0-20260920173057-fb2cd4691376
 	github.com/go-api-libs/api v0.0.0-20260920172211-2e5733e71b56
 	github.com/go-api-libs/types v0.0.0-20260821232109-0cf45378823e
-	github.com/go-json-experiment/json v0.0.0-20260820222146-c27c302e5fc3
-	github.com/google/uuid v1.6.0
-	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
 )
 
 require (
@@ -27,7 +25,6 @@ require (
 	github.com/MarkRosemaker/openapi-compare v0.0.0-20260920172315-5ee5db379394 // indirect
 	github.com/MarkRosemaker/openapi-compress v0.0.0-20260920173723-6cb069223d89 // indirect
 	github.com/MarkRosemaker/openapi-edit v0.0.0-20260920172315-1337932e46f8 // indirect
-	github.com/MarkRosemaker/openapi-enrich v0.0.0-20260920173057-fb2cd4691376 // indirect
 	github.com/MarkRosemaker/openapi-flatten v0.0.0-20260920172335-5294d2acb1ee // indirect
 	github.com/MarkRosemaker/openapi-merge v0.0.0-20260920172315-2342b22738ab // indirect
 	github.com/MarkRosemaker/ordmap v0.0.0-20260920172223-2eab4db34adb // indirect
