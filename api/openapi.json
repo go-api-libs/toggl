@@ -656,7 +656,8 @@
             "x-nullable": true
           },
           "current_period": {
-            "$ref": "#/components/schemas/RecurringPeriod"
+            "$ref": "#/components/schemas/EventMetadata",
+            "description": "RecurringPeriod"
           },
           "end_date": {
             "description": "End date",
@@ -1715,9 +1716,6 @@
           }
         ]
       },
-      "RecurringPeriod": {
-        "type": "object"
-      },
       "SimpleOrganization": {
         "type": "object",
         "properties": {
@@ -2185,14 +2183,16 @@
             "example": "2024-11-26T17:13:54.850204Z"
           },
           "openid_email": {
-            "type": "object"
+            "type": "object",
+            "example": null
           },
           "openid_enabled": {
             "type": "boolean",
             "example": true
           },
           "country_id": {
-            "type": "integer"
+            "type": "integer",
+            "example": null
           },
           "has_password": {
             "type": "boolean",
@@ -2242,6 +2242,13 @@
           },
           "workspaces": {
             "$ref": "#/components/schemas/Workspaces"
+          },
+          "2fa_enabled": {
+            "type": "boolean"
+          },
+          "user_account_id": {
+            "type": "integer",
+            "example": 2063736
           }
         },
         "required": [

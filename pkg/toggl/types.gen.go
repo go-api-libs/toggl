@@ -333,8 +333,10 @@ type UserWithRelated struct {
 	TimeEntries TimeEntries `json:"time_entries,omitzero"`
 	Options     *Options    `json:"options,omitempty"`
 	// Projects, null if with_related_data was not set to true or if the user does not have any projects
-	Projects   Projects   `json:"projects,omitzero"`
-	Workspaces Workspaces `json:"workspaces,omitzero"`
+	Projects      Projects   `json:"projects,omitzero"`
+	Workspaces    Workspaces `json:"workspaces,omitzero"`
+	TwoFaEnabled  bool       `json:"2fa_enabled,omitempty"`
+	UserAccountID *int       `json:"user_account_id,omitempty"`
 }
 
 // WorkClient defines a model
