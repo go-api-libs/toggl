@@ -17,6 +17,11 @@ import (
 	merge "github.com/MarkRosemaker/openapi-merge"
 )
 
+const (
+	schemeNameBearer = "bearerAuth"
+	schemeNameBasic  = "BasicAuth"
+)
+
 func analyzeInteraction(doc *openapi.Document, ia *cassette.Interaction) error {
 	reqURL, err := url.Parse(ia.Request.URL)
 	if err != nil {
@@ -170,6 +175,7 @@ func processQueryParams(doc *openapi.Document, pi *openapi.PathItem, op *openapi
 				}
 			default:
 				var err error
+
 				schema, err = scalarSchema(value)
 				if err != nil {
 					return fmt.Errorf("param %q: %w", name, err)
@@ -242,10 +248,10 @@ func processAuth(doc *openapi.Document, op *openapi.Operation, v string) error {
 	switch {
 	case strings.HasPrefix(v, "Bearer "):
 		scheme = openapi.SecuritySchemeBearer
-		schemeName = "bearerAuth"
+		schemeName = schemeNameBearer
 	case strings.HasPrefix(v, "Basic "):
 		scheme = openapi.SecuritySchemeBasic
-		schemeName = "BasicAuth"
+		schemeName = schemeNameBasic
 
 		// Validate it is either masked or actually base64
 		encoded := strings.TrimPrefix(v, "Basic ")
@@ -399,11 +405,6 @@ func scalarSchema(value string) (*openapi.Schema, error) {
 	if _, err := strconv.Atoi(value); err == nil {
 		return &openapi.Schema{Type: openapi.TypeInteger}, nil
 	}
-
-	// switch value {
-	// case `true`, `false`:
-	// 	return &openapi.Schema{Type: openapi.TypeBoolean}, nil
-	// }
 
 	return newSchemaFromJSON(fmt.Appendf(nil, "%q", value))
 }
