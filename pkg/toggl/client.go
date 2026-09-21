@@ -18,6 +18,7 @@ func NewClientWithAPIToken(apiToken string, opts ...ClientOption) (*Client, erro
 	password := "api_token"
 	token := "Basic " + base64.StdEncoding.EncodeToString([]byte(username+":"+password))
 	_ = token
+
 	return NewClient(opts...)
 }
 
