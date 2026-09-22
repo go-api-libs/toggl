@@ -2952,6 +2952,7 @@
         "description": "Get entries modified since this date using UNIX timestamp, including deleted ones.",
         "schema": {
           "type": "integer",
+          "format": "date-time",
           "example": 1734304527
         },
         "example": 1734304527

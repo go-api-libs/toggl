@@ -35,7 +35,7 @@ type GetMeParams struct {
 // ListTimeEntriesParams holds the query parameters for ListTimeEntries.
 type ListTimeEntriesParams struct {
 	// Get entries modified since this date using UNIX timestamp, including deleted ones.
-	Since int
+	Since time.Time
 	// Get entries with start time before the given date.
 	Before time.Time
 	// Get entries with start time from the given time. To be used with end_date.

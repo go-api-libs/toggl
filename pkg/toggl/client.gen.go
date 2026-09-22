@@ -446,8 +446,8 @@ func (c *Client) ListTimeEntriesWithResult[R any](ctx context.Context, params *L
 	if params != nil {
 		q := make(url.Values, 6)
 
-		if params.Since != 0 {
-			q["since"] = []string{strconv.Itoa(params.Since)}
+		if !params.Since.IsZero() {
+			q["since"] = []string{strconv.Itoa(int(params.Since.Unix()))}
 		}
 
 		if !params.Before.IsZero() {
