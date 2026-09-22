@@ -33,7 +33,7 @@ func init() {
 	}
 }
 
-func (c *Client) ListTimeEntriesInRange(ctx context.Context, start, end time.Time) (*TimeEntries, error) {
+func (c *Client) ListTimeEntriesInRange(ctx context.Context, start, end time.Time) (TimeEntries, error) {
 	return c.ListTimeEntries(ctx, &ListTimeEntriesParams{
 		StartDate:      start,
 		EndDate:        end,
