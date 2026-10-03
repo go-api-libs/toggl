@@ -604,7 +604,10 @@
           },
           "client_id": {
             "description": "Client ID",
-            "type": "integer",
+            "type": [
+              "integer",
+              "null"
+            ],
             "example": 64890399,
             "x-nullable": true
           },
@@ -634,8 +637,10 @@
             "example": "2017-08-28T10:47:38+00:00"
           },
           "server_deleted_at": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "color": {
             "description": "Color",
@@ -649,18 +654,22 @@
             "x-nullable": true
           },
           "template": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "auto_estimates": {
             "description": "Whether estimates are based on task hours, premium feature",
-            "type": "boolean",
-            "example": null,
+            "type": [
+              "boolean",
+              "null"
+            ],
             "x-nullable": true
           },
           "current_period": {
-            "$ref": "#/components/schemas/EventMetadata",
-            "description": "RecurringPeriod"
+            "description": "RecurringPeriod",
+            "$ref": "#/components/schemas/EventMetadata"
           },
           "end_date": {
             "description": "End date",
@@ -668,28 +677,38 @@
           },
           "estimated_hours": {
             "description": "Estimated hours",
-            "type": "integer",
-            "example": null,
+            "type": [
+              "integer",
+              "null"
+            ],
             "x-nullable": true
           },
           "estimated_seconds": {
             "description": "Estimated seconds",
-            "type": "integer",
-            "example": null,
+            "type": [
+              "integer",
+              "null"
+            ],
             "x-nullable": true
           },
           "rate": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "rate_last_updated": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "currency": {
             "description": "Currency, premium feature",
-            "type": "string",
-            "example": null,
+            "type": [
+              "string",
+              "null"
+            ],
             "x-nullable": true
           },
           "recurring": {
@@ -697,18 +716,24 @@
             "example": false
           },
           "template_id": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "recurring_parameters": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "fixed_fee": {
             "description": "Fixed fee, premium feature",
-            "type": "number",
-            "format": "double",
-            "example": null
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double"
           },
           "actual_hours": {
             "description": "Actual hours",
@@ -743,7 +768,10 @@
           },
           "cid": {
             "description": "Client ID legacy field",
-            "type": "integer",
+            "type": [
+              "integer",
+              "null"
+            ],
             "example": 64890399
           },
           "is_shared": {
@@ -767,15 +795,20 @@
             "type": "string"
           },
           "workspace_default_currency": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "total_count": {
             "type": "integer",
             "example": 0
           },
           "client_name": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "example": "AGL"
           }
         },
@@ -1960,8 +1993,10 @@
             "example": 155392684
           },
           "task_id": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "billable": {
             "type": "boolean",
@@ -1989,15 +2024,13 @@
           "tags": {
             "type": "array",
             "items": {
-              "type": "string",
-              "example": null
+              "type": "string"
             }
           },
           "tag_ids": {
             "type": "array",
             "items": {
-              "type": "string",
-              "example": null
+              "type": "string"
             }
           },
           "duronly": {
@@ -2010,7 +2043,10 @@
             "example": "2024-12-12T20:40:28.056447Z"
           },
           "server_deleted_at": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "date-time",
             "example": "2024-12-16T01:38:02+00:00"
           },
@@ -2210,16 +2246,20 @@
             "example": "2024-11-26T17:13:54.850204Z"
           },
           "openid_email": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "openid_enabled": {
             "type": "boolean",
             "example": true
           },
           "country_id": {
-            "type": "integer",
-            "example": null
+            "type": [
+              "integer",
+              "null"
+            ]
           },
           "has_password": {
             "type": "boolean",
@@ -2254,8 +2294,8 @@
             "$ref": "#/components/schemas/Tags"
           },
           "clients": {
-            "$ref": "#/components/schemas/Clients",
-            "description": "Clients, null if with_related_data was not set to true or if the user does not have any clients"
+            "description": "Clients, null if with_related_data was not set to true or if the user does not have any clients",
+            "$ref": "#/components/schemas/Clients"
           },
           "time_entries": {
             "$ref": "#/components/schemas/TimeEntries"
@@ -2264,8 +2304,8 @@
             "$ref": "#/components/schemas/Options"
           },
           "projects": {
-            "$ref": "#/components/schemas/Projects",
-            "description": "Projects, null if with_related_data was not set to true or if the user does not have any projects"
+            "description": "Projects, null if with_related_data was not set to true or if the user does not have any projects",
+            "$ref": "#/components/schemas/Projects"
           },
           "workspaces": {
             "$ref": "#/components/schemas/Workspaces"
@@ -2430,20 +2470,28 @@
             "example": "admin"
           },
           "suspended_at": {
-            "type": "string",
-            "example": null
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "server_deleted_at": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "default_hourly_rate": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "rate_last_updated": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "default_currency": {
             "type": "string",
@@ -2522,20 +2570,26 @@
             "example": true
           },
           "csv_upload": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "subscription": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "hide_start_end_times": {
             "type": "boolean",
             "example": false
           },
           "working_hours_in_minutes": {
-            "type": "object",
-            "example": null
+            "type": [
+              "object",
+              "null"
+            ]
           },
           "disable_timesheet_view": {
             "type": "boolean"
