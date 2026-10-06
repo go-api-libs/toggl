@@ -837,13 +837,11 @@
           "fixed_fee",
           "actual_hours",
           "actual_seconds",
-          "tasks_count",
           "can_track_time",
           "start_date",
           "status",
           "wid",
           "cid",
-          "is_shared",
           "pinned"
         ],
         "example": {
@@ -2335,7 +2333,6 @@
           "country_id",
           "has_password",
           "at",
-          "intercom_hash",
           "oauth_providers",
           "authorization_updated_at"
         ],
@@ -2616,7 +2613,6 @@
           "default_currency",
           "only_admins_may_create_projects",
           "only_admins_may_create_tags",
-          "only_admins_see_billable_rates",
           "only_admins_see_team_dashboard",
           "projects_billable_by_default",
           "projects_private_by_default",

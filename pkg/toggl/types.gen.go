@@ -200,16 +200,16 @@ type Project struct {
 	// Actual hours
 	ActualHours int `json:"actual_hours"`
 	// Actual seconds
-	ActualSeconds int      `json:"actual_seconds"`
-	TasksCount    struct{} `json:"tasks_count"`
-	CanTrackTime  bool     `json:"can_track_time"`
-	StartDate     string   `json:"start_date"`
-	Status        string   `json:"status"`
-	Wid           int      `json:"wid"`
+	ActualSeconds int       `json:"actual_seconds"`
+	TasksCount    *struct{} `json:"tasks_count,omitzero"`
+	CanTrackTime  bool      `json:"can_track_time"`
+	StartDate     string    `json:"start_date"`
+	Status        string    `json:"status"`
+	Wid           int       `json:"wid"`
 	// Client ID legacy field
-	Cid      int  `json:"cid"`
-	IsShared bool `json:"is_shared"`
-	Pinned   bool `json:"pinned"`
+	Cid      int   `json:"cid"`
+	IsShared *bool `json:"is_shared,omitzero"`
+	Pinned   bool  `json:"pinned"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
 	IntegrationExtID string `json:"integration_ext_id,omitzero"`
 	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
@@ -330,7 +330,7 @@ type UserWithRelated struct {
 	CountryID          int         `json:"country_id"`
 	HasPassword        bool        `json:"has_password"`
 	At                 time.Time   `json:"at"`
-	IntercomHash       string      `json:"intercom_hash"`
+	IntercomHash       string      `json:"intercom_hash,omitzero"`
 	OauthProviders     []string    `json:"oauth_providers"`
 	// A timestamp when the authorization user session object was last updated.
 	AuthorizationUpdatedAt time.Time `json:"authorization_updated_at"`
@@ -388,7 +388,7 @@ type Workspace struct {
 	DefaultCurrency             string    `json:"default_currency"`
 	OnlyAdminsMayCreateProjects bool      `json:"only_admins_may_create_projects"`
 	OnlyAdminsMayCreateTags     bool      `json:"only_admins_may_create_tags"`
-	OnlyAdminsSeeBillableRates  bool      `json:"only_admins_see_billable_rates"`
+	OnlyAdminsSeeBillableRates  *bool     `json:"only_admins_see_billable_rates,omitzero"`
 	OnlyAdminsSeeTeamDashboard  bool      `json:"only_admins_see_team_dashboard"`
 	ProjectsBillableByDefault   bool      `json:"projects_billable_by_default"`
 	ProjectsPrivateByDefault    bool      `json:"projects_private_by_default"`
