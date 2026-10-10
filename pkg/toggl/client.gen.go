@@ -184,12 +184,24 @@ func (c *Client) GetMeWithResult[R any](ctx context.Context, params *GetMeParams
 
 			return &out, nil
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	case http.StatusUnauthorized:
 		// User is unauthorized to use the API
 		return nil, fmt.Errorf("GetMe: status %s", rsp.Status)
 	default:
+		if c.debug {
+			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+				return nil, errors.Join(api.NewErrUnknownStatusCode(rsp), err)
+			}
+		}
+
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
@@ -280,6 +292,12 @@ func (c *Client) CreateTimeEntryWithResult[R any](ctx context.Context, workspace
 
 			return &out, nil
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	case http.StatusBadRequest:
@@ -304,9 +322,21 @@ func (c *Client) CreateTimeEntryWithResult[R any](ctx context.Context, workspace
 
 			return nil, api.NewErrCustom(rsp, &out)
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	default:
+		if c.debug {
+			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+				return nil, errors.Join(api.NewErrUnknownStatusCode(rsp), err)
+			}
+		}
+
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
@@ -390,9 +420,21 @@ func (c *Client) GetCurrentTimeEntryWithResult[R any](ctx context.Context) (*R, 
 
 			return &out, nil
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	default:
+		if c.debug {
+			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+				return nil, errors.Join(api.NewErrUnknownStatusCode(rsp), err)
+			}
+		}
+
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
@@ -476,9 +518,21 @@ func (c *Client) StopTimeEntryWithResult[R any](ctx context.Context, workspaceID
 
 			return &out, nil
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	default:
+		if c.debug {
+			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+				return nil, errors.Join(api.NewErrUnknownStatusCode(rsp), err)
+			}
+		}
+
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
@@ -597,6 +651,12 @@ func (c *Client) ListTimeEntriesWithResult[R any](ctx context.Context, params *L
 
 			return &out, nil
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	case http.StatusBadRequest:
@@ -621,9 +681,21 @@ func (c *Client) ListTimeEntriesWithResult[R any](ctx context.Context, params *L
 
 			return nil, api.NewErrCustom(rsp, &out)
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	default:
+		if c.debug {
+			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+				return nil, errors.Join(api.NewErrUnknownStatusCode(rsp), err)
+			}
+		}
+
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
@@ -714,9 +786,21 @@ func (c *Client) CreateOrganizationWithResult[R any](ctx context.Context, body N
 
 			return &out, nil
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	default:
+		if c.debug {
+			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+				return nil, errors.Join(api.NewErrUnknownStatusCode(rsp), err)
+			}
+		}
+
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
@@ -805,9 +889,21 @@ func (c *Client) ListOrganizationsWithResult[R any](ctx context.Context) (*R, er
 
 			return &out, nil
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	default:
+		if c.debug {
+			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+				return nil, errors.Join(api.NewErrUnknownStatusCode(rsp), err)
+			}
+		}
+
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
@@ -891,9 +987,21 @@ func (c *Client) GetOrganizationWithResult[R any](ctx context.Context, organizat
 
 			return &out, nil
 		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
 			return nil, api.NewErrUnknownContentType(rsp)
 		}
 	default:
+		if c.debug {
+			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+				return nil, errors.Join(api.NewErrUnknownStatusCode(rsp), err)
+			}
+		}
+
 		return nil, api.NewErrUnknownStatusCode(rsp)
 	}
 }
