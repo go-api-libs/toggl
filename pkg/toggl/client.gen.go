@@ -195,6 +195,25 @@ func (c *Client) GetMeWithResult[R any](ctx context.Context, params *GetMeParams
 	case http.StatusUnauthorized:
 		// User is unauthorized to use the API
 		return nil, fmt.Errorf("GetMe: status %s", rsp.Status)
+	case http.StatusPaymentRequired:
+		// Payment Required
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "text/plain":
+			out, err := io.ReadAll(rsp.Body)
+			if err != nil {
+				return nil, api.WrapDecodingError(rsp, err)
+			}
+
+			return nil, api.NewErrBody(rsp, out)
+		default:
+			if c.debug {
+				if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {
+					return nil, errors.Join(api.NewErrUnknownContentType(rsp), err)
+				}
+			}
+
+			return nil, api.NewErrUnknownContentType(rsp)
+		}
 	default:
 		if c.debug {
 			if err := cassette.AddInteraction("api/interactions.json", ia); err != nil {

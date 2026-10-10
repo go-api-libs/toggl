@@ -890,4 +890,12 @@ func TestClient_Interactions(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("GetMe: %v", err)
 	}
+
+	if _, err := c.GetMe(ctx, &GetMeParams{
+		WithRelatedData: true,
+	}); err == nil {
+		t.Fatal("GetMe: expected error")
+	} else if _, ok := errors.AsType[*api.ErrorBody](err); !ok {
+		t.Fatalf("GetMe: got: %T, want: *api.ErrorBody", err)
+	}
 }

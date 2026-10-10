@@ -219,5 +219,22 @@
 				"authorization_updated_at": "2026-09-21T09:37:21.089605315Z"
 			}
 		}
+	},
+	{
+		"request": {
+			"method": "GET",
+			"url": "https://api.track.toggl.com/api/v9/me?with_related_data=true",
+			"header": {
+				"Authorization": "Basic ********************************************************",
+				"User-Agent": "Toggl API"
+			}
+		},
+		"response": {
+			"statusCode": 402,
+			"header": {
+				"Content-Type": "text/plain; charset=utf-8"
+			},
+			"body": "You have hit your hourly limit for API calls. Please upgrade to a paid plan for increased access. Your quota will reset in 893 seconds. CTA: Go to subscriptions page."
+		}
 	}
 ]

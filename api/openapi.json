@@ -37,6 +37,9 @@
           },
           "401": {
             "$ref": "#/components/responses/UnauthorizedResponse"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
           }
         }
       }
@@ -243,6 +246,9 @@
             "creator_id": 2166261
           }
         ]
+      },
+      "ErrorMessage": {
+        "type": "string"
       },
       "EventMetadata": {
         "type": "object"
@@ -2824,6 +2830,16 @@
                 "pricing_plan_enterprise": false
               }
             ]
+          }
+        }
+      },
+      "PaymentRequired": {
+        "description": "Payment Required",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            }
           }
         }
       },

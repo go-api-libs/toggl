@@ -58,6 +58,9 @@ type APIErrorString string
 // Clients defines a model
 type Clients []WorkClient
 
+// ErrorMessage defines a model
+type ErrorMessage string
+
 // EventMetadata defines a model
 type EventMetadata struct{}
 
