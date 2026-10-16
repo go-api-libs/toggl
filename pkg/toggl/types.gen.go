@@ -271,7 +271,7 @@ type TimeEntries []TimeEntry
 
 // TimeEntry defines a model
 type TimeEntry struct {
-	ID              int           `json:"id"`
+	ID              int64         `json:"id"`
 	WorkspaceID     int           `json:"workspace_id"`
 	ProjectID       int           `json:"project_id"`
 	TaskID          struct{}      `json:"task_id"`
