@@ -1986,7 +1986,6 @@
         "properties": {
           "id": {
             "type": "integer",
-            "format": "int64",
             "example": 3727977106
           },
           "workspace_id": {
