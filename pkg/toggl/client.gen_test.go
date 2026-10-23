@@ -12,6 +12,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"testing"
+	"time"
 
 	"github.com/MarkRosemaker/cassette"
 	"github.com/go-api-libs/api"
@@ -842,5 +843,12 @@ func TestClient_Interactions(t *testing.T) {
 		t.Fatal("GetMe: expected error")
 	} else if _, ok := errors.AsType[*api.ErrorBody](err); !ok {
 		t.Fatalf("GetMe: got: %T, want: *api.ErrorBody", err)
+	}
+
+	if _, err := c.ListTimeEntries(ctx, &ListTimeEntriesParams{
+		StartDate: time.Date(2026, 10, 9, 15, 32, 44, 0, time.FixedZone("", 7200)),
+		EndDate:   time.Date(2026, 10, 23, 15, 32, 44, 0, time.FixedZone("", 7200)),
+	}); err != nil {
+		t.Fatalf("ListTimeEntries: %v", err)
 	}
 }

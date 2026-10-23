@@ -64,6 +64,15 @@ type ErrorMessage string
 // EventMetadata defines a model
 type EventMetadata struct{}
 
+// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
+type IntegrationExtID string
+
+// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
+type IntegrationExtType string
+
+// The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity
+type IntegrationProvider string
+
 // NewOrganization defines a model
 type NewOrganization struct {
 	// Name of the organization
@@ -214,14 +223,14 @@ type Project struct {
 	IsShared *bool `json:"is_shared,omitzero"`
 	Pinned   bool  `json:"pinned"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
-	IntegrationExtID string `json:"integration_ext_id,omitzero"`
+	IntegrationExtID IntegrationExtID `json:"integration_ext_id,omitzero"`
 	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
-	IntegrationExtType string `json:"integration_ext_type,omitzero"`
+	IntegrationExtType IntegrationExtType `json:"integration_ext_type,omitzero"`
 	// The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity
-	IntegrationProvider      string    `json:"integration_provider,omitzero"`
-	WorkspaceDefaultCurrency *struct{} `json:"workspace_default_currency,omitzero"`
-	TotalCount               *int      `json:"total_count,omitzero"`
-	ClientName               string    `json:"client_name,omitzero"`
+	IntegrationProvider      IntegrationProvider `json:"integration_provider,omitzero"`
+	WorkspaceDefaultCurrency *struct{}           `json:"workspace_default_currency,omitzero"`
+	TotalCount               *int                `json:"total_count,omitzero"`
+	ClientName               string              `json:"client_name,omitzero"`
 }
 
 // Projects defines a model
@@ -296,6 +305,12 @@ type TimeEntry struct {
 	ProjectBillable *bool         `json:"project_billable,omitzero"`
 	UserName        string        `json:"user_name,omitzero"`
 	UserAvatarURL   url.URL       `json:"user_avatar_url,omitzero"`
+	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
+	IntegrationExtID IntegrationExtID `json:"integration_ext_id,omitzero"`
+	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
+	IntegrationExtType IntegrationExtType `json:"integration_ext_type,omitzero"`
+	// The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity
+	IntegrationProvider IntegrationProvider `json:"integration_provider,omitzero"`
 }
 
 // TrialInfo defines a model
@@ -364,12 +379,12 @@ type WorkClient struct {
 	// The ID of the user who created the client
 	CreatorID int `json:"creator_id"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
-	IntegrationExtID string `json:"integration_ext_id,omitzero"`
+	IntegrationExtID IntegrationExtID `json:"integration_ext_id,omitzero"`
 	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
-	IntegrationExtType string `json:"integration_ext_type,omitzero"`
+	IntegrationExtType IntegrationExtType `json:"integration_ext_type,omitzero"`
 	// The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity
-	IntegrationProvider string `json:"integration_provider,omitzero"`
-	Notes               string `json:"notes,omitzero"`
+	IntegrationProvider IntegrationProvider `json:"integration_provider,omitzero"`
+	Notes               string              `json:"notes,omitzero"`
 	// List of authorization permissions for this client.
 	Permissions string `json:"permissions,omitzero"`
 	TotalCount  *int   `json:"total_count,omitzero"`

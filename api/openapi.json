@@ -253,6 +253,21 @@
       "EventMetadata": {
         "type": "object"
       },
+      "IntegrationExtID": {
+        "description": "The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)",
+        "type": "string",
+        "example": "206843203"
+      },
+      "IntegrationExtType": {
+        "description": "The external type of the linked entity in the external system (e.g. JIRA/SalesForce)",
+        "type": "string",
+        "example": "time_entry"
+      },
+      "IntegrationProvider": {
+        "description": "The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity",
+        "type": "string",
+        "example": "focus"
+      },
       "NewOrganization": {
         "type": "object",
         "properties": {
@@ -789,16 +804,13 @@
             "example": false
           },
           "integration_ext_id": {
-            "description": "The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)",
-            "type": "string"
+            "$ref": "#/components/schemas/IntegrationExtID"
           },
           "integration_ext_type": {
-            "description": "The external type of the linked entity in the external system (e.g. JIRA/SalesForce)",
-            "type": "string"
+            "$ref": "#/components/schemas/IntegrationExtType"
           },
           "integration_provider": {
-            "description": "The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity",
-            "type": "string"
+            "$ref": "#/components/schemas/IntegrationProvider"
           },
           "workspace_default_currency": {
             "type": [
@@ -2012,7 +2024,10 @@
             "example": "2024-12-13T00:18:26+00:00"
           },
           "stop": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "date-time",
             "example": "2024-12-12T20:38:05+00:00"
           },
@@ -2098,6 +2113,15 @@
             "type": "string",
             "format": "uri",
             "example": "https://secure.gravatar.com/avatar/af0a4ad100669ddbc678eb40ba90459d?d=404&s=200"
+          },
+          "integration_ext_id": {
+            "$ref": "#/components/schemas/IntegrationExtID"
+          },
+          "integration_ext_type": {
+            "$ref": "#/components/schemas/IntegrationExtType"
+          },
+          "integration_provider": {
+            "$ref": "#/components/schemas/IntegrationProvider"
           }
         },
         "required": [
@@ -2401,16 +2425,13 @@
             "example": 2166261
           },
           "integration_ext_id": {
-            "description": "The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)",
-            "type": "string"
+            "$ref": "#/components/schemas/IntegrationExtID"
           },
           "integration_ext_type": {
-            "description": "The external type of the linked entity in the external system (e.g. JIRA/SalesForce)",
-            "type": "string"
+            "$ref": "#/components/schemas/IntegrationExtType"
           },
           "integration_provider": {
-            "description": "The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity",
-            "type": "string"
+            "$ref": "#/components/schemas/IntegrationProvider"
           },
           "notes": {
             "type": "string"
