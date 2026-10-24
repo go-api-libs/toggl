@@ -22,6 +22,7 @@ func TestErrTimeEntryAlreadyStopped(t *testing.T) {
 
 func TestAPIErrorStringIs(t *testing.T) {
 	nilp := (*APIErrorString)(nil)
+
 	tests := []struct {
 		name        string
 		err, target error
