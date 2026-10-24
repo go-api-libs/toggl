@@ -851,4 +851,10 @@ func TestClient_Interactions(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("ListTimeEntries: %v", err)
 	}
+
+	if _, err := c.StopTimeEntry(ctx, 2230580, 4598868048); err == nil {
+		t.Fatal("StopTimeEntry: expected error")
+	} else if _, ok := errors.AsType[*APIErrorString](err); !ok {
+		t.Fatalf("StopTimeEntry: got: %T, want: *APIErrorString", err)
+	}
 }

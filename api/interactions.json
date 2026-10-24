@@ -2377,5 +2377,22 @@
 				}
 			]
 		}
+	},
+	{
+		"request": {
+			"method": "PATCH",
+			"url": "https://api.track.toggl.com/api/v9/workspaces/2230580/time_entries/4598868048/stop",
+			"header": {
+				"Authorization": "Basic ********************************************************",
+				"User-Agent": "Toggl API"
+			}
+		},
+		"response": {
+			"statusCode": 409,
+			"header": {
+				"Content-Type": "application/json; charset=utf-8"
+			},
+			"body": "Time entry already stopped"
+		}
 	}
 ]

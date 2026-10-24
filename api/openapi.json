@@ -105,6 +105,9 @@
           "200": {
             "$ref": "#/components/responses/TimeEntryResponse",
             "description": "The stopped workspace TimeEntry."
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           }
         }
       }
@@ -2748,6 +2751,16 @@
               "$ref": "#/components/schemas/APIErrorString"
             },
             "example": "Start time year must be between 2006 and 2030"
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/APIErrorString"
+            }
           }
         }
       },
