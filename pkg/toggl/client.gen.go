@@ -376,6 +376,106 @@ func (c *Client) GetCurrentTimeEntryWithResult[R any](ctx context.Context) (*R, 
 	}
 }
 
+// Updates a workspace time entry. Only the fields given change.
+//
+//	PUT /workspaces/{workspace_id}/time_entries/{time_entry_id}
+func (c *Client) UpdateTimeEntry(ctx context.Context, workspaceID int, timeEntryID int, body TimeEntryUpdate) (*TimeEntry, error) {
+	return c.UpdateTimeEntryWithResult[TimeEntry](ctx, workspaceID, timeEntryID, body)
+}
+
+// Updates a workspace time entry. Only the fields given change.
+// You can define a custom result to unmarshal the response into.
+//
+//	PUT /workspaces/{workspace_id}/time_entries/{time_entry_id}
+func (c *Client) UpdateTimeEntryWithResult[R any](ctx context.Context, workspaceID int, timeEntryID int, body TimeEntryUpdate) (*R, error) {
+	u := c.baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries", strconv.Itoa(timeEntryID))
+	pr, pw := io.Pipe()
+	req := (&http.Request{
+		Header: http.Header{
+			"Authorization": []string{c.basic},
+			"User-Agent":    []string{c.userAgent},
+			"Content-Type":  []string{"application/json"},
+		},
+		Host:          u.Host,
+		Method:        http.MethodPut,
+		Proto:         "HTTP/1.1",
+		ProtoMajor:    1,
+		ProtoMinor:    1,
+		URL:           u,
+		Body:          pr,
+		ContentLength: -1,
+	}).WithContext(ctx)
+
+	go func() { pw.CloseWithError(json.MarshalWrite(pw, body, jsonOpts)) }()
+	defer pr.Close()
+
+	rsp, ia, err := c.do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	switch rsp.StatusCode {
+	case http.StatusOK:
+		// Returns a time entry
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out R
+
+			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
+			opts := jsonOptsLenient
+			if _, ok := any(&out).(*TimeEntry); ok {
+				opts = jsonOpts
+			}
+
+			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+				if ia == nil {
+					return nil, api.WrapDecodingError(rsp, err)
+				}
+
+				if kerr := c.keep(ia); kerr != nil {
+					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
+				}
+
+				out = *new(R)
+				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
+					return nil, api.WrapDecodingError(rsp, err)
+				}
+			}
+
+			return &out, nil
+		default:
+			return nil, c.failed(ia, api.NewErrUnknownContentType(rsp))
+		}
+	case http.StatusBadRequest:
+		// Returned when the user made a bad request
+		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
+		case "application/json":
+			var out APIErrorString
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
+				if ia == nil {
+					return nil, api.WrapDecodingError(rsp, err)
+				}
+
+				if kerr := c.keep(ia); kerr != nil {
+					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
+				}
+
+				out = *new(APIErrorString)
+				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
+					return nil, api.WrapDecodingError(rsp, err)
+				}
+			}
+
+			return nil, api.NewErrCustom(rsp, &out)
+		default:
+			return nil, c.failed(ia, api.NewErrUnknownContentType(rsp))
+		}
+	default:
+		return nil, c.failed(ia, api.NewErrUnknownStatusCode(rsp))
+	}
+}
+
 // Stops a workspace time entry.
 //
 //	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop

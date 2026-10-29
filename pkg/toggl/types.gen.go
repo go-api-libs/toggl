@@ -314,6 +314,26 @@ type TimeEntry struct {
 	IntegrationProvider IntegrationProvider `json:"integration_provider,omitzero"`
 }
 
+// The fields of a time entry to change; those left out keep their value.
+type TimeEntryUpdate struct {
+	// Whether the time entry is marked as billable
+	Billable *bool `json:"billable,omitzero"`
+	// Time entry description
+	Description string `json:"description,omitzero"`
+	// Time entry duration. For running entries should be negative, preferable -1
+	Duration *time.Duration `json:"duration,omitzero"`
+	// Project ID
+	ProjectID *int `json:"project_id,omitzero"`
+	// Start time
+	Start time.Time `json:"start,omitzero"`
+	// Stop time. Setting it stops a running entry then.
+	Stop time.Time `json:"stop,omitzero"`
+	// Names of tags to add/remove. If name does not exist as tag, one will be created automatically
+	Tags []string `json:"tags,omitzero"`
+	// Workspace ID
+	WorkspaceID *int `json:"workspace_id,omitzero"`
+}
+
 // TrialInfo defines a model
 type TrialInfo struct {
 	// Whether the organization's subscription is currently on trial
