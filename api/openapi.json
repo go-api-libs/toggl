@@ -85,6 +85,35 @@
         }
       }
     },
+    "/workspaces/{workspace_id}/time_entries/{time_entry_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/workspace_id"
+        },
+        {
+          "$ref": "#/components/parameters/time_entry_id"
+        }
+      ],
+      "put": {
+        "tags": [
+          "time_entries"
+        ],
+        "summary": "Update a time entry",
+        "description": "Updates a workspace time entry. Only the fields given change.",
+        "operationId": "UpdateTimeEntry",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/TimeEntryUpdate"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/TimeEntryResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
       "parameters": [
         {
@@ -2168,6 +2197,52 @@
           "pid": 155392684
         }
       },
+      "TimeEntryUpdate": {
+        "description": "The fields of a time entry to change; those left out keep their value.",
+        "type": "object",
+        "properties": {
+          "billable": {
+            "description": "Whether the time entry is marked as billable",
+            "type": "boolean"
+          },
+          "description": {
+            "description": "Time entry description",
+            "type": "string"
+          },
+          "duration": {
+            "description": "Time entry duration. For running entries should be negative, preferable -1",
+            "type": "integer",
+            "format": "duration"
+          },
+          "project_id": {
+            "description": "Project ID",
+            "type": "integer"
+          },
+          "start": {
+            "description": "Start time",
+            "type": "string",
+            "format": "date-time"
+          },
+          "stop": {
+            "description": "Stop time. Setting it stops a running entry then.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-15T22:17:59Z"
+          },
+          "tags": {
+            "description": "Names of tags to add/remove. If name does not exist as tag, one will be created automatically",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "workspace_id": {
+            "description": "Workspace ID",
+            "type": "integer",
+            "example": 2230580
+          }
+        }
+      },
       "TrialInfo": {
         "type": "object",
         "properties": {
@@ -3126,6 +3201,20 @@
               "created_with": "github.com/go-api-libs/toggl",
               "start": "2024-12-15T21:17:59.593648+01:00",
               "workspace_id": 2230580
+            }
+          }
+        }
+      },
+      "TimeEntryUpdate": {
+        "description": "The fields to change.",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TimeEntryUpdate"
+            },
+            "example": {
+              "stop": "2024-12-15T22:17:59Z"
             }
           }
         }
