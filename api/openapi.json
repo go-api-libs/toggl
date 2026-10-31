@@ -85,6 +85,35 @@
         }
       }
     },
+    "/workspaces/{workspace_id}/time_entries/{time_entry_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/workspace_id"
+        },
+        {
+          "$ref": "#/components/parameters/time_entry_id"
+        }
+      ],
+      "put": {
+        "tags": [
+          "time_entries"
+        ],
+        "summary": "Update a time entry",
+        "description": "Updates a workspace time entry. Only the fields given change.",
+        "operationId": "UpdateTimeEntry",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/TimeEntryUpdate"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/TimeEntryResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/time_entries/{time_entry_id}/stop": {
       "parameters": [
         {
@@ -320,14 +349,16 @@
           },
           "duronly": {
             "description": "Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.",
-            "type": "boolean"
+            "type": "boolean",
+            "x-go-name": "DurationOnly"
           },
           "event_metadata": {
             "$ref": "#/components/schemas/EventMetadata"
           },
           "pid": {
             "description": "Project ID, legacy field",
-            "type": "integer"
+            "type": "integer",
+            "x-go-name": "ProjectIDLegacy"
           },
           "project_id": {
             "description": "Project ID, optional",
@@ -348,11 +379,13 @@
           },
           "start_date": {
             "description": "If provided during creation, the date part will take precedence over the date part of \"start\". Format: 2006-11-07",
-            "type": "string"
+            "type": "string",
+            "format": "date"
           },
           "stop": {
             "description": "Stop time in UTC, can be omitted if it's still running or created with \"duration\".\nIf \"stop\" and \"duration\" are provided, values must be consistent (start + duration == stop)",
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "tag_action": {
             "$ref": "#/components/schemas/TagAction"
@@ -381,7 +414,8 @@
           },
           "uid": {
             "description": "Time Entry creator ID, legacy field",
-            "type": "integer"
+            "type": "integer",
+            "x-go-name": "UserIDLegacy"
           },
           "user_id": {
             "description": "Time Entry creator ID, if omitted will use the requester user ID",
@@ -389,7 +423,8 @@
           },
           "wid": {
             "description": "Workspace ID, legacy field",
-            "type": "integer"
+            "type": "integer",
+            "x-go-name": "WorkspaceIDLegacy"
           },
           "workspace_id": {
             "description": "Workspace ID",
@@ -697,7 +732,8 @@
           },
           "end_date": {
             "description": "End date",
-            "type": "string"
+            "type": "string",
+            "format": "date"
           },
           "estimated_hours": {
             "description": "Estimated hours",
@@ -780,6 +816,7 @@
           },
           "start_date": {
             "type": "string",
+            "format": "date",
             "example": "2017-08-28"
           },
           "status": {
@@ -788,7 +825,8 @@
           },
           "wid": {
             "type": "integer",
-            "example": 2230580
+            "example": 2230580,
+            "x-go-name": "WorkspaceIDLegacy"
           },
           "cid": {
             "description": "Client ID legacy field",
@@ -2008,7 +2046,10 @@
             "example": 2230580
           },
           "project_id": {
-            "type": "integer",
+            "type": [
+              "integer",
+              "null"
+            ],
             "example": 155392684
           },
           "task_id": {
@@ -2056,8 +2097,10 @@
             }
           },
           "duronly": {
+            "description": "Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.",
             "type": "boolean",
-            "example": true
+            "example": true,
+            "x-go-name": "DurationOnly"
           },
           "at": {
             "type": "string",
@@ -2078,15 +2121,18 @@
           },
           "uid": {
             "type": "integer",
-            "example": 2166261
+            "example": 2166261,
+            "x-go-name": "UserIDLegacy"
           },
           "wid": {
             "type": "integer",
-            "example": 2230580
+            "example": 2230580,
+            "x-go-name": "WorkspaceIDLegacy"
           },
           "pid": {
             "type": "integer",
-            "example": 155392684
+            "example": 155392684,
+            "x-go-name": "ProjectIDLegacy"
           },
           "client_name": {
             "type": "string",
@@ -2144,8 +2190,7 @@
           "server_deleted_at",
           "user_id",
           "uid",
-          "wid",
-          "pid"
+          "wid"
         ],
         "example": {
           "id": 3727977106,
@@ -2168,6 +2213,51 @@
           "pid": 155392684
         }
       },
+      "TimeEntryUpdate": {
+        "description": "The fields of a time entry to change; those left out keep their value.",
+        "type": "object",
+        "properties": {
+          "billable": {
+            "description": "Whether the time entry is marked as billable",
+            "type": "boolean"
+          },
+          "description": {
+            "description": "Time entry description",
+            "type": "string"
+          },
+          "duration": {
+            "description": "Time entry duration. For running entries should be negative, preferable -1",
+            "type": "integer",
+            "format": "duration"
+          },
+          "project_id": {
+            "description": "Project ID",
+            "type": "integer"
+          },
+          "start": {
+            "description": "Start time",
+            "type": "string",
+            "format": "date-time"
+          },
+          "stop": {
+            "description": "Stop time. Setting it stops a running entry then.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-31T17:15:53.245516+01:00"
+          },
+          "tags": {
+            "description": "Names of tags to add/remove. If name does not exist as tag, one will be created automatically",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "workspace_id": {
+            "description": "Workspace ID",
+            "type": "integer"
+          }
+        }
+      },
       "TrialInfo": {
         "type": "object",
         "properties": {
@@ -2184,11 +2274,13 @@
           "trial_end_date": {
             "description": "When the trial ends",
             "type": "string",
+            "format": "date",
             "x-nullable": true
           },
           "next_payment_date": {
             "description": "When the trial payment is due",
             "type": "string",
+            "format": "date",
             "x-nullable": true
           },
           "last_pricing_plan_id": {
@@ -2404,7 +2496,8 @@
           "wid": {
             "description": "Workspace ID",
             "type": "integer",
-            "example": 2230580
+            "example": 2230580,
+            "x-go-name": "WorkspaceIDLegacy"
           },
           "archived": {
             "description": "true, if the client is archived",
@@ -3126,6 +3219,20 @@
               "created_with": "github.com/go-api-libs/toggl",
               "start": "2024-12-15T21:17:59.593648+01:00",
               "workspace_id": 2230580
+            }
+          }
+        }
+      },
+      "TimeEntryUpdate": {
+        "description": "The fields to change.",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TimeEntryUpdate"
+            },
+            "example": {
+              "stop": "2024-12-15T22:17:59Z"
             }
           }
         }

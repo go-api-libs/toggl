@@ -10,6 +10,7 @@ import (
 	"time"
 	"uuid"
 
+	"cloud.google.com/go/civil"
 	"github.com/MarkRosemaker/jsonutil"
 	"github.com/go-api-libs/types"
 )
@@ -23,6 +24,7 @@ var jsonOpts = json.JoinOptions(
 	json.WithUnmarshalers(json.JoinUnmarshalers(
 		json.UnmarshalFromFunc(jsonutil.URLUnmarshal),
 		json.UnmarshalFromFunc(jsonutil.DurationUnmarshalIntSeconds),
+		json.UnmarshalFromFunc(jsonutil.DateUnmarshalEmptyAsZero),
 		json.UnmarshalFromFunc(jsonutil.TimeUnmarshalEmptyAsZero),
 	)),
 )
@@ -93,10 +95,10 @@ type NewTimeEntry struct {
 	// Time entry duration. For running entries should be negative, preferable -1
 	Duration time.Duration `json:"duration"`
 	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
-	Duronly       *bool          `json:"duronly,omitzero"`
+	DurationOnly  *bool          `json:"duronly,omitzero"`
 	EventMetadata *EventMetadata `json:"event_metadata,omitzero"`
 	// Project ID, legacy field
-	Pid *int `json:"pid,omitzero"`
+	ProjectIDLegacy *int `json:"pid,omitzero"`
 	// Project ID, optional
 	ProjectID *int `json:"project_id,omitzero"`
 	// List of user IDs to share this time entry with
@@ -104,10 +106,10 @@ type NewTimeEntry struct {
 	// Start time, required for creation.
 	Start time.Time `json:"start"`
 	// If provided during creation, the date part will take precedence over the date part of "start". Format: 2006-11-07
-	StartDate string `json:"start_date,omitzero"`
+	StartDate civil.Date `json:"start_date,omitzero"`
 	// Stop time in UTC, can be omitted if it's still running or created with "duration".
 	// If "stop" and "duration" are provided, values must be consistent (start + duration == stop)
-	Stop string `json:"stop,omitzero"`
+	Stop time.Time `json:"stop,omitzero"`
 	// Used when updating an existing time entry
 	TagAction TagAction `json:"tag_action,omitzero"`
 	// IDs of tags to add/remove
@@ -119,11 +121,11 @@ type NewTimeEntry struct {
 	// Task ID, legacy field
 	Tid *int `json:"tid,omitzero"`
 	// Time Entry creator ID, legacy field
-	UID *int `json:"uid,omitzero"`
+	UserIDLegacy *int `json:"uid,omitzero"`
 	// Time Entry creator ID, if omitted will use the requester user ID
 	UserID *int `json:"user_id,omitzero"`
 	// Workspace ID, legacy field
-	Wid *int `json:"wid,omitzero"`
+	WorkspaceIDLegacy *int `json:"wid,omitzero"`
 	// Workspace ID
 	WorkspaceID int `json:"workspace_id"`
 }
@@ -196,7 +198,7 @@ type Project struct {
 	// RecurringPeriod
 	CurrentPeriod *EventMetadata `json:"current_period,omitzero"`
 	// End date
-	EndDate string `json:"end_date,omitzero"`
+	EndDate civil.Date `json:"end_date,omitzero"`
 	// Estimated hours
 	EstimatedHours int `json:"estimated_hours"`
 	// Estimated seconds
@@ -213,12 +215,12 @@ type Project struct {
 	// Actual hours
 	ActualHours int `json:"actual_hours"`
 	// Actual seconds
-	ActualSeconds int       `json:"actual_seconds"`
-	TasksCount    *struct{} `json:"tasks_count,omitzero"`
-	CanTrackTime  bool      `json:"can_track_time"`
-	StartDate     string    `json:"start_date"`
-	Status        string    `json:"status"`
-	Wid           int       `json:"wid"`
+	ActualSeconds     int        `json:"actual_seconds"`
+	TasksCount        *struct{}  `json:"tasks_count,omitzero"`
+	CanTrackTime      bool       `json:"can_track_time"`
+	StartDate         civil.Date `json:"start_date"`
+	Status            string     `json:"status"`
+	WorkspaceIDLegacy int        `json:"wid"`
 	// Client ID legacy field
 	Cid      int   `json:"cid"`
 	IsShared *bool `json:"is_shared,omitzero"`
@@ -281,37 +283,58 @@ type TimeEntries []TimeEntry
 
 // TimeEntry defines a model
 type TimeEntry struct {
-	ID              int           `json:"id"`
-	WorkspaceID     int           `json:"workspace_id"`
-	ProjectID       int           `json:"project_id"`
-	TaskID          struct{}      `json:"task_id"`
-	Billable        bool          `json:"billable"`
-	Start           time.Time     `json:"start"`
-	Stop            time.Time     `json:"stop"`
-	Duration        time.Duration `json:"duration"`
-	Description     string        `json:"description"`
-	Tags            []string      `json:"tags"`
-	TagIds          []string      `json:"tag_ids"`
-	Duronly         bool          `json:"duronly"`
-	At              time.Time     `json:"at"`
-	ServerDeletedAt time.Time     `json:"server_deleted_at"`
-	UserID          int           `json:"user_id"`
-	UID             int           `json:"uid"`
-	Wid             int           `json:"wid"`
-	Pid             int           `json:"pid"`
-	ClientName      string        `json:"client_name,omitzero"`
-	ProjectName     string        `json:"project_name,omitzero"`
-	ProjectColor    string        `json:"project_color,omitzero"`
-	ProjectActive   *bool         `json:"project_active,omitzero"`
-	ProjectBillable *bool         `json:"project_billable,omitzero"`
-	UserName        string        `json:"user_name,omitzero"`
-	UserAvatarURL   url.URL       `json:"user_avatar_url,omitzero"`
+	ID          int           `json:"id"`
+	WorkspaceID int           `json:"workspace_id"`
+	ProjectID   int           `json:"project_id"`
+	TaskID      struct{}      `json:"task_id"`
+	Billable    bool          `json:"billable"`
+	Start       time.Time     `json:"start"`
+	Stop        time.Time     `json:"stop"`
+	Duration    time.Duration `json:"duration"`
+	Description string        `json:"description"`
+	Tags        []string      `json:"tags"`
+	TagIds      []string      `json:"tag_ids"`
+	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
+	DurationOnly      bool      `json:"duronly"`
+	At                time.Time `json:"at"`
+	ServerDeletedAt   time.Time `json:"server_deleted_at"`
+	UserID            int       `json:"user_id"`
+	UserIDLegacy      int       `json:"uid"`
+	WorkspaceIDLegacy int       `json:"wid"`
+	ProjectIDLegacy   *int      `json:"pid,omitzero"`
+	ClientName        string    `json:"client_name,omitzero"`
+	ProjectName       string    `json:"project_name,omitzero"`
+	ProjectColor      string    `json:"project_color,omitzero"`
+	ProjectActive     *bool     `json:"project_active,omitzero"`
+	ProjectBillable   *bool     `json:"project_billable,omitzero"`
+	UserName          string    `json:"user_name,omitzero"`
+	UserAvatarURL     url.URL   `json:"user_avatar_url,omitzero"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
 	IntegrationExtID IntegrationExtID `json:"integration_ext_id,omitzero"`
 	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
 	IntegrationExtType IntegrationExtType `json:"integration_ext_type,omitzero"`
 	// The provider (e.g. JIRA/SalesForce) that has an entity linked to this Toggl Track entity
 	IntegrationProvider IntegrationProvider `json:"integration_provider,omitzero"`
+}
+
+// The fields of a time entry to change; those left out keep their value.
+type TimeEntryUpdate struct {
+	// Whether the time entry is marked as billable
+	Billable *bool `json:"billable,omitzero"`
+	// Time entry description
+	Description string `json:"description,omitzero"`
+	// Time entry duration. For running entries should be negative, preferable -1
+	Duration *time.Duration `json:"duration,omitzero"`
+	// Project ID
+	ProjectID *int `json:"project_id,omitzero"`
+	// Start time
+	Start time.Time `json:"start,omitzero"`
+	// Stop time. Setting it stops a running entry then.
+	Stop time.Time `json:"stop,omitzero"`
+	// Names of tags to add/remove. If name does not exist as tag, one will be created automatically
+	Tags []string `json:"tags,omitzero"`
+	// Workspace ID
+	WorkspaceID *int `json:"workspace_id,omitzero"`
 }
 
 // TrialInfo defines a model
@@ -321,9 +344,9 @@ type TrialInfo struct {
 	// When a trial is available for this organization
 	TrialAvailable bool `json:"trial_available"`
 	// When the trial ends
-	TrialEndDate string `json:"trial_end_date"`
+	TrialEndDate civil.Date `json:"trial_end_date"`
 	// When the trial payment is due
-	NextPaymentDate string `json:"next_payment_date"`
+	NextPaymentDate civil.Date `json:"next_payment_date"`
 	// What was the previous plan before the trial
 	LastPricingPlanID int `json:"last_pricing_plan_id"`
 	// True, if neither the organization nor the owner has never had a trial before
@@ -370,7 +393,7 @@ type WorkClient struct {
 	// Client ID
 	ID int `json:"id"`
 	// Workspace ID
-	Wid int `json:"wid"`
+	WorkspaceIDLegacy int `json:"wid"`
 	// true, if the client is archived
 	Archived bool `json:"archived"`
 	// Name of the client

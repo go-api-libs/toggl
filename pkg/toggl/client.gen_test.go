@@ -320,6 +320,101 @@ func TestClient_Error(t *testing.T) {
 		})
 	})
 
+	t.Run("UpdateTimeEntry", func(t *testing.T) {
+		t.Setenv("TOGGL_API_USERNAME", "user")
+		t.Setenv("TOGGL_API_PASSWORD", "pass")
+
+		t.Run("transport error", func(t *testing.T) {
+			c, err := NewClient(WithHTTPClient(&http.Client{Transport: roundTripFunc(
+				func(*http.Request) (*http.Response, error) { return nil, io.EOF },
+			)}))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.UpdateTimeEntry(t.Context(), 0, 0, TimeEntryUpdate{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, io.EOF) {
+				t.Fatalf("want: %v, got: %v", io.EOF, err)
+			}
+		})
+
+		t.Run("unknown status code", func(t *testing.T) {
+			srv := newTestServer(t, http.StatusTeapot)
+
+			baseURL, err := url.Parse(srv.URL)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			c, err := NewClient(WithBaseURL(baseURL))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.UpdateTimeEntry(t.Context(), 0, 0, TimeEntryUpdate{}); err == nil {
+				t.Fatal("expected error")
+			} else if apiErr, ok := errors.AsType[*api.Error](err); !ok {
+				t.Fatalf("got: %T, want: *api.Error", err)
+			} else if apiErr.Err != api.ErrUnknownStatusCode {
+				t.Fatalf("got: %v, want: %v", apiErr.Err, api.ErrUnknownStatusCode)
+			} else if apiErr.Response.StatusCode != http.StatusTeapot {
+				t.Fatalf("got: %v, want: %v", apiErr.Response.StatusCode, http.StatusTeapot)
+			}
+		})
+
+		t.Run("unknown content type", func(t *testing.T) {
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.Header().Set("Content-Type", "foo")
+				w.WriteHeader(http.StatusOK)
+			}))
+			t.Cleanup(srv.Close)
+
+			baseURL, err := url.Parse(srv.URL)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			c, err := NewClient(WithBaseURL(baseURL))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.UpdateTimeEntry(t.Context(), 0, 0, TimeEntryUpdate{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+		})
+
+		t.Run("decoding error", func(t *testing.T) {
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusOK)
+				_, _ = w.Write([]byte("invalid json"))
+			}))
+			t.Cleanup(srv.Close)
+
+			baseURL, err := url.Parse(srv.URL)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			c, err := NewClient(WithBaseURL(baseURL))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.UpdateTimeEntry(t.Context(), 0, 0, TimeEntryUpdate{}); err == nil {
+				t.Fatal("expected error")
+			} else if decErr, ok := errors.AsType[*api.DecodingError](err); !ok {
+				t.Fatalf("got: %T, want: *api.DecodingError", err)
+			} else if _, ok := errors.AsType[*jsontext.SyntacticError](decErr.Err); !ok {
+				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
+			}
+		})
+	})
+
 	t.Run("StopTimeEntry", func(t *testing.T) {
 		t.Setenv("TOGGL_API_USERNAME", "user")
 		t.Setenv("TOGGL_API_PASSWORD", "pass")
@@ -856,5 +951,11 @@ func TestClient_Interactions(t *testing.T) {
 		t.Fatal("StopTimeEntry: expected error")
 	} else if _, ok := errors.AsType[*APIErrorString](err); !ok {
 		t.Fatalf("StopTimeEntry: got: %T, want: *APIErrorString", err)
+	}
+
+	if _, err := c.UpdateTimeEntry(ctx, 2230580, 4606721930, TimeEntryUpdate{
+		Stop: time.Date(2026, 10, 31, 17, 15, 53, 245516000, time.FixedZone("", 3600)),
+	}); err != nil {
+		t.Fatalf("UpdateTimeEntry: %v", err)
 	}
 }
