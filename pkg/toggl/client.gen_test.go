@@ -952,4 +952,10 @@ func TestClient_Interactions(t *testing.T) {
 	} else if _, ok := errors.AsType[*APIErrorString](err); !ok {
 		t.Fatalf("StopTimeEntry: got: %T, want: *APIErrorString", err)
 	}
+
+	if _, err := c.UpdateTimeEntry(ctx, 2230580, 4606721930, TimeEntryUpdate{
+		Stop: time.Date(2026, 10, 31, 17, 15, 53, 245516000, time.FixedZone("", 3600)),
+	}); err != nil {
+		t.Fatalf("UpdateTimeEntry: %v", err)
+	}
 }

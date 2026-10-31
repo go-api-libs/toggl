@@ -2037,7 +2037,10 @@
             "example": 2230580
           },
           "project_id": {
-            "type": "integer",
+            "type": [
+              "integer",
+              "null"
+            ],
             "example": 155392684
           },
           "task_id": {
@@ -2173,8 +2176,7 @@
           "server_deleted_at",
           "user_id",
           "uid",
-          "wid",
-          "pid"
+          "wid"
         ],
         "example": {
           "id": 3727977106,
@@ -2227,7 +2229,7 @@
             "description": "Stop time. Setting it stops a running entry then.",
             "type": "string",
             "format": "date-time",
-            "example": "2024-12-15T22:17:59Z"
+            "example": "2026-10-31T17:15:53.245516+01:00"
           },
           "tags": {
             "description": "Names of tags to add/remove. If name does not exist as tag, one will be created automatically",
@@ -2238,8 +2240,7 @@
           },
           "workspace_id": {
             "description": "Workspace ID",
-            "type": "integer",
-            "example": 2230580
+            "type": "integer"
           }
         }
       },

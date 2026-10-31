@@ -298,7 +298,7 @@ type TimeEntry struct {
 	UserID          int           `json:"user_id"`
 	UID             int           `json:"uid"`
 	Wid             int           `json:"wid"`
-	Pid             int           `json:"pid"`
+	Pid             *int          `json:"pid,omitzero"`
 	ClientName      string        `json:"client_name,omitzero"`
 	ProjectName     string        `json:"project_name,omitzero"`
 	ProjectColor    string        `json:"project_color,omitzero"`

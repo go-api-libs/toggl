@@ -2394,5 +2394,44 @@
 			},
 			"body": "Time entry already stopped"
 		}
+	},
+	{
+		"request": {
+			"method": "PUT",
+			"url": "https://api.track.toggl.com/api/v9/workspaces/2230580/time_entries/4606721930",
+			"header": {
+				"Authorization": "Basic ********************************************************",
+				"Content-Type": "application/json",
+				"User-Agent": "Toggl API"
+			},
+			"body": {
+				"stop": "2026-10-31T17:15:53.245516+01:00"
+			}
+		},
+		"response": {
+			"statusCode": 200,
+			"header": {
+				"Content-Type": "application/json; charset=utf-8"
+			},
+			"body": {
+				"id": 4606721930,
+				"workspace_id": 2230580,
+				"project_id": null,
+				"task_id": null,
+				"billable": false,
+				"start": "2026-10-31T14:45:53Z",
+				"stop": "2026-10-31T16:15:53Z",
+				"duration": 5400,
+				"description": "test event",
+				"tags": [],
+				"tag_ids": [],
+				"duronly": true,
+				"at": "2026-10-31T16:45:53.554625Z",
+				"server_deleted_at": null,
+				"user_id": 0,
+				"uid": 2166261,
+				"wid": 2230580
+			}
+		}
 	}
 ]
