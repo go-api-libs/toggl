@@ -281,31 +281,32 @@ type TimeEntries []TimeEntry
 
 // TimeEntry defines a model
 type TimeEntry struct {
-	ID                int           `json:"id"`
-	WorkspaceID       int           `json:"workspace_id"`
-	ProjectID         int           `json:"project_id"`
-	TaskID            struct{}      `json:"task_id"`
-	Billable          bool          `json:"billable"`
-	Start             time.Time     `json:"start"`
-	Stop              time.Time     `json:"stop"`
-	Duration          time.Duration `json:"duration"`
-	Description       string        `json:"description"`
-	Tags              []string      `json:"tags"`
-	TagIds            []string      `json:"tag_ids"`
-	DurationOnly      bool          `json:"duronly"`
-	At                time.Time     `json:"at"`
-	ServerDeletedAt   time.Time     `json:"server_deleted_at"`
-	UserID            int           `json:"user_id"`
-	UserIDLegacy      int           `json:"uid"`
-	WorkspaceIDLegacy int           `json:"wid"`
-	ProjectIDLegacy   *int          `json:"pid,omitzero"`
-	ClientName        string        `json:"client_name,omitzero"`
-	ProjectName       string        `json:"project_name,omitzero"`
-	ProjectColor      string        `json:"project_color,omitzero"`
-	ProjectActive     *bool         `json:"project_active,omitzero"`
-	ProjectBillable   *bool         `json:"project_billable,omitzero"`
-	UserName          string        `json:"user_name,omitzero"`
-	UserAvatarURL     url.URL       `json:"user_avatar_url,omitzero"`
+	ID          int           `json:"id"`
+	WorkspaceID int           `json:"workspace_id"`
+	ProjectID   int           `json:"project_id"`
+	TaskID      struct{}      `json:"task_id"`
+	Billable    bool          `json:"billable"`
+	Start       time.Time     `json:"start"`
+	Stop        time.Time     `json:"stop"`
+	Duration    time.Duration `json:"duration"`
+	Description string        `json:"description"`
+	Tags        []string      `json:"tags"`
+	TagIds      []string      `json:"tag_ids"`
+	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
+	DurationOnly      bool      `json:"duronly"`
+	At                time.Time `json:"at"`
+	ServerDeletedAt   time.Time `json:"server_deleted_at"`
+	UserID            int       `json:"user_id"`
+	UserIDLegacy      int       `json:"uid"`
+	WorkspaceIDLegacy int       `json:"wid"`
+	ProjectIDLegacy   *int      `json:"pid,omitzero"`
+	ClientName        string    `json:"client_name,omitzero"`
+	ProjectName       string    `json:"project_name,omitzero"`
+	ProjectColor      string    `json:"project_color,omitzero"`
+	ProjectActive     *bool     `json:"project_active,omitzero"`
+	ProjectBillable   *bool     `json:"project_billable,omitzero"`
+	UserName          string    `json:"user_name,omitzero"`
+	UserAvatarURL     url.URL   `json:"user_avatar_url,omitzero"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
 	IntegrationExtID IntegrationExtID `json:"integration_ext_id,omitzero"`
 	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)

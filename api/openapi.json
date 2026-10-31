@@ -2093,6 +2093,7 @@
             }
           },
           "duronly": {
+            "description": "Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.",
             "type": "boolean",
             "example": true,
             "x-go-name": "DurationOnly"
