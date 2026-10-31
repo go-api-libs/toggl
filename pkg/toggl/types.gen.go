@@ -10,6 +10,7 @@ import (
 	"time"
 	"uuid"
 
+	"cloud.google.com/go/civil"
 	"github.com/MarkRosemaker/jsonutil"
 	"github.com/go-api-libs/types"
 )
@@ -23,6 +24,7 @@ var jsonOpts = json.JoinOptions(
 	json.WithUnmarshalers(json.JoinUnmarshalers(
 		json.UnmarshalFromFunc(jsonutil.URLUnmarshal),
 		json.UnmarshalFromFunc(jsonutil.DurationUnmarshalIntSeconds),
+		json.UnmarshalFromFunc(jsonutil.DateUnmarshalEmptyAsZero),
 		json.UnmarshalFromFunc(jsonutil.TimeUnmarshalEmptyAsZero),
 	)),
 )
@@ -104,10 +106,10 @@ type NewTimeEntry struct {
 	// Start time, required for creation.
 	Start time.Time `json:"start"`
 	// If provided during creation, the date part will take precedence over the date part of "start". Format: 2006-11-07
-	StartDate string `json:"start_date,omitzero"`
+	StartDate civil.Date `json:"start_date,omitzero"`
 	// Stop time in UTC, can be omitted if it's still running or created with "duration".
 	// If "stop" and "duration" are provided, values must be consistent (start + duration == stop)
-	Stop string `json:"stop,omitzero"`
+	Stop time.Time `json:"stop,omitzero"`
 	// Used when updating an existing time entry
 	TagAction TagAction `json:"tag_action,omitzero"`
 	// IDs of tags to add/remove
@@ -196,7 +198,7 @@ type Project struct {
 	// RecurringPeriod
 	CurrentPeriod *EventMetadata `json:"current_period,omitzero"`
 	// End date
-	EndDate string `json:"end_date,omitzero"`
+	EndDate civil.Date `json:"end_date,omitzero"`
 	// Estimated hours
 	EstimatedHours int `json:"estimated_hours"`
 	// Estimated seconds
@@ -213,12 +215,12 @@ type Project struct {
 	// Actual hours
 	ActualHours int `json:"actual_hours"`
 	// Actual seconds
-	ActualSeconds     int       `json:"actual_seconds"`
-	TasksCount        *struct{} `json:"tasks_count,omitzero"`
-	CanTrackTime      bool      `json:"can_track_time"`
-	StartDate         string    `json:"start_date"`
-	Status            string    `json:"status"`
-	WorkspaceIDLegacy int       `json:"wid"`
+	ActualSeconds     int        `json:"actual_seconds"`
+	TasksCount        *struct{}  `json:"tasks_count,omitzero"`
+	CanTrackTime      bool       `json:"can_track_time"`
+	StartDate         civil.Date `json:"start_date"`
+	Status            string     `json:"status"`
+	WorkspaceIDLegacy int        `json:"wid"`
 	// Client ID legacy field
 	Cid      int   `json:"cid"`
 	IsShared *bool `json:"is_shared,omitzero"`
@@ -342,9 +344,9 @@ type TrialInfo struct {
 	// When a trial is available for this organization
 	TrialAvailable bool `json:"trial_available"`
 	// When the trial ends
-	TrialEndDate string `json:"trial_end_date"`
+	TrialEndDate civil.Date `json:"trial_end_date"`
 	// When the trial payment is due
-	NextPaymentDate string `json:"next_payment_date"`
+	NextPaymentDate civil.Date `json:"next_payment_date"`
 	// What was the previous plan before the trial
 	LastPricingPlanID int `json:"last_pricing_plan_id"`
 	// True, if neither the organization nor the owner has never had a trial before

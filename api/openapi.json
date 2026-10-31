@@ -379,11 +379,13 @@
           },
           "start_date": {
             "description": "If provided during creation, the date part will take precedence over the date part of \"start\". Format: 2006-11-07",
-            "type": "string"
+            "type": "string",
+            "format": "date"
           },
           "stop": {
             "description": "Stop time in UTC, can be omitted if it's still running or created with \"duration\".\nIf \"stop\" and \"duration\" are provided, values must be consistent (start + duration == stop)",
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
           },
           "tag_action": {
             "$ref": "#/components/schemas/TagAction"
@@ -730,7 +732,8 @@
           },
           "end_date": {
             "description": "End date",
-            "type": "string"
+            "type": "string",
+            "format": "date"
           },
           "estimated_hours": {
             "description": "Estimated hours",
@@ -813,6 +816,7 @@
           },
           "start_date": {
             "type": "string",
+            "format": "date",
             "example": "2017-08-28"
           },
           "status": {
@@ -2270,11 +2274,13 @@
           "trial_end_date": {
             "description": "When the trial ends",
             "type": "string",
+            "format": "date",
             "x-nullable": true
           },
           "next_payment_date": {
             "description": "When the trial payment is due",
             "type": "string",
+            "format": "date",
             "x-nullable": true
           },
           "last_pricing_plan_id": {
