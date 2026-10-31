@@ -93,10 +93,10 @@ type NewTimeEntry struct {
 	// Time entry duration. For running entries should be negative, preferable -1
 	Duration time.Duration `json:"duration"`
 	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
-	Duronly       *bool          `json:"duronly,omitzero"`
+	DurationOnly  *bool          `json:"duronly,omitzero"`
 	EventMetadata *EventMetadata `json:"event_metadata,omitzero"`
 	// Project ID, legacy field
-	Pid *int `json:"pid,omitzero"`
+	ProjectIDLegacy *int `json:"pid,omitzero"`
 	// Project ID, optional
 	ProjectID *int `json:"project_id,omitzero"`
 	// List of user IDs to share this time entry with
@@ -119,11 +119,11 @@ type NewTimeEntry struct {
 	// Task ID, legacy field
 	Tid *int `json:"tid,omitzero"`
 	// Time Entry creator ID, legacy field
-	UID *int `json:"uid,omitzero"`
+	UserIDLegacy *int `json:"uid,omitzero"`
 	// Time Entry creator ID, if omitted will use the requester user ID
 	UserID *int `json:"user_id,omitzero"`
 	// Workspace ID, legacy field
-	Wid *int `json:"wid,omitzero"`
+	WorkspaceIDLegacy *int `json:"wid,omitzero"`
 	// Workspace ID
 	WorkspaceID int `json:"workspace_id"`
 }
@@ -213,12 +213,12 @@ type Project struct {
 	// Actual hours
 	ActualHours int `json:"actual_hours"`
 	// Actual seconds
-	ActualSeconds int       `json:"actual_seconds"`
-	TasksCount    *struct{} `json:"tasks_count,omitzero"`
-	CanTrackTime  bool      `json:"can_track_time"`
-	StartDate     string    `json:"start_date"`
-	Status        string    `json:"status"`
-	Wid           int       `json:"wid"`
+	ActualSeconds     int       `json:"actual_seconds"`
+	TasksCount        *struct{} `json:"tasks_count,omitzero"`
+	CanTrackTime      bool      `json:"can_track_time"`
+	StartDate         string    `json:"start_date"`
+	Status            string    `json:"status"`
+	WorkspaceIDLegacy int       `json:"wid"`
 	// Client ID legacy field
 	Cid      int   `json:"cid"`
 	IsShared *bool `json:"is_shared,omitzero"`
@@ -281,31 +281,31 @@ type TimeEntries []TimeEntry
 
 // TimeEntry defines a model
 type TimeEntry struct {
-	ID              int           `json:"id"`
-	WorkspaceID     int           `json:"workspace_id"`
-	ProjectID       int           `json:"project_id"`
-	TaskID          struct{}      `json:"task_id"`
-	Billable        bool          `json:"billable"`
-	Start           time.Time     `json:"start"`
-	Stop            time.Time     `json:"stop"`
-	Duration        time.Duration `json:"duration"`
-	Description     string        `json:"description"`
-	Tags            []string      `json:"tags"`
-	TagIds          []string      `json:"tag_ids"`
-	Duronly         bool          `json:"duronly"`
-	At              time.Time     `json:"at"`
-	ServerDeletedAt time.Time     `json:"server_deleted_at"`
-	UserID          int           `json:"user_id"`
-	UID             int           `json:"uid"`
-	Wid             int           `json:"wid"`
-	Pid             *int          `json:"pid,omitzero"`
-	ClientName      string        `json:"client_name,omitzero"`
-	ProjectName     string        `json:"project_name,omitzero"`
-	ProjectColor    string        `json:"project_color,omitzero"`
-	ProjectActive   *bool         `json:"project_active,omitzero"`
-	ProjectBillable *bool         `json:"project_billable,omitzero"`
-	UserName        string        `json:"user_name,omitzero"`
-	UserAvatarURL   url.URL       `json:"user_avatar_url,omitzero"`
+	ID                int           `json:"id"`
+	WorkspaceID       int           `json:"workspace_id"`
+	ProjectID         int           `json:"project_id"`
+	TaskID            struct{}      `json:"task_id"`
+	Billable          bool          `json:"billable"`
+	Start             time.Time     `json:"start"`
+	Stop              time.Time     `json:"stop"`
+	Duration          time.Duration `json:"duration"`
+	Description       string        `json:"description"`
+	Tags              []string      `json:"tags"`
+	TagIds            []string      `json:"tag_ids"`
+	DurationOnly      bool          `json:"duronly"`
+	At                time.Time     `json:"at"`
+	ServerDeletedAt   time.Time     `json:"server_deleted_at"`
+	UserID            int           `json:"user_id"`
+	UserIDLegacy      int           `json:"uid"`
+	WorkspaceIDLegacy int           `json:"wid"`
+	ProjectIDLegacy   *int          `json:"pid,omitzero"`
+	ClientName        string        `json:"client_name,omitzero"`
+	ProjectName       string        `json:"project_name,omitzero"`
+	ProjectColor      string        `json:"project_color,omitzero"`
+	ProjectActive     *bool         `json:"project_active,omitzero"`
+	ProjectBillable   *bool         `json:"project_billable,omitzero"`
+	UserName          string        `json:"user_name,omitzero"`
+	UserAvatarURL     url.URL       `json:"user_avatar_url,omitzero"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
 	IntegrationExtID IntegrationExtID `json:"integration_ext_id,omitzero"`
 	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
@@ -390,7 +390,7 @@ type WorkClient struct {
 	// Client ID
 	ID int `json:"id"`
 	// Workspace ID
-	Wid int `json:"wid"`
+	WorkspaceIDLegacy int `json:"wid"`
 	// true, if the client is archived
 	Archived bool `json:"archived"`
 	// Name of the client

@@ -349,14 +349,16 @@
           },
           "duronly": {
             "description": "Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.",
-            "type": "boolean"
+            "type": "boolean",
+            "x-go-name": "DurationOnly"
           },
           "event_metadata": {
             "$ref": "#/components/schemas/EventMetadata"
           },
           "pid": {
             "description": "Project ID, legacy field",
-            "type": "integer"
+            "type": "integer",
+            "x-go-name": "ProjectIDLegacy"
           },
           "project_id": {
             "description": "Project ID, optional",
@@ -410,7 +412,8 @@
           },
           "uid": {
             "description": "Time Entry creator ID, legacy field",
-            "type": "integer"
+            "type": "integer",
+            "x-go-name": "UserIDLegacy"
           },
           "user_id": {
             "description": "Time Entry creator ID, if omitted will use the requester user ID",
@@ -418,7 +421,8 @@
           },
           "wid": {
             "description": "Workspace ID, legacy field",
-            "type": "integer"
+            "type": "integer",
+            "x-go-name": "WorkspaceIDLegacy"
           },
           "workspace_id": {
             "description": "Workspace ID",
@@ -817,7 +821,8 @@
           },
           "wid": {
             "type": "integer",
-            "example": 2230580
+            "example": 2230580,
+            "x-go-name": "WorkspaceIDLegacy"
           },
           "cid": {
             "description": "Client ID legacy field",
@@ -2089,7 +2094,8 @@
           },
           "duronly": {
             "type": "boolean",
-            "example": true
+            "example": true,
+            "x-go-name": "DurationOnly"
           },
           "at": {
             "type": "string",
@@ -2110,15 +2116,18 @@
           },
           "uid": {
             "type": "integer",
-            "example": 2166261
+            "example": 2166261,
+            "x-go-name": "UserIDLegacy"
           },
           "wid": {
             "type": "integer",
-            "example": 2230580
+            "example": 2230580,
+            "x-go-name": "WorkspaceIDLegacy"
           },
           "pid": {
             "type": "integer",
-            "example": 155392684
+            "example": 155392684,
+            "x-go-name": "ProjectIDLegacy"
           },
           "client_name": {
             "type": "string",
@@ -2480,7 +2489,8 @@
           "wid": {
             "description": "Workspace ID",
             "type": "integer",
-            "example": 2230580
+            "example": 2230580,
+            "x-go-name": "WorkspaceIDLegacy"
           },
           "archived": {
             "description": "true, if the client is archived",
