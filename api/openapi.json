@@ -667,8 +667,7 @@
               "integer",
               "null"
             ],
-            "example": 64890399,
-            "x-nullable": true
+            "example": 64890399
           },
           "name": {
             "type": "string",
@@ -708,9 +707,11 @@
           },
           "billable": {
             "description": "Whether the project is billable, premium feature",
-            "type": "boolean",
-            "example": false,
-            "x-nullable": true
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "example": false
           },
           "template": {
             "type": [
@@ -723,8 +724,7 @@
             "type": [
               "boolean",
               "null"
-            ],
-            "x-nullable": true
+            ]
           },
           "current_period": {
             "description": "RecurringPeriod",
@@ -740,16 +740,14 @@
             "type": [
               "integer",
               "null"
-            ],
-            "x-nullable": true
+            ]
           },
           "estimated_seconds": {
             "description": "Estimated seconds",
             "type": [
               "integer",
               "null"
-            ],
-            "x-nullable": true
+            ]
           },
           "rate": {
             "type": [
@@ -768,8 +766,7 @@
             "type": [
               "string",
               "null"
-            ],
-            "x-nullable": true
+            ]
           },
           "recurring": {
             "type": "boolean",
@@ -797,15 +794,19 @@
           },
           "actual_hours": {
             "description": "Actual hours",
-            "type": "integer",
-            "example": 1103,
-            "x-nullable": true
+            "type": [
+              "integer",
+              "null"
+            ],
+            "example": 1103
           },
           "actual_seconds": {
             "description": "Actual seconds",
-            "type": "integer",
-            "example": 3973324,
-            "x-nullable": true
+            "type": [
+              "integer",
+              "null"
+            ],
+            "example": 3973324
           },
           "tasks_count": {
             "type": "object"
@@ -2273,20 +2274,26 @@
           },
           "trial_end_date": {
             "description": "When the trial ends",
-            "type": "string",
-            "format": "date",
-            "x-nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
           },
           "next_payment_date": {
             "description": "When the trial payment is due",
-            "type": "string",
-            "format": "date",
-            "x-nullable": true
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
           },
           "last_pricing_plan_id": {
             "description": "What was the previous plan before the trial",
-            "type": "integer",
-            "x-nullable": true
+            "type": [
+              "integer",
+              "null"
+            ]
           },
           "can_have_trial": {
             "description": "True, if neither the organization nor the owner has never had a trial before",
@@ -2294,8 +2301,10 @@
             "example": true
           },
           "trial_plan_id": {
-            "type": "object",
-            "x-nullable": true
+            "type": [
+              "object",
+              "null"
+            ]
           }
         },
         "required": [
