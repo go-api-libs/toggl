@@ -102,7 +102,7 @@ type NewTimeEntry struct {
 	// Project ID, optional
 	ProjectID *int `json:"project_id,omitzero"`
 	// List of user IDs to share this time entry with
-	SharedWithUserIds []int `json:"shared_with_user_ids,omitzero"`
+	SharedWithUserIDs []int `json:"shared_with_user_ids,omitzero"`
 	// Start time, required for creation.
 	Start time.Time `json:"start"`
 	// If provided during creation, the date part will take precedence over the date part of "start". Format: 2006-11-07
@@ -113,7 +113,7 @@ type NewTimeEntry struct {
 	// Used when updating an existing time entry
 	TagAction TagAction `json:"tag_action,omitzero"`
 	// IDs of tags to add/remove
-	TagIds []int `json:"tag_ids,omitzero"`
+	TagIDs []int `json:"tag_ids,omitzero"`
 	// Names of tags to add/remove. If name does not exist as tag, one will be created automatically
 	Tags []string `json:"tags"`
 	// Task ID, optional
@@ -293,7 +293,7 @@ type TimeEntry struct {
 	Duration    time.Duration `json:"duration"`
 	Description string        `json:"description"`
 	Tags        []string      `json:"tags"`
-	TagIds      []string      `json:"tag_ids"`
+	TagIDs      []string      `json:"tag_ids"`
 	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
 	DurationOnly      bool      `json:"duronly"`
 	At                time.Time `json:"at"`
