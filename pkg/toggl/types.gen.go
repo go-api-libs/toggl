@@ -178,7 +178,7 @@ type Project struct {
 	ID          int `json:"id"`
 	WorkspaceID int `json:"workspace_id"`
 	// Client ID
-	ClientID  int    `json:"client_id"`
+	ClientID  *int   `json:"client_id"`
 	Name      string `json:"name"`
 	IsPrivate bool   `json:"is_private"`
 	// Whether the project is active or archived
@@ -187,42 +187,42 @@ type Project struct {
 	At time.Time `json:"at"`
 	// Creation date
 	CreatedAt       time.Time `json:"created_at"`
-	ServerDeletedAt struct{}  `json:"server_deleted_at"`
+	ServerDeletedAt *struct{} `json:"server_deleted_at"`
 	// Color
 	Color string `json:"color"`
 	// Whether the project is billable, premium feature
-	Billable bool     `json:"billable"`
-	Template struct{} `json:"template"`
+	Billable *bool     `json:"billable"`
+	Template *struct{} `json:"template"`
 	// Whether estimates are based on task hours, premium feature
-	AutoEstimates bool `json:"auto_estimates"`
+	AutoEstimates *bool `json:"auto_estimates"`
 	// RecurringPeriod
 	CurrentPeriod *EventMetadata `json:"current_period,omitzero"`
 	// End date
 	EndDate civil.Date `json:"end_date,omitzero"`
 	// Estimated hours
-	EstimatedHours int `json:"estimated_hours"`
+	EstimatedHours *int `json:"estimated_hours"`
 	// Estimated seconds
-	EstimatedSeconds int      `json:"estimated_seconds"`
-	Rate             struct{} `json:"rate"`
-	RateLastUpdated  struct{} `json:"rate_last_updated"`
+	EstimatedSeconds *int      `json:"estimated_seconds"`
+	Rate             *struct{} `json:"rate"`
+	RateLastUpdated  *struct{} `json:"rate_last_updated"`
 	// Currency, premium feature
-	Currency            string   `json:"currency"`
-	Recurring           bool     `json:"recurring"`
-	TemplateID          struct{} `json:"template_id"`
-	RecurringParameters struct{} `json:"recurring_parameters"`
+	Currency            string    `json:"currency"`
+	Recurring           bool      `json:"recurring"`
+	TemplateID          *struct{} `json:"template_id"`
+	RecurringParameters *struct{} `json:"recurring_parameters"`
 	// Fixed fee, premium feature
-	FixedFee float64 `json:"fixed_fee"`
+	FixedFee *float64 `json:"fixed_fee"`
 	// Actual hours
-	ActualHours int `json:"actual_hours"`
+	ActualHours *int `json:"actual_hours"`
 	// Actual seconds
-	ActualSeconds     int        `json:"actual_seconds"`
+	ActualSeconds     *int       `json:"actual_seconds"`
 	TasksCount        *struct{}  `json:"tasks_count,omitzero"`
 	CanTrackTime      bool       `json:"can_track_time"`
 	StartDate         civil.Date `json:"start_date"`
 	Status            string     `json:"status"`
 	WorkspaceIDLegacy int        `json:"wid"`
 	// Client ID legacy field
-	Cid      int   `json:"cid"`
+	Cid      *int  `json:"cid"`
 	IsShared *bool `json:"is_shared,omitzero"`
 	Pinned   bool  `json:"pinned"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
@@ -285,30 +285,30 @@ type TimeEntries []TimeEntry
 type TimeEntry struct {
 	ID          int           `json:"id"`
 	WorkspaceID int           `json:"workspace_id"`
-	ProjectID   int           `json:"project_id"`
-	TaskID      struct{}      `json:"task_id"`
+	ProjectID   *int          `json:"project_id"`
+	TaskID      *struct{}     `json:"task_id"`
 	Billable    bool          `json:"billable"`
 	Start       time.Time     `json:"start"`
-	Stop        time.Time     `json:"stop"`
+	Stop        *time.Time    `json:"stop"`
 	Duration    time.Duration `json:"duration"`
 	Description string        `json:"description"`
 	Tags        []string      `json:"tags"`
 	TagIDs      []string      `json:"tag_ids"`
 	// Deprecated: Used to create a time entry with a duration but without a stop time. This parameter can be ignored.
-	DurationOnly      bool      `json:"duronly"`
-	At                time.Time `json:"at"`
-	ServerDeletedAt   time.Time `json:"server_deleted_at"`
-	UserID            int       `json:"user_id"`
-	UserIDLegacy      int       `json:"uid"`
-	WorkspaceIDLegacy int       `json:"wid"`
-	ProjectIDLegacy   *int      `json:"pid,omitzero"`
-	ClientName        string    `json:"client_name,omitzero"`
-	ProjectName       string    `json:"project_name,omitzero"`
-	ProjectColor      string    `json:"project_color,omitzero"`
-	ProjectActive     *bool     `json:"project_active,omitzero"`
-	ProjectBillable   *bool     `json:"project_billable,omitzero"`
-	UserName          string    `json:"user_name,omitzero"`
-	UserAvatarURL     url.URL   `json:"user_avatar_url,omitzero"`
+	DurationOnly      bool       `json:"duronly"`
+	At                time.Time  `json:"at"`
+	ServerDeletedAt   *time.Time `json:"server_deleted_at"`
+	UserID            int        `json:"user_id"`
+	UserIDLegacy      int        `json:"uid"`
+	WorkspaceIDLegacy int        `json:"wid"`
+	ProjectIDLegacy   *int       `json:"pid,omitzero"`
+	ClientName        string     `json:"client_name,omitzero"`
+	ProjectName       string     `json:"project_name,omitzero"`
+	ProjectColor      string     `json:"project_color,omitzero"`
+	ProjectActive     *bool      `json:"project_active,omitzero"`
+	ProjectBillable   *bool      `json:"project_billable,omitzero"`
+	UserName          string     `json:"user_name,omitzero"`
+	UserAvatarURL     url.URL    `json:"user_avatar_url,omitzero"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
 	IntegrationExtID IntegrationExtID `json:"integration_ext_id,omitzero"`
 	// The external type of the linked entity in the external system (e.g. JIRA/SalesForce)
@@ -344,14 +344,14 @@ type TrialInfo struct {
 	// When a trial is available for this organization
 	TrialAvailable bool `json:"trial_available"`
 	// When the trial ends
-	TrialEndDate civil.Date `json:"trial_end_date"`
+	TrialEndDate *civil.Date `json:"trial_end_date"`
 	// When the trial payment is due
-	NextPaymentDate civil.Date `json:"next_payment_date"`
+	NextPaymentDate *civil.Date `json:"next_payment_date"`
 	// What was the previous plan before the trial
-	LastPricingPlanID int `json:"last_pricing_plan_id"`
+	LastPricingPlanID *int `json:"last_pricing_plan_id"`
 	// True, if neither the organization nor the owner has never had a trial before
-	CanHaveTrial bool     `json:"can_have_trial"`
-	TrialPlanID  struct{} `json:"trial_plan_id"`
+	CanHaveTrial bool      `json:"can_have_trial"`
+	TrialPlanID  *struct{} `json:"trial_plan_id"`
 }
 
 // UserWithRelated defines a model
@@ -367,9 +367,9 @@ type UserWithRelated struct {
 	ImageURL           url.URL     `json:"image_url"`
 	CreatedAt          time.Time   `json:"created_at"`
 	UpdatedAt          time.Time   `json:"updated_at"`
-	OpenidEmail        struct{}    `json:"openid_email"`
+	OpenidEmail        *struct{}   `json:"openid_email"`
 	OpenidEnabled      bool        `json:"openid_enabled"`
-	CountryID          int         `json:"country_id"`
+	CountryID          *int        `json:"country_id"`
 	HasPassword        bool        `json:"has_password"`
 	At                 time.Time   `json:"at"`
 	IntercomHash       string      `json:"intercom_hash,omitzero"`
@@ -424,9 +424,9 @@ type Workspace struct {
 	Admin                       bool      `json:"admin"`
 	Role                        string    `json:"role"`
 	SuspendedAt                 string    `json:"suspended_at"`
-	ServerDeletedAt             struct{}  `json:"server_deleted_at"`
-	DefaultHourlyRate           struct{}  `json:"default_hourly_rate"`
-	RateLastUpdated             struct{}  `json:"rate_last_updated"`
+	ServerDeletedAt             *struct{} `json:"server_deleted_at"`
+	DefaultHourlyRate           *struct{} `json:"default_hourly_rate"`
+	RateLastUpdated             *struct{} `json:"rate_last_updated"`
 	DefaultCurrency             string    `json:"default_currency"`
 	OnlyAdminsMayCreateProjects bool      `json:"only_admins_may_create_projects"`
 	OnlyAdminsMayCreateTags     bool      `json:"only_admins_may_create_tags"`
@@ -445,10 +445,10 @@ type Workspace struct {
 	LogoURL                     url.URL   `json:"logo_url"`
 	IcalURL                     string    `json:"ical_url"`
 	IcalEnabled                 bool      `json:"ical_enabled"`
-	CsvUpload                   struct{}  `json:"csv_upload"`
-	Subscription                struct{}  `json:"subscription"`
+	CsvUpload                   *struct{} `json:"csv_upload"`
+	Subscription                *struct{} `json:"subscription"`
 	HideStartEndTimes           bool      `json:"hide_start_end_times"`
-	WorkingHoursInMinutes       struct{}  `json:"working_hours_in_minutes"`
+	WorkingHoursInMinutes       *struct{} `json:"working_hours_in_minutes"`
 	DisableTimesheetView        *bool     `json:"disable_timesheet_view,omitzero"`
 	DisableApprovals            *bool     `json:"disable_approvals,omitzero"`
 	DisableExpenses             *bool     `json:"disable_expenses,omitzero"`

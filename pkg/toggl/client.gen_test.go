@@ -6,11 +6,13 @@ package toggl
 
 import (
 	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -26,6 +28,41 @@ func newTestServer(t *testing.T, status int) *httptest.Server {
 	}))
 	t.Cleanup(srv.Close)
 	return srv
+}
+
+// newBodyServer is the base URL of a server that answers every request with status, contentType and body.
+func newBodyServer(t *testing.T, status int, contentType string, body []byte) *url.URL {
+	t.Helper()
+
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", contentType)
+		w.WriteHeader(status)
+		_, _ = w.Write(body)
+	}))
+	t.Cleanup(srv.Close)
+
+	u, err := url.Parse(srv.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return u
+}
+
+// withUnknownMember is v as JSON, with a member no type declares added to it.
+func withUnknownMember(t *testing.T, v any) []byte {
+	t.Helper()
+
+	b, err := json.Marshal(v, jsonOpts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if string(b) == "{}" {
+		return []byte(`{"not_a_member_of_any_type": true}`)
+	}
+
+	return append([]byte(`{"not_a_member_of_any_type": true, `), b[1:]...)
 }
 
 type roundTripFunc func(*http.Request) (*http.Response, error)
@@ -128,6 +165,27 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
 			}
 		})
+
+		t.Run("debug mode keeps an unknown member", func(t *testing.T) {
+			file := filepath.Join(t.TempDir(), "interactions.json")
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusOK, "application/json", withUnknownMember(t, UserWithRelated{}))), WithDebugFile(file))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for range 2 {
+				if _, err := c.GetMe(t.Context(), nil); err != nil {
+					t.Fatalf("debug mode decodes leniently: %v", err)
+				}
+			}
+
+			if ias, err := cassette.InteractionsReadFile(file); err != nil {
+				t.Fatal(err)
+			} else if len(ias) != 1 {
+				t.Fatalf("the debug file holds %d calls, want the one that failed to decode, once", len(ias))
+			}
+		})
 	})
 
 	t.Run("CreateTimeEntry", func(t *testing.T) {
@@ -221,6 +279,75 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("got: %T, want: *api.DecodingError", err)
 			} else if _, ok := errors.AsType[*jsontext.SyntacticError](decErr.Err); !ok {
 				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
+			}
+		})
+
+		t.Run("debug mode keeps an unknown member", func(t *testing.T) {
+			file := filepath.Join(t.TempDir(), "interactions.json")
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusOK, "application/json", withUnknownMember(t, TimeEntry{}))), WithDebugFile(file))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for range 2 {
+				if _, err := c.CreateTimeEntry(t.Context(), 0, NewTimeEntry{}); err != nil {
+					t.Fatalf("debug mode decodes leniently: %v", err)
+				}
+			}
+
+			if ias, err := cassette.InteractionsReadFile(file); err != nil {
+				t.Fatal(err)
+			} else if len(ias) != 1 {
+				t.Fatalf("the debug file holds %d calls, want the one that failed to decode, once", len(ias))
+			}
+		})
+
+		t.Run("400 response", func(t *testing.T) {
+			body, err := json.Marshal(*new(APIErrorString), jsonOpts)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "application/json", body)))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.CreateTimeEntry(t.Context(), 0, NewTimeEntry{}); err == nil {
+				t.Fatal("expected error")
+			} else if apiErr, ok := errors.AsType[*api.Error](err); !ok {
+				t.Fatalf("got: %T, want: *api.Error", err)
+			} else if !apiErr.IsCustom || apiErr.Response.StatusCode != http.StatusBadRequest {
+				t.Fatalf("got: custom %t, status %d, want: custom, status %d", apiErr.IsCustom, apiErr.Response.StatusCode, http.StatusBadRequest)
+			} else if _, ok := errors.AsType[*APIErrorString](err); !ok {
+				t.Fatalf("got: %v, want it to be a *APIErrorString", err)
+			}
+		})
+
+		t.Run("400 response decoding error", func(t *testing.T) {
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "application/json", []byte("invalid json"))))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.CreateTimeEntry(t.Context(), 0, NewTimeEntry{}); err == nil {
+				t.Fatal("expected error")
+			} else if _, ok := errors.AsType[*api.DecodingError](err); !ok {
+				t.Fatalf("got: %T, want: *api.DecodingError", err)
+			}
+		})
+
+		t.Run("400 response unknown content type", func(t *testing.T) {
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "foo", nil)))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.CreateTimeEntry(t.Context(), 0, NewTimeEntry{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
 			}
 		})
 	})
@@ -318,6 +445,27 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
 			}
 		})
+
+		t.Run("debug mode keeps an unknown member", func(t *testing.T) {
+			file := filepath.Join(t.TempDir(), "interactions.json")
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusOK, "application/json", withUnknownMember(t, TimeEntry{}))), WithDebugFile(file))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for range 2 {
+				if _, err := c.GetCurrentTimeEntry(t.Context()); err != nil {
+					t.Fatalf("debug mode decodes leniently: %v", err)
+				}
+			}
+
+			if ias, err := cassette.InteractionsReadFile(file); err != nil {
+				t.Fatal(err)
+			} else if len(ias) != 1 {
+				t.Fatalf("the debug file holds %d calls, want the one that failed to decode, once", len(ias))
+			}
+		})
 	})
 
 	t.Run("UpdateTimeEntry", func(t *testing.T) {
@@ -411,6 +559,75 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("got: %T, want: *api.DecodingError", err)
 			} else if _, ok := errors.AsType[*jsontext.SyntacticError](decErr.Err); !ok {
 				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
+			}
+		})
+
+		t.Run("debug mode keeps an unknown member", func(t *testing.T) {
+			file := filepath.Join(t.TempDir(), "interactions.json")
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusOK, "application/json", withUnknownMember(t, TimeEntry{}))), WithDebugFile(file))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for range 2 {
+				if _, err := c.UpdateTimeEntry(t.Context(), 0, 0, TimeEntryUpdate{}); err != nil {
+					t.Fatalf("debug mode decodes leniently: %v", err)
+				}
+			}
+
+			if ias, err := cassette.InteractionsReadFile(file); err != nil {
+				t.Fatal(err)
+			} else if len(ias) != 1 {
+				t.Fatalf("the debug file holds %d calls, want the one that failed to decode, once", len(ias))
+			}
+		})
+
+		t.Run("400 response", func(t *testing.T) {
+			body, err := json.Marshal(*new(APIErrorString), jsonOpts)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "application/json", body)))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.UpdateTimeEntry(t.Context(), 0, 0, TimeEntryUpdate{}); err == nil {
+				t.Fatal("expected error")
+			} else if apiErr, ok := errors.AsType[*api.Error](err); !ok {
+				t.Fatalf("got: %T, want: *api.Error", err)
+			} else if !apiErr.IsCustom || apiErr.Response.StatusCode != http.StatusBadRequest {
+				t.Fatalf("got: custom %t, status %d, want: custom, status %d", apiErr.IsCustom, apiErr.Response.StatusCode, http.StatusBadRequest)
+			} else if _, ok := errors.AsType[*APIErrorString](err); !ok {
+				t.Fatalf("got: %v, want it to be a *APIErrorString", err)
+			}
+		})
+
+		t.Run("400 response decoding error", func(t *testing.T) {
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "application/json", []byte("invalid json"))))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.UpdateTimeEntry(t.Context(), 0, 0, TimeEntryUpdate{}); err == nil {
+				t.Fatal("expected error")
+			} else if _, ok := errors.AsType[*api.DecodingError](err); !ok {
+				t.Fatalf("got: %T, want: *api.DecodingError", err)
+			}
+		})
+
+		t.Run("400 response unknown content type", func(t *testing.T) {
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "foo", nil)))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.UpdateTimeEntry(t.Context(), 0, 0, TimeEntryUpdate{}); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
 			}
 		})
 	})
@@ -508,6 +725,75 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
 			}
 		})
+
+		t.Run("debug mode keeps an unknown member", func(t *testing.T) {
+			file := filepath.Join(t.TempDir(), "interactions.json")
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusOK, "application/json", withUnknownMember(t, TimeEntry{}))), WithDebugFile(file))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for range 2 {
+				if _, err := c.StopTimeEntry(t.Context(), 0, 0); err != nil {
+					t.Fatalf("debug mode decodes leniently: %v", err)
+				}
+			}
+
+			if ias, err := cassette.InteractionsReadFile(file); err != nil {
+				t.Fatal(err)
+			} else if len(ias) != 1 {
+				t.Fatalf("the debug file holds %d calls, want the one that failed to decode, once", len(ias))
+			}
+		})
+
+		t.Run("409 response", func(t *testing.T) {
+			body, err := json.Marshal(*new(APIErrorString), jsonOpts)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusConflict, "application/json", body)))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.StopTimeEntry(t.Context(), 0, 0); err == nil {
+				t.Fatal("expected error")
+			} else if apiErr, ok := errors.AsType[*api.Error](err); !ok {
+				t.Fatalf("got: %T, want: *api.Error", err)
+			} else if !apiErr.IsCustom || apiErr.Response.StatusCode != http.StatusConflict {
+				t.Fatalf("got: custom %t, status %d, want: custom, status %d", apiErr.IsCustom, apiErr.Response.StatusCode, http.StatusConflict)
+			} else if _, ok := errors.AsType[*APIErrorString](err); !ok {
+				t.Fatalf("got: %v, want it to be a *APIErrorString", err)
+			}
+		})
+
+		t.Run("409 response decoding error", func(t *testing.T) {
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusConflict, "application/json", []byte("invalid json"))))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.StopTimeEntry(t.Context(), 0, 0); err == nil {
+				t.Fatal("expected error")
+			} else if _, ok := errors.AsType[*api.DecodingError](err); !ok {
+				t.Fatalf("got: %T, want: *api.DecodingError", err)
+			}
+		})
+
+		t.Run("409 response unknown content type", func(t *testing.T) {
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusConflict, "foo", nil)))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.StopTimeEntry(t.Context(), 0, 0); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+		})
 	})
 
 	t.Run("ListTimeEntries", func(t *testing.T) {
@@ -603,6 +889,54 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
 			}
 		})
+
+		t.Run("400 response", func(t *testing.T) {
+			body, err := json.Marshal(*new(APIErrorString), jsonOpts)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "application/json", body)))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.ListTimeEntries(t.Context(), nil); err == nil {
+				t.Fatal("expected error")
+			} else if apiErr, ok := errors.AsType[*api.Error](err); !ok {
+				t.Fatalf("got: %T, want: *api.Error", err)
+			} else if !apiErr.IsCustom || apiErr.Response.StatusCode != http.StatusBadRequest {
+				t.Fatalf("got: custom %t, status %d, want: custom, status %d", apiErr.IsCustom, apiErr.Response.StatusCode, http.StatusBadRequest)
+			} else if _, ok := errors.AsType[*APIErrorString](err); !ok {
+				t.Fatalf("got: %v, want it to be a *APIErrorString", err)
+			}
+		})
+
+		t.Run("400 response decoding error", func(t *testing.T) {
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "application/json", []byte("invalid json"))))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.ListTimeEntries(t.Context(), nil); err == nil {
+				t.Fatal("expected error")
+			} else if _, ok := errors.AsType[*api.DecodingError](err); !ok {
+				t.Fatalf("got: %T, want: *api.DecodingError", err)
+			}
+		})
+
+		t.Run("400 response unknown content type", func(t *testing.T) {
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusBadRequest, "foo", nil)))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := c.ListTimeEntries(t.Context(), nil); err == nil {
+				t.Fatal("expected error")
+			} else if !errors.Is(err, api.ErrUnknownContentType) {
+				t.Fatalf("want: %v, got: %v", api.ErrUnknownContentType, err)
+			}
+		})
 	})
 
 	t.Run("CreateOrganization", func(t *testing.T) {
@@ -696,6 +1030,27 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("got: %T, want: *api.DecodingError", err)
 			} else if _, ok := errors.AsType[*jsontext.SyntacticError](decErr.Err); !ok {
 				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
+			}
+		})
+
+		t.Run("debug mode keeps an unknown member", func(t *testing.T) {
+			file := filepath.Join(t.TempDir(), "interactions.json")
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusOK, "application/json", withUnknownMember(t, SimpleOrganization{}))), WithDebugFile(file))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for range 2 {
+				if _, err := c.CreateOrganization(t.Context(), NewOrganization{}); err != nil {
+					t.Fatalf("debug mode decodes leniently: %v", err)
+				}
+			}
+
+			if ias, err := cassette.InteractionsReadFile(file); err != nil {
+				t.Fatal(err)
+			} else if len(ias) != 1 {
+				t.Fatalf("the debug file holds %d calls, want the one that failed to decode, once", len(ias))
 			}
 		})
 	})
@@ -888,6 +1243,94 @@ func TestClient_Error(t *testing.T) {
 				t.Fatalf("got: %T, want: *jsontext.SyntacticError", decErr.Err)
 			}
 		})
+
+		t.Run("debug mode keeps an unknown member", func(t *testing.T) {
+			file := filepath.Join(t.TempDir(), "interactions.json")
+
+			c, err := NewClient(WithBaseURL(newBodyServer(t, http.StatusOK, "application/json", withUnknownMember(t, Organization{}))), WithDebugFile(file))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for range 2 {
+				if _, err := c.GetOrganization(t.Context(), 0); err != nil {
+					t.Fatalf("debug mode decodes leniently: %v", err)
+				}
+			}
+
+			if ias, err := cassette.InteractionsReadFile(file); err != nil {
+				t.Fatal(err)
+			} else if len(ias) != 1 {
+				t.Fatalf("the debug file holds %d calls, want the one that failed to decode, once", len(ias))
+			}
+		})
+	})
+}
+
+// TestClient_Params sets every parameter it can to a value other than its zero value, and finds each in the request,
+// under its name and written as the client must write it.
+func TestClient_Params(t *testing.T) {
+	t.Run("GetMe", func(t *testing.T) {
+		t.Setenv("TOGGL_API_USERNAME", "user")
+		t.Setenv("TOGGL_API_PASSWORD", "pass")
+
+		var got *http.Request
+
+		c, err := NewClient(WithHTTPClient(&http.Client{Transport: roundTripFunc(
+			func(r *http.Request) (*http.Response, error) {
+				got = r
+
+				return &http.Response{StatusCode: http.StatusTeapot, Header: http.Header{}, Body: http.NoBody, Request: r}, nil
+			},
+		)}))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		_, _ = c.GetMe(t.Context(), &GetMeParams{
+			WithRelatedData: true,
+		})
+
+		if got == nil {
+			t.Fatal("no request was sent")
+		}
+
+		if v := got.URL.Query().Get("with_related_data"); v != "true" {
+			t.Errorf("query %s: got %q, want %q", "with_related_data", v, "true")
+		}
+	})
+	t.Run("ListTimeEntries", func(t *testing.T) {
+		t.Setenv("TOGGL_API_USERNAME", "user")
+		t.Setenv("TOGGL_API_PASSWORD", "pass")
+
+		var got *http.Request
+
+		c, err := NewClient(WithHTTPClient(&http.Client{Transport: roundTripFunc(
+			func(r *http.Request) (*http.Response, error) {
+				got = r
+
+				return &http.Response{StatusCode: http.StatusTeapot, Header: http.Header{}, Body: http.NoBody, Request: r}, nil
+			},
+		)}))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		_, _ = c.ListTimeEntries(t.Context(), &ListTimeEntriesParams{
+			Meta:           true,
+			IncludeSharing: true,
+		})
+
+		if got == nil {
+			t.Fatal("no request was sent")
+		}
+
+		if v := got.URL.Query().Get("meta"); v != "true" {
+			t.Errorf("query %s: got %q, want %q", "meta", v, "true")
+		}
+		if v := got.URL.Query().Get("include_sharing"); v != "true" {
+			t.Errorf("query %s: got %q, want %q", "include_sharing", v, "true")
+		}
 	})
 }
 
