@@ -116,14 +116,6 @@ func NewClient(opts ...ClientOption) (*Client, error) {
 //
 //	GET /me
 func (c *Client) GetMe(ctx context.Context, params *GetMeParams) (*UserWithRelated, error) {
-	return c.GetMeWithResult[UserWithRelated](ctx, params)
-}
-
-// Returns details for the current user.
-// You can define a custom result to unmarshal the response into.
-//
-//	GET /me
-func (c *Client) GetMeWithResult[R any](ctx context.Context, params *GetMeParams) (*R, error) {
 	u := c.baseURL.JoinPath("me")
 	if params != nil {
 		q := make(url.Values, 1)
@@ -159,15 +151,8 @@ func (c *Client) GetMeWithResult[R any](ctx context.Context, params *GetMeParams
 		// Returns the user.
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*UserWithRelated); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out UserWithRelated
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -176,7 +161,7 @@ func (c *Client) GetMeWithResult[R any](ctx context.Context, params *GetMeParams
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(UserWithRelated)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -211,14 +196,6 @@ func (c *Client) GetMeWithResult[R any](ctx context.Context, params *GetMeParams
 //
 //	POST /workspaces/{workspace_id}/time_entries
 func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, body NewTimeEntry) (*TimeEntry, error) {
-	return c.CreateTimeEntryWithResult[TimeEntry](ctx, workspaceID, body)
-}
-
-// Creates a new workspace TimeEntry.
-// You can define a custom result to unmarshal the response into.
-//
-//	POST /workspaces/{workspace_id}/time_entries
-func (c *Client) CreateTimeEntryWithResult[R any](ctx context.Context, workspaceID int, body NewTimeEntry) (*R, error) {
 	u := c.baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries")
 	pr, pw := io.Pipe()
 	req := (&http.Request{
@@ -251,15 +228,8 @@ func (c *Client) CreateTimeEntryWithResult[R any](ctx context.Context, workspace
 		// Returns a time entry
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*TimeEntry); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out TimeEntry
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -268,7 +238,7 @@ func (c *Client) CreateTimeEntryWithResult[R any](ctx context.Context, workspace
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(TimeEntry)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -311,14 +281,6 @@ func (c *Client) CreateTimeEntryWithResult[R any](ctx context.Context, workspace
 //
 //	GET /me/time_entries/current
 func (c *Client) GetCurrentTimeEntry(ctx context.Context) (*TimeEntry, error) {
-	return c.GetCurrentTimeEntryWithResult[TimeEntry](ctx)
-}
-
-// Load running time entry for the current user.
-// You can define a custom result to unmarshal the response into.
-//
-//	GET /me/time_entries/current
-func (c *Client) GetCurrentTimeEntryWithResult[R any](ctx context.Context) (*R, error) {
 	u := c.baseURL.JoinPath("me", "time_entries", "current")
 	req := (&http.Request{
 		Header: http.Header{
@@ -344,15 +306,8 @@ func (c *Client) GetCurrentTimeEntryWithResult[R any](ctx context.Context) (*R, 
 		// Returns a time entry
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*TimeEntry); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out TimeEntry
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -361,7 +316,7 @@ func (c *Client) GetCurrentTimeEntryWithResult[R any](ctx context.Context) (*R, 
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(TimeEntry)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -380,14 +335,6 @@ func (c *Client) GetCurrentTimeEntryWithResult[R any](ctx context.Context) (*R, 
 //
 //	PUT /workspaces/{workspace_id}/time_entries/{time_entry_id}
 func (c *Client) UpdateTimeEntry(ctx context.Context, workspaceID int, timeEntryID int, body TimeEntryUpdate) (*TimeEntry, error) {
-	return c.UpdateTimeEntryWithResult[TimeEntry](ctx, workspaceID, timeEntryID, body)
-}
-
-// Updates a workspace time entry. Only the fields given change.
-// You can define a custom result to unmarshal the response into.
-//
-//	PUT /workspaces/{workspace_id}/time_entries/{time_entry_id}
-func (c *Client) UpdateTimeEntryWithResult[R any](ctx context.Context, workspaceID int, timeEntryID int, body TimeEntryUpdate) (*R, error) {
 	u := c.baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries", strconv.Itoa(timeEntryID))
 	pr, pw := io.Pipe()
 	req := (&http.Request{
@@ -420,15 +367,8 @@ func (c *Client) UpdateTimeEntryWithResult[R any](ctx context.Context, workspace
 		// Returns a time entry
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*TimeEntry); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out TimeEntry
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -437,7 +377,7 @@ func (c *Client) UpdateTimeEntryWithResult[R any](ctx context.Context, workspace
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(TimeEntry)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -480,14 +420,6 @@ func (c *Client) UpdateTimeEntryWithResult[R any](ctx context.Context, workspace
 //
 //	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
 func (c *Client) StopTimeEntry(ctx context.Context, workspaceID int, timeEntryID int) (*TimeEntry, error) {
-	return c.StopTimeEntryWithResult[TimeEntry](ctx, workspaceID, timeEntryID)
-}
-
-// Stops a workspace time entry.
-// You can define a custom result to unmarshal the response into.
-//
-//	PATCH /workspaces/{workspace_id}/time_entries/{time_entry_id}/stop
-func (c *Client) StopTimeEntryWithResult[R any](ctx context.Context, workspaceID int, timeEntryID int) (*R, error) {
 	u := c.baseURL.JoinPath("workspaces", strconv.Itoa(workspaceID), "time_entries", strconv.Itoa(timeEntryID), "stop")
 	req := (&http.Request{
 		Header: http.Header{
@@ -513,15 +445,8 @@ func (c *Client) StopTimeEntryWithResult[R any](ctx context.Context, workspaceID
 		// The stopped workspace TimeEntry.
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*TimeEntry); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out TimeEntry
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -530,7 +455,7 @@ func (c *Client) StopTimeEntryWithResult[R any](ctx context.Context, workspaceID
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(TimeEntry)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -573,19 +498,6 @@ func (c *Client) StopTimeEntryWithResult[R any](ctx context.Context, workspaceID
 //
 //	GET /me/time_entries
 func (c *Client) ListTimeEntries(ctx context.Context, params *ListTimeEntriesParams) (TimeEntries, error) {
-	out, err := c.ListTimeEntriesWithResult[TimeEntries](ctx, params)
-	if err != nil {
-		return nil, err
-	}
-
-	return *out, nil
-}
-
-// Lists latest time entries.
-// You can define a custom result to unmarshal the response into.
-//
-//	GET /me/time_entries
-func (c *Client) ListTimeEntriesWithResult[R any](ctx context.Context, params *ListTimeEntriesParams) (*R, error) {
 	u := c.baseURL.JoinPath("me", "time_entries")
 	if params != nil {
 		q := make(url.Values, 6)
@@ -641,15 +553,8 @@ func (c *Client) ListTimeEntriesWithResult[R any](ctx context.Context, params *L
 		// Returns a list of time entries
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*TimeEntries); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out TimeEntries
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -658,13 +563,13 @@ func (c *Client) ListTimeEntriesWithResult[R any](ctx context.Context, params *L
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(TimeEntries)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
 			}
 
-			return &out, nil
+			return out, nil
 		default:
 			return nil, c.failed(ia, api.NewErrUnknownContentType(rsp))
 		}
@@ -701,14 +606,6 @@ func (c *Client) ListTimeEntriesWithResult[R any](ctx context.Context, params *L
 //
 //	POST /organizations
 func (c *Client) CreateOrganization(ctx context.Context, body NewOrganization) (*SimpleOrganization, error) {
-	return c.CreateOrganizationWithResult[SimpleOrganization](ctx, body)
-}
-
-// Creates a new organization with a single workspace and assigns current user as the organization owner
-// You can define a custom result to unmarshal the response into.
-//
-//	POST /organizations
-func (c *Client) CreateOrganizationWithResult[R any](ctx context.Context, body NewOrganization) (*R, error) {
 	u := c.baseURL.JoinPath("organizations")
 	pr, pw := io.Pipe()
 	req := (&http.Request{
@@ -741,15 +638,8 @@ func (c *Client) CreateOrganizationWithResult[R any](ctx context.Context, body N
 		// Organization and workspace IDs
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*SimpleOrganization); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out SimpleOrganization
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -758,7 +648,7 @@ func (c *Client) CreateOrganizationWithResult[R any](ctx context.Context, body N
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(SimpleOrganization)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -777,19 +667,6 @@ func (c *Client) CreateOrganizationWithResult[R any](ctx context.Context, body N
 //
 //	GET /me/organizations
 func (c *Client) ListOrganizations(ctx context.Context) (Organizations, error) {
-	out, err := c.ListOrganizationsWithResult[Organizations](ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return *out, nil
-}
-
-// Get all organizations a given user is part of.
-// You can define a custom result to unmarshal the response into.
-//
-//	GET /me/organizations
-func (c *Client) ListOrganizationsWithResult[R any](ctx context.Context) (*R, error) {
 	u := c.baseURL.JoinPath("me", "organizations")
 	req := (&http.Request{
 		Header: http.Header{
@@ -815,15 +692,8 @@ func (c *Client) ListOrganizationsWithResult[R any](ctx context.Context) (*R, er
 		// Returns an array of organisations
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*Organizations); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out Organizations
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -832,13 +702,13 @@ func (c *Client) ListOrganizationsWithResult[R any](ctx context.Context) (*R, er
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(Organizations)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
 			}
 
-			return &out, nil
+			return out, nil
 		default:
 			return nil, c.failed(ia, api.NewErrUnknownContentType(rsp))
 		}
@@ -851,14 +721,6 @@ func (c *Client) ListOrganizationsWithResult[R any](ctx context.Context) (*R, er
 //
 //	GET /organizations/{organization_id}
 func (c *Client) GetOrganization(ctx context.Context, organizationID int) (*Organization, error) {
-	return c.GetOrganizationWithResult[Organization](ctx, organizationID)
-}
-
-// Returns organization name and current pricing plan
-// You can define a custom result to unmarshal the response into.
-//
-//	GET /organizations/{organization_id}
-func (c *Client) GetOrganizationWithResult[R any](ctx context.Context, organizationID int) (*R, error) {
 	u := c.baseURL.JoinPath("organizations", strconv.Itoa(organizationID))
 	req := (&http.Request{
 		Header: http.Header{
@@ -884,15 +746,8 @@ func (c *Client) GetOrganizationWithResult[R any](ctx context.Context, organizat
 		// TODO
 		switch mt, _, _ := strings.Cut(rsp.Header.Get("Content-Type"), ";"); mt {
 		case "application/json":
-			var out R
-
-			// a type of the caller's own declares only what it needs of the response, so it is decoded leniently
-			opts := jsonOptsLenient
-			if _, ok := any(&out).(*Organization); ok {
-				opts = jsonOpts
-			}
-
-			if err := json.UnmarshalRead(rsp.Body, &out, opts); err != nil {
+			var out Organization
+			if err := json.UnmarshalRead(rsp.Body, &out, jsonOpts); err != nil {
 				if ia == nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
@@ -901,7 +756,7 @@ func (c *Client) GetOrganizationWithResult[R any](ctx context.Context, organizat
 					return nil, errors.Join(api.WrapDecodingError(rsp, err), kerr)
 				}
 
-				out = *new(R)
+				out = *new(Organization)
 				if err := json.Unmarshal(ia.Response.Body, &out, jsonOptsLenient); err != nil {
 					return nil, api.WrapDecodingError(rsp, err)
 				}
