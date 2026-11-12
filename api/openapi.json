@@ -358,11 +358,13 @@
           "pid": {
             "description": "Project ID, legacy field",
             "type": "integer",
+            "minimum": 1,
             "x-go-name": "ProjectIDLegacy"
           },
           "project_id": {
             "description": "Project ID, optional",
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1
           },
           "shared_with_user_ids": {
             "description": "List of user IDs to share this time entry with",
@@ -406,29 +408,35 @@
           },
           "task_id": {
             "description": "Task ID, optional",
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1
           },
           "tid": {
             "description": "Task ID, legacy field",
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1
           },
           "uid": {
             "description": "Time Entry creator ID, legacy field",
             "type": "integer",
+            "minimum": 1,
             "x-go-name": "UserIDLegacy"
           },
           "user_id": {
             "description": "Time Entry creator ID, if omitted will use the requester user ID",
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1
           },
           "wid": {
             "description": "Workspace ID, legacy field",
             "type": "integer",
+            "minimum": 1,
             "x-go-name": "WorkspaceIDLegacy"
           },
           "workspace_id": {
             "description": "Workspace ID",
             "type": "integer",
+            "minimum": 1,
             "example": 2230580
           }
         },
@@ -459,6 +467,7 @@
           "id": {
             "description": "Organization ID",
             "type": "integer",
+            "minimum": 1,
             "example": 2108099
           },
           "name": {
@@ -469,6 +478,7 @@
           "pricing_plan_id": {
             "description": "Organization plan ID",
             "type": "integer",
+            "minimum": 1,
             "example": 0
           },
           "created_at": {
@@ -655,10 +665,12 @@
           "id": {
             "description": "Project ID",
             "type": "integer",
+            "minimum": 1,
             "example": 63334144
           },
           "workspace_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2230580
           },
           "client_id": {
@@ -667,6 +679,7 @@
               "integer",
               "null"
             ],
+            "minimum": 1,
             "example": 64890399
           },
           "name": {
@@ -826,6 +839,7 @@
           },
           "wid": {
             "type": "integer",
+            "minimum": 1,
             "example": 2230580,
             "x-go-name": "WorkspaceIDLegacy"
           },
@@ -835,6 +849,7 @@
               "integer",
               "null"
             ],
+            "minimum": 1,
             "example": 64890399
           },
           "is_shared": {
@@ -1836,6 +1851,7 @@
         "properties": {
           "id": {
             "type": "integer",
+            "minimum": 1,
             "example": 9011051
           },
           "name": {
@@ -1847,6 +1863,7 @@
           },
           "workspace_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 9009928
           },
           "workspace_name": {
@@ -1872,10 +1889,12 @@
         "properties": {
           "id": {
             "type": "integer",
+            "minimum": 1,
             "example": 16939168
           },
           "workspace_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2230580
           },
           "name": {
@@ -1889,6 +1908,7 @@
           },
           "creator_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2166261
           }
         },
@@ -2040,10 +2060,12 @@
         "properties": {
           "id": {
             "type": "integer",
+            "minimum": 1,
             "example": 3727977106
           },
           "workspace_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2230580
           },
           "project_id": {
@@ -2051,6 +2073,7 @@
               "integer",
               "null"
             ],
+            "minimum": 1,
             "example": 155392684
           },
           "task_id": {
@@ -2118,20 +2141,24 @@
           },
           "user_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2166261
           },
           "uid": {
             "type": "integer",
+            "minimum": 1,
             "example": 2166261,
             "x-go-name": "UserIDLegacy"
           },
           "wid": {
             "type": "integer",
+            "minimum": 1,
             "example": 2230580,
             "x-go-name": "WorkspaceIDLegacy"
           },
           "pid": {
             "type": "integer",
+            "minimum": 1,
             "example": 155392684,
             "x-go-name": "ProjectIDLegacy"
           },
@@ -2233,7 +2260,8 @@
           },
           "project_id": {
             "description": "Project ID",
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1
           },
           "start": {
             "description": "Start time",
@@ -2255,7 +2283,8 @@
           },
           "workspace_id": {
             "description": "Workspace ID",
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1
           }
         }
       },
@@ -2293,7 +2322,8 @@
             "type": [
               "integer",
               "null"
-            ]
+            ],
+            "minimum": 1
           },
           "can_have_trial": {
             "description": "True, if neither the organization nor the owner has never had a trial before",
@@ -2331,6 +2361,7 @@
         "properties": {
           "id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2166261
           },
           "api_token": {
@@ -2356,6 +2387,7 @@
           },
           "default_workspace_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2230580
           },
           "beginning_of_week": {
@@ -2391,7 +2423,8 @@
             "type": [
               "integer",
               "null"
-            ]
+            ],
+            "minimum": 1
           },
           "has_password": {
             "type": "boolean",
@@ -2447,6 +2480,7 @@
           },
           "user_account_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2063736
           }
         },
@@ -2500,11 +2534,13 @@
           "id": {
             "description": "Client ID",
             "type": "integer",
+            "minimum": 1,
             "example": 64890399
           },
           "wid": {
             "description": "Workspace ID",
             "type": "integer",
+            "minimum": 1,
             "example": 2230580,
             "x-go-name": "WorkspaceIDLegacy"
           },
@@ -2527,6 +2563,7 @@
           "creator_id": {
             "description": "The ID of the user who created the client",
             "type": "integer",
+            "minimum": 1,
             "example": 2166261
           },
           "integration_ext_id": {
@@ -2572,10 +2609,12 @@
         "properties": {
           "id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2230580
           },
           "organization_id": {
             "type": "integer",
+            "minimum": 1,
             "example": 2108099
           },
           "name": {
@@ -3144,6 +3183,7 @@
         "required": true,
         "schema": {
           "type": "integer",
+          "minimum": 1,
           "example": 9011051
         },
         "example": 9011051
@@ -3177,6 +3217,7 @@
         "required": true,
         "schema": {
           "type": "integer",
+          "minimum": 1,
           "example": 3730303299
         }
       },
@@ -3197,6 +3238,7 @@
         "required": true,
         "schema": {
           "type": "integer",
+          "minimum": 1,
           "example": 2230580
         }
       }
