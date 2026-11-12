@@ -99,9 +99,9 @@ type NewTimeEntry struct {
 	DurationOnly  *bool          `json:"duronly,omitzero"`
 	EventMetadata *EventMetadata `json:"event_metadata,omitzero"`
 	// Project ID, legacy field
-	ProjectIDLegacy *int `json:"pid,omitzero"`
+	ProjectIDLegacy int `json:"pid,omitzero"`
 	// Project ID, optional
-	ProjectID *int `json:"project_id,omitzero"`
+	ProjectID int `json:"project_id,omitzero"`
 	// List of user IDs to share this time entry with
 	SharedWithUserIDs []int `json:"shared_with_user_ids,omitzero"`
 	// Start time, required for creation.
@@ -118,15 +118,15 @@ type NewTimeEntry struct {
 	// Names of tags to add/remove. If name does not exist as tag, one will be created automatically
 	Tags []string `json:"tags"`
 	// Task ID, optional
-	TaskID *int `json:"task_id,omitzero"`
+	TaskID int `json:"task_id,omitzero"`
 	// Task ID, legacy field
-	Tid *int `json:"tid,omitzero"`
+	Tid int `json:"tid,omitzero"`
 	// Time Entry creator ID, legacy field
-	UserIDLegacy *int `json:"uid,omitzero"`
+	UserIDLegacy int `json:"uid,omitzero"`
 	// Time Entry creator ID, if omitted will use the requester user ID
-	UserID *int `json:"user_id,omitzero"`
+	UserID int `json:"user_id,omitzero"`
 	// Workspace ID, legacy field
-	WorkspaceIDLegacy *int `json:"wid,omitzero"`
+	WorkspaceIDLegacy int `json:"wid,omitzero"`
 	// Workspace ID
 	WorkspaceID int `json:"workspace_id"`
 }
@@ -179,7 +179,7 @@ type Project struct {
 	ID          int `json:"id"`
 	WorkspaceID int `json:"workspace_id"`
 	// Client ID
-	ClientID  *int   `json:"client_id"`
+	ClientID  int    `json:"client_id"`
 	Name      string `json:"name"`
 	IsPrivate bool   `json:"is_private"`
 	// Whether the project is active or archived
@@ -223,7 +223,7 @@ type Project struct {
 	Status            string     `json:"status"`
 	WorkspaceIDLegacy int        `json:"wid"`
 	// Client ID legacy field
-	Cid      *int  `json:"cid"`
+	Cid      int   `json:"cid"`
 	IsShared *bool `json:"is_shared,omitzero"`
 	Pinned   bool  `json:"pinned"`
 	// The external ID of the linked entity in the external system (e.g. JIRA/SalesForce)
@@ -286,7 +286,7 @@ type TimeEntries []TimeEntry
 type TimeEntry struct {
 	ID          int           `json:"id"`
 	WorkspaceID int           `json:"workspace_id"`
-	ProjectID   *int          `json:"project_id"`
+	ProjectID   int           `json:"project_id"`
 	TaskID      struct{}      `json:"task_id"`
 	Billable    bool          `json:"billable"`
 	Start       time.Time     `json:"start"`
@@ -302,7 +302,7 @@ type TimeEntry struct {
 	UserID            int       `json:"user_id"`
 	UserIDLegacy      int       `json:"uid"`
 	WorkspaceIDLegacy int       `json:"wid"`
-	ProjectIDLegacy   *int      `json:"pid,omitzero"`
+	ProjectIDLegacy   int       `json:"pid,omitzero"`
 	ClientName        string    `json:"client_name,omitzero"`
 	ProjectName       string    `json:"project_name,omitzero"`
 	ProjectColor      string    `json:"project_color,omitzero"`
@@ -327,7 +327,7 @@ type TimeEntryUpdate struct {
 	// Time entry duration. For running entries should be negative, preferable -1
 	Duration *time.Duration `json:"duration,omitzero"`
 	// Project ID
-	ProjectID *int `json:"project_id,omitzero"`
+	ProjectID int `json:"project_id,omitzero"`
 	// Start time
 	Start time.Time `json:"start,omitzero"`
 	// Stop time. Setting it stops a running entry then.
@@ -335,7 +335,7 @@ type TimeEntryUpdate struct {
 	// Names of tags to add/remove. If name does not exist as tag, one will be created automatically
 	Tags []string `json:"tags,omitzero"`
 	// Workspace ID
-	WorkspaceID *int `json:"workspace_id,omitzero"`
+	WorkspaceID int `json:"workspace_id,omitzero"`
 }
 
 // TrialInfo defines a model
@@ -349,7 +349,7 @@ type TrialInfo struct {
 	// When the trial payment is due
 	NextPaymentDate civil.Date `json:"next_payment_date"`
 	// What was the previous plan before the trial
-	LastPricingPlanID *int `json:"last_pricing_plan_id"`
+	LastPricingPlanID int `json:"last_pricing_plan_id"`
 	// True, if neither the organization nor the owner has never had a trial before
 	CanHaveTrial bool     `json:"can_have_trial"`
 	TrialPlanID  struct{} `json:"trial_plan_id"`
@@ -370,7 +370,7 @@ type UserWithRelated struct {
 	UpdatedAt          time.Time   `json:"updated_at"`
 	OpenidEmail        struct{}    `json:"openid_email"`
 	OpenidEnabled      bool        `json:"openid_enabled"`
-	CountryID          *int        `json:"country_id"`
+	CountryID          int         `json:"country_id"`
 	HasPassword        bool        `json:"has_password"`
 	At                 time.Time   `json:"at"`
 	IntercomHash       string      `json:"intercom_hash,omitzero"`
@@ -386,7 +386,7 @@ type UserWithRelated struct {
 	Projects      Projects   `json:"projects,omitzero"`
 	Workspaces    Workspaces `json:"workspaces,omitzero"`
 	TwoFaEnabled  *bool      `json:"2fa_enabled,omitzero"`
-	UserAccountID *int       `json:"user_account_id,omitzero"`
+	UserAccountID int        `json:"user_account_id,omitzero"`
 }
 
 // WorkClient defines a model
