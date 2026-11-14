@@ -192,18 +192,18 @@ type Project struct {
 	// Color
 	Color string `json:"color"`
 	// Whether the project is billable, premium feature
-	Billable *bool    `json:"billable"`
+	Billable bool     `json:"billable"`
 	Template struct{} `json:"template"`
 	// Whether estimates are based on task hours, premium feature
-	AutoEstimates *bool `json:"auto_estimates"`
+	AutoEstimates bool `json:"auto_estimates"`
 	// RecurringPeriod
 	CurrentPeriod *EventMetadata `json:"current_period,omitzero"`
 	// End date
 	EndDate civil.Date `json:"end_date,omitzero"`
 	// Estimated hours
-	EstimatedHours *int `json:"estimated_hours"`
+	EstimatedHours int `json:"estimated_hours"`
 	// Estimated seconds
-	EstimatedSeconds *int     `json:"estimated_seconds"`
+	EstimatedSeconds int      `json:"estimated_seconds"`
 	Rate             struct{} `json:"rate"`
 	RateLastUpdated  struct{} `json:"rate_last_updated"`
 	// Currency, premium feature
@@ -212,11 +212,11 @@ type Project struct {
 	TemplateID          struct{} `json:"template_id"`
 	RecurringParameters struct{} `json:"recurring_parameters"`
 	// Fixed fee, premium feature
-	FixedFee *float64 `json:"fixed_fee"`
+	FixedFee float64 `json:"fixed_fee"`
 	// Actual hours
-	ActualHours *int `json:"actual_hours"`
+	ActualHours int `json:"actual_hours"`
 	// Actual seconds
-	ActualSeconds     *int       `json:"actual_seconds"`
+	ActualSeconds     int        `json:"actual_seconds"`
 	TasksCount        *struct{}  `json:"tasks_count,omitzero"`
 	CanTrackTime      bool       `json:"can_track_time"`
 	StartDate         civil.Date `json:"start_date"`
