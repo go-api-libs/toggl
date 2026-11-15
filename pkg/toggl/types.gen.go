@@ -131,6 +131,12 @@ type NewTimeEntry struct {
 	WorkspaceID int `json:"workspace_id"`
 }
 
+// unknownEnum reports whether v holds a value of an enum the specification does not list, a response debug mode
+// records.
+func (v *NewTimeEntry) unknownEnum() bool {
+	return v.TagAction != "" && !v.TagAction.Valid()
+}
+
 // Options defines a model
 type Options map[string]string
 
