@@ -137,7 +137,6 @@ func (c *Client) GetMe(ctx context.Context, params *GetMeParams) (*UserWithRelat
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json, text/plain"},
 			"User-Agent":    []string{c.userAgent},
 		},
 		Host:       u.Host,
@@ -200,7 +199,6 @@ func (c *Client) CreateTimeEntry(ctx context.Context, workspaceID int, body NewT
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json"},
 			"User-Agent":    []string{c.userAgent},
 			"Content-Type":  []string{"application/json"},
 		},
@@ -267,7 +265,6 @@ func (c *Client) GetCurrentTimeEntry(ctx context.Context) (*TimeEntry, error) {
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json"},
 			"User-Agent":    []string{c.userAgent},
 		},
 		Host:       u.Host,
@@ -314,7 +311,6 @@ func (c *Client) UpdateTimeEntry(ctx context.Context, workspaceID int, timeEntry
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json"},
 			"User-Agent":    []string{c.userAgent},
 			"Content-Type":  []string{"application/json"},
 		},
@@ -381,7 +377,6 @@ func (c *Client) StopTimeEntry(ctx context.Context, workspaceID int, timeEntryID
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json"},
 			"User-Agent":    []string{c.userAgent},
 		},
 		Host:       u.Host,
@@ -472,7 +467,6 @@ func (c *Client) ListTimeEntries(ctx context.Context, params *ListTimeEntriesPar
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json"},
 			"User-Agent":    []string{c.userAgent},
 		},
 		Host:       u.Host,
@@ -534,7 +528,6 @@ func (c *Client) CreateOrganization(ctx context.Context, body NewOrganization) (
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json"},
 			"User-Agent":    []string{c.userAgent},
 			"Content-Type":  []string{"application/json"},
 		},
@@ -586,7 +579,6 @@ func (c *Client) ListOrganizations(ctx context.Context) (Organizations, error) {
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json"},
 			"User-Agent":    []string{c.userAgent},
 		},
 		Host:       u.Host,
@@ -632,7 +624,6 @@ func (c *Client) GetOrganization(ctx context.Context, organizationID int) (*Orga
 	req := (&http.Request{
 		Header: http.Header{
 			"Authorization": []string{c.basic},
-			"Accept":        []string{"application/json"},
 			"User-Agent":    []string{c.userAgent},
 		},
 		Host:       u.Host,
